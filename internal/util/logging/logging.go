@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 const (
@@ -41,7 +41,7 @@ const nameKey = "name"
 //
 // How this name is used depends on the handler.
 //
-// TODO https://github.com/FerretDB/FerretDB/issues/4431
+// TODO https://github.com/hanzoai/docdb/issues/4431
 func WithName(l *slog.Logger, name string) *slog.Logger {
 	must.NotBeZero(l)
 	return l.With(slog.String(nameKey, name))

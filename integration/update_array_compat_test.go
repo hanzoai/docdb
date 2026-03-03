@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestUpdateArrayCompatPop(t *testing.T) {
@@ -34,7 +34,7 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 		},
 		"Pop": {
 			update:           bson.D{{"$pop", bson.D{{"v", 1}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/314",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/314",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -80,7 +80,7 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 		},
 		"PopFirst": {
 			update:           bson.D{{"$pop", bson.D{{"v", -1}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/314",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/314",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -140,7 +140,7 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 			filter:           bson.D{{"_id", "array-documents-nested"}},
 			update:           bson.D{{"$pop", bson.D{{"v.0.foo.0.bar", 1}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/314",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/314",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -167,7 +167,7 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 		"DotNotationObjectInArray": {
 			update:           bson.D{{"$pop", bson.D{{"v.array.foo.array", 1}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/413",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/413",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -189,7 +189,7 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 		"DotNotationObject": {
 			update:           bson.D{{"$pop", bson.D{{"v.foo", 1}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/413",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/413",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -386,7 +386,7 @@ func TestUpdateArrayCompatAddToSetEach(t *testing.T) {
 		"NotArray": {
 			update:           bson.D{{"$addToSet", bson.D{{"v", bson.D{{"$each", int32(1)}}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/478",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/478",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -482,7 +482,7 @@ func TestUpdateArrayCompatPushEach(t *testing.T) {
 			filter:           bson.D{{"_id", "array-documents-nested"}},
 			update:           bson.D{{"$push", bson.D{{"v", bson.D{{"$each", bson.A{}}}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/373",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/373",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string

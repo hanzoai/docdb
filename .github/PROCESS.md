@@ -1,6 +1,6 @@
 # The Process
 
-This file contains some process notes for FerretDB Inc. engineers and long-term contributors.
+This file contains some process notes for DocDB Inc. engineers and long-term contributors.
 If you are a community contributor, feel free to ignore all this!
 We will do all that for you so you can focus on what is really interesting for you.
 
@@ -20,7 +20,7 @@ After about a week of inactivity, we should ping contributors.
 
 ## Pull requests
 
-For FerretDB Inc. engineers and long-term contributors,
+For DocDB Inc. engineers and long-term contributors,
 besides the guides in [CONTRIBUTING.md](../CONTRIBUTING.md),
 please follow these notes below when you working with pull request:
 
@@ -48,11 +48,11 @@ please follow these notes below when you working with pull request:
    with optional [trailers for co-authors](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors).
 7. Ultimately, the author is responsible for doing everything to ensure that the pull request is merged and done.
 
-One can see all pull requests that await review [there](https://github.com/pulls/review-requested?q=user%3AFerretDB+is%3Aopen).
-We also have [#devlog channel](https://ferretdb.slack.com/archives/C02P0MR7VJS)
+One can see all pull requests that await review [there](https://github.com/pulls/review-requested?q=user%3ADocDB+is%3Aopen).
+We also have [#devlog channel](https://docdb.slack.com/archives/C02P0MR7VJS)
 in our community Slack with periodic reminders.
 To make them useful,
-talk with [@GitHub bot in direct messages](https://ferretdb.slack.com/archives/D02P4EJPFGV)
+talk with [@GitHub bot in direct messages](https://docdb.slack.com/archives/D02P4EJPFGV)
 to link your Slack and GitHub identities,
 and then configure notification only for your name.
 

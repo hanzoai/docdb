@@ -30,7 +30,7 @@ We encourage you to try out the new PostgreSQL backend and let us know what you 
 
 We're also happy to announce that we've added linux/arm64 binaries and .deb/.rpm packages.
 This has been a requested feature by the FerretDB community, and we're thrilled that we can finally provide them for you.
-Check them out [here](https://github.com/FerretDB/FerretDB/releases/).
+Check them out [here](https://github.com/hanzoai/docdb/releases/).
 
 ## Docker images changes
 
@@ -53,7 +53,7 @@ We've also enabled extra details about indexes for `dbStats` response.
 In addition, bugs from the previous release were addressed in this release.
 For example, we've relaxed restrictions when `_id` is not the first field in projection, allowing it to be at any index.
 
-Please see our [release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.12.1)
+Please see our [release notes](https://github.com/hanzoai/docdb/releases/tag/v1.12.1)
 
 In recent weeks, the support and enthusiasm from the community have been remarkable.
 We appreciate you!

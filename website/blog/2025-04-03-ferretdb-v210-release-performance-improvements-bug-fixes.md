@@ -25,7 +25,7 @@ To update to FerretDB v2.1.0, please follow the same instructions as in our [mig
 
 - Back up your data using `mongodump` or `mongoexport`.
 - Remove existing FerretDB and DocumentDB images, containers, and volumes (or Debian packages and data directories).
-- Install [FerretDB v2.1.0](https://github.com/FerretDB/FerretDB/releases/tag/v2.1.0) and [DocumentDB extension](https://github.com/FerretDB/documentdb/releases/tag/v0.102.0-ferretdb-2.1.0).
+- Install [FerretDB v2.1.0](https://github.com/hanzoai/docdb/releases/tag/v2.1.0) and [DocumentDB extension](https://github.com/hanzoai/docdb/releases/tag/v0.102.0-ferretdb-2.1.0).
 - Restore your data with `mongorestore` or `mongoimport`.
 
 This is a one-time manual process.
@@ -43,7 +43,7 @@ This will ensure that all indexes are up to date and functioning correctly.
 
 ### Fixed embeddable package
 
-The [embeddable Go package](https://pkg.go.dev/github.com/FerretDB/FerretDB/v2/ferretdb), broken in v2.0.0, now works as expected, making it easier to use FerretDB as a library in Go applications.
+The [embeddable Go package](https://pkg.go.dev/github.com/hanzoai/docdb/v2/ferretdb), broken in v2.0.0, now works as expected, making it easier to use FerretDB as a library in Go applications.
 
 ### Other changes
 
@@ -54,14 +54,14 @@ We also made improvements to the `--help` output to align with our documentation
 
 To better integrate with Docker Secrets, FerretDB now supports reading the PostgreSQL connection URL from a file using the `--postgresql-url-file` flag or the `FERRETDB_POSTGRESQL_URL_FILE` environment variable.
 
-See the [release notes for all changes in this release](https://github.com/FerretDB/FerretDB/releases/tag/v2.1.0).
+See the [release notes for all changes in this release](https://github.com/hanzoai/docdb/releases/tag/v2.1.0).
 
 ## Looking ahead
 
 Since the release of FerretDB v2.0.0, we have been working to address the feedback and issues reported by our users.
 We are committed to providing a truly open-source alternative to MongoDB that's highly performant, compatible, and reliable for all your database needs.
 
-Visit [our GitHub](https://github.com/FerretDB) and [our website](https://www.ferretdb.com) to download,
+Visit [our GitHub](https://github.com/hanzoai) and [our website](https://www.ferretdb.com) to download,
 contribute, or explore enterprise solutions.
 
 If you have any questions, reach out to us on [our community channels](https://docs.ferretdb.io/#community).

@@ -32,7 +32,7 @@ That creates a need for fetching all the data from a storage layer, which for la
 
 Considering this fact, query pushdowns are a really important method for decreasing the data that we must fetch for every query.
 That's why FerretDB really can benefit from using them in such queries.
-Fortunately, we've managed to introduce the query pushdown with [this PR](https://github.com/FerretDB/FerretDB/pull/1207)!
+Fortunately, we've managed to introduce the query pushdown with [this PR](https://github.com/hanzoai/docdb/pull/1207)!
 
 ## How FerretDB fetches data using query pushdown
 
@@ -151,7 +151,7 @@ So, if we use any other field there, we are able to produce a non-optimized quer
 
 Our benchmark will run 3 cases.
 Two of them will cause a pushdown on `_id` field, and the third one will query the `v` field, which at the moment of writing the article cannot be pushdowned by FerretDB.
-You can find the code of the benchmark in the [FerretDB repository](https://github.com/FerretDB/FerretDB/blob/c50e8344f1ead5f25a34352eb76643c30baf4bf4/integration/benchmarks_test.go).
+You can find the code of the benchmark in the [FerretDB repository](https://github.com/hanzoai/docdb/blob/c50e8344f1ead5f25a34352eb76643c30baf4bf4/integration/benchmarks_test.go).
 
 Now we can run the test:
 
@@ -172,7 +172,7 @@ The results show that the tests with pushdown queries took around 101 ms, which 
 
 ## A sneak peek into the future
 
-In the near future, [we will add a support for other fields](https://github.com/FerretDB/FerretDB/issues/4) (like simple scalar fields) and other values (starting with numbers, strings, and other simple scalar values).
+In the near future, [we will add a support for other fields](https://github.com/hanzoai/docdb/issues/4) (like simple scalar fields) and other values (starting with numbers, strings, and other simple scalar values).
 As our pushdown related code is written to be easily extensible, most of the future pushdown implementations are just a matter of adding a couple of cases for each of them.
 
 Longterm, we consider adding even more complicated pushdown cases to continue boosting the performance.

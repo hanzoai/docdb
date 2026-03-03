@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,15 +24,15 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb"
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/debug"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
+	"github.com/hanzoai/docdb/internal/documentdb"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/debug"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/state"
 )
 
 // setupMongoDB configures MongoDB containers.
@@ -137,7 +137,7 @@ func setupUser(ctx context.Context, uri string, l *slog.Logger) error {
 			return lazyerrors.Errorf("Failed to create user: %s", d.LogMessage())
 		}
 	case int32:
-		// TODO https://github.com/FerretDB/FerretDB/issues/5313
+		// TODO https://github.com/hanzoai/docdb/issues/5313
 		if ok != int32(1) {
 			return lazyerrors.Errorf("Failed to create user: %s", d.LogMessage())
 		}

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestAggregateCompatRootVariable(t *testing.T) {
@@ -39,7 +39,7 @@ func TestAggregateCompatRootVariable(t *testing.T) {
 				bson.D{{"$group", bson.D{{"_id", "$$ROOT"}}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"GroupIDTwice": {
 			pipeline: bson.A{
@@ -48,7 +48,7 @@ func TestAggregateCompatRootVariable(t *testing.T) {
 				bson.D{{"$group", bson.D{{"_id", "$$ROOT"}}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"GroupIDFieldID": {
 			pipeline: bson.A{
@@ -56,7 +56,7 @@ func TestAggregateCompatRootVariable(t *testing.T) {
 				bson.D{{"$group", bson.D{{"_id", "$$ROOT._id"}}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"GroupIDFieldValue": {
 			pipeline: bson.A{
@@ -68,21 +68,21 @@ func TestAggregateCompatRootVariable(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"unique", 1}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2185",
+			skip: "https://github.com/hanzoai/docdb/issues/2185",
 		},
 		"GroupIDFieldDotNotation": {
 			pipeline: bson.A{
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 				bson.D{{"$group", bson.D{{"_id", "$$ROOT.v.foo"}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"GroupIDFieldArrayDotNotation": {
 			pipeline: bson.A{
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 				bson.D{{"$group", bson.D{{"_id", "$$ROOT.v.0"}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"GroupIDExpression": {
 			pipeline: bson.A{
@@ -92,7 +92,7 @@ func TestAggregateCompatRootVariable(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"GroupSumAccumulator": {
 			pipeline: bson.A{
@@ -110,7 +110,7 @@ func TestAggregateCompatRootVariable(t *testing.T) {
 					{"sum", bson.D{{"$sum", "$$ROOT"}}},
 				}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"ProjectTypeOperator": {
 			pipeline: bson.A{
@@ -118,7 +118,7 @@ func TestAggregateCompatRootVariable(t *testing.T) {
 					{"type", bson.D{{"$type", "$$ROOT"}}},
 				}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1992",
+			skip: "https://github.com/hanzoai/docdb/issues/1992",
 		},
 		"Set": {
 			pipeline: bson.A{

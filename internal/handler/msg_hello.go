@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/session"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/handler/session"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // msgHello implements `hello` command.
@@ -76,7 +76,7 @@ func (h *Handler) hello(ctx context.Context, doc *wirebson.Document, tcpHost, na
 	if name != "" {
 		// That does not work for TLS-only setups, IPv6 addresses, etc.
 		// The proper solution is to support `replSetInitiate` command.
-		// TODO https://github.com/FerretDB/FerretDB/issues/3936
+		// TODO https://github.com/hanzoai/docdb/issues/3936
 		if strings.HasPrefix(tcpHost, ":") {
 			tcpHost = "localhost" + tcpHost
 		}

@@ -1,5 +1,5 @@
 ---
-# Linters that should pass for all FerretDB and tools code.
+# Linters that should pass for all DocDB and tools code.
 
 run:
   timeout: 3m
@@ -30,20 +30,20 @@ linters-settings:
           - pkg: github.com/jackc/pgx/v4
             desc: use `github.com/jackc/pgx/v5` package instead
 
-          # TODO https://github.com/FerretDB/FerretDB/issues/4798
+          # TODO https://github.com/hanzoai/docdb/issues/4798
           # - pkg: go.mongodb.org/mongo-driver/bson
           #   desc: use `go.mongodb.org/mongo-driver/v2/bson` package instead
           # - pkg: go.mongodb.org/mongo-driver/mongo
           #   desc: use `go.mongodb.org/mongo-driver/v2/mongo` package instead
 
           # - pkg: github.com/xdg-go/scram
-          #   desc: use `github.com/FerretDB/FerretDB/v2/internal/util/scram` package instead
-      ferretdb-in-tools:
+          #   desc: use `github.com/hanzoai/docdb/v2/internal/util/scram` package instead
+      docdb-in-tools:
         files:
           - "**/tools/**/*.go"
         deny:
-          - pkg: github.com/FerretDB/FerretDB/v2/internal/
-            desc: tools should not import FerretDB code
+          - pkg: github.com/hanzoai/docdb/v2/internal/
+            desc: tools should not import DocDB code
       wirebson:
         files:
           - $all
@@ -59,18 +59,18 @@ linters-settings:
           - "!**/internal/util/scram/*.go"
           - "!**/internal/util/testutil/*.go"
         deny:
-          - pkg: github.com/FerretDB/wire/wirebson
+          - pkg: github.com/hanzoai/docdb-wire/wirebson
       documentdb:
         files:
           - "**/internal/documentdb/genwrap/*.go"
         deny:
-          - pkg: github.com/FerretDB/FerretDB/v2/internal/documentdb
+          - pkg: github.com/hanzoai/docdb/v2/internal/documentdb
       cursor:
         files:
           - $all
           - "!**/internal/documentdb/**.go"
         deny:
-          - pkg: github.com/FerretDB/FerretDB/v2/internal/documentdb/cursor
+          - pkg: github.com/hanzoai/docdb/v2/internal/documentdb/cursor
   exhaustive:
     default-signifies-exhaustive: false
   exhaustruct:
@@ -82,7 +82,7 @@ linters-settings:
         pkg: ^\Qgithub.com/jackc/pgx/v5/pgxpool\E$
         msg: Use `Acquire` with `defer Release()` instead.
 
-      # TODO https://github.com/FerretDB/FerretDB/issues/4798
+      # TODO https://github.com/hanzoai/docdb/issues/4798
       - p: ^\Qbson.E\E$
         pkg: ^\Qgo.mongodb.org/mongo-driver/bson\E$
         msg: Use `*wirebson.Document` or `*wirebson.Array` instead.
@@ -114,7 +114,7 @@ linters-settings:
     sections:
       - standard
       - default
-      - prefix(github.com/FerretDB/FerretDB/v2/)
+      - prefix(github.com/hanzoai/docdb/v2/)
   goconst:
     min-occurrences: 5
     ignore-tests: true
@@ -133,7 +133,7 @@ linters-settings:
   goheader:
     # Please do not update it, including bumping a year.
     template: |-
-      Copyright 2021 FerretDB Inc.
+      Copyright 2021 DocDB Inc.
 
       Licensed under the Apache License, Version 2.0 (the "License");
       you may not use this file except in compliance with the License.
@@ -147,12 +147,12 @@ linters-settings:
       See the License for the specific language governing permissions and
       limitations under the License.
   goimports:
-    local-prefixes: github.com/FerretDB/FerretDB/v2
+    local-prefixes: github.com/hanzoai/docdb/v2
   gomodguard:
     blocked:
       modules:
-        - github.com/FerretDB/FerretDB:
-            reason: "Use `github.com/FerretDB/FerretDB/v2/...` instead."
+        - github.com/hanzoai/docdb:
+            reason: "Use `github.com/hanzoai/docdb/v2/...` instead."
   gosimple:
     checks: ["all"]
   govet:
@@ -209,8 +209,8 @@ linters-settings:
     attr-only: true
     no-global: "all"
     context: "scope"
-    static-msg: false # TODO https://github.com/FerretDB/FerretDB/issues/3421
-    no-raw-keys: false # TODO https://github.com/FerretDB/FerretDB/issues/3421
+    static-msg: false # TODO https://github.com/hanzoai/docdb/issues/3421
+    no-raw-keys: false # TODO https://github.com/hanzoai/docdb/issues/3421
     key-naming-case: snake
     args-on-sep-lines: false
   staticcheck:
@@ -231,7 +231,7 @@ linters-settings:
     field-writes-are-uses: false
     post-statements-are-reads: false
     exported-fields-are-used: false
-    parameters-are-used: true # it should be false, TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/823
+    parameters-are-used: true # it should be false, TODO https://github.com/hanzoai/docdb-DocumentDB/issues/823
     local-variables-are-used: false
     generated-is-used: false
   whitespace:
@@ -280,5 +280,5 @@ issues:
       text: "^string `_id` has \\d+ occurrences, make it a constant"
 
     - linters: [forbidigo]
-      path: "\\Qferretdb/ferretdb_test.go"
+      path: "\\Qhanzoai/docdb_test.go"
       text: "\\Quse of `bson.D` forbidden"

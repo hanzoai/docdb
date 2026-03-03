@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ import (
 	"unicode/utf8"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb/documentdb_api"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
 )
 
 // msgRenameCollection implements `renameCollection` command.
@@ -107,7 +107,7 @@ func (h *Handler) msgRenameCollection(connCtx context.Context, req *middleware.R
 	}
 
 	// support cross-database rename
-	// TODO https://github.com/FerretDB/FerretDB/issues/2563
+	// TODO https://github.com/hanzoai/docdb/issues/2563
 	if oldDBName != newDBName {
 		return nil, mongoerrors.NewWithArgument(
 			mongoerrors.ErrNotImplemented,

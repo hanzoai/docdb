@@ -80,7 +80,7 @@ ferretdb> db.dropUser("user");
 { ok: 1 }
 ```
 
-For other changes in this release, see the [release note here](https://github.com/FerretDB/FerretDB/releases/tag/v1.19.0).
+For other changes in this release, see the [release note here](https://github.com/hanzoai/docdb/releases/tag/v1.19.0).
 
 Many thanks to all our contributors, your support means a lot to us, and we value it greatly.
 We had many open-source contributors to this release, with [@fadyat](https://github.com/fadyat) making a first contribution – thank you!

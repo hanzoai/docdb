@@ -43,7 +43,7 @@ jobs:
       contents: read
 
     steps:
-      # TODO https://github.com/FerretDB/github-actions/issues/211
+      # TODO https://github.com/hanzoai/github-actions/issues/211
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -60,7 +60,7 @@ jobs:
       # no ppremk/lfs-warning due to https://github.com/ppremk/lfs-warning/issues/150
 
       - name: Setup Go
-        uses: FerretDB/github-actions/setup-go@main
+        uses: hanzoai/github-actions/setup-go@main
         with:
           cache-key: website-preview
 
@@ -89,7 +89,7 @@ jobs:
 
       - name: Set GitHub deployment URL
         id: extract
-        uses: FerretDB/github-actions/extract-first-url@main
+        uses: hanzoai/github-actions/extract-first-url@main
 
   docs-preview:
     name: Preview docs
@@ -114,13 +114,13 @@ jobs:
       # Just build them again instead.
       # That also allows us to pass branch name, commit hash, etc from git to wrangler.
 
-      # TODO https://github.com/FerretDB/github-actions/issues/211
+      # TODO https://github.com/hanzoai/github-actions/issues/211
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 0 # for wrangler to work
           lfs: true
-          ref: ${{ github.event.pull_request.head.sha }} # TODO https://github.com/FerretDB/github-actions/issues/211
+          ref: ${{ github.event.pull_request.head.sha }} # TODO https://github.com/hanzoai/github-actions/issues/211
 
       # for Wrangler / Cloudflare Pages on pull_request_target
       - name: Name branch
@@ -131,7 +131,7 @@ jobs:
       # no ppremk/lfs-warning due to https://github.com/ppremk/lfs-warning/issues/150
 
       - name: Setup Go
-        uses: FerretDB/github-actions/setup-go@main
+        uses: hanzoai/github-actions/setup-go@main
         with:
           cache-key: website-preview
 
@@ -163,4 +163,4 @@ jobs:
 
       - name: Set GitHub deployment URL
         id: extract
-        uses: FerretDB/github-actions/extract-first-url@main
+        uses: hanzoai/github-actions/extract-first-url@main

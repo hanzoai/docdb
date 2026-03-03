@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,17 +18,17 @@ import (
 	"fmt"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // Response is a normal or error response produced by the handler.
 //
 // It may be constructed from [*wire.MsgHeader]/[wire.MsgBody] (for the proxy handler),
-// from [wirebson.AnyDocument] (for the DocumentDB handler),
+// from [wirebson.AnyDocument] (for the DocDB handler),
 // or from [*mongoerrors.Error] (for both).
 type Response struct {
 	header     *wire.MsgHeader

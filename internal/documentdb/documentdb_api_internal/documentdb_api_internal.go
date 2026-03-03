@@ -6,13 +6,13 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 	"go.opentelemetry.io/otel"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
 )
 
 // AggregationSupport is a wrapper for

@@ -103,7 +103,7 @@ spec:
 
 The `YAML` file will create a `ferret` resource in the `ferretdemo` namespace using KubeDB.
 At the moment, KubeDB only supports version FerretDB v1.18.0.
-[Check here for recent versions](https://github.com/FerretDB/FerretDB/releases)
+[Check here for recent versions](https://github.com/hanzoai/docdb/releases)
 
 Save the config as `ferret.yaml` and apply it.
 
@@ -205,7 +205,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2024-04-22T17:09:13.234Z: Powered by FerretDB v1.18.0 and PostgreSQL 13.13 on aarch64-unknown-linux-musl, compiled by gcc.
-   2024-04-22T17:09:13.235Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2024-04-22T17:09:13.235Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2024-04-22T17:09:13.235Z: The telemetry state is undecided.
    2024-04-22T17:09:13.235Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.io.
 ------

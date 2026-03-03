@@ -65,7 +65,7 @@ It also resolved the batch-size error issue when using the embedded FerretDB pac
 
 ## Other changes
 
-There are several other changes in this release, please [see the FerretDB v1.22.0 release changelog for more](https://github.com/FerretDB/FerretDB/releases/tag/v1.22.0).
+There are several other changes in this release, please [see the FerretDB v1.22.0 release changelog for more](https://github.com/hanzoai/docdb/releases/tag/v1.22.0).
 
 There were four new contributors to FerretDB in this release: [@deferdeter](https://github.com/deferdeter), [@dockercui](https://github.com/dockercui), [@nullniverse](https://github.com/nullniverse), and [@pravi](https://github.com/pravi).
 Thanks for contributing to FerretDB!

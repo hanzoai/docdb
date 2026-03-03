@@ -75,7 +75,7 @@ services:
       - ferretdb
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb-eval:2
+    image: ghcr.io/hanzoai/docdb-eval:2
     restart: on-failure
     ports:
       - 27017:27017
@@ -97,7 +97,7 @@ It includes PostgreSQL with DocumentDB extension, which FerretDB uses as its bac
 We also place the `mongodb` service under the `donotstart` profile so it won't start by default.
 This means you need to explicitly update the LibreChat `api` service to not depend on the `mongodb` service in your `docker-compose.yml` file – or you can remove the `mongodb` service entirely from the `docker-compose.yml` file.
 
-If you're new to FerretDB, you can learn more about the [FerretDB installation guide here](https://docs.ferretdb.io/installation/ferretdb/).
+If you're new to FerretDB, you can learn more about the [FerretDB installation guide here](https://docs.ferretdb.io/installation/docdb/).
 
 ## Using Ollama with LibreChat
 

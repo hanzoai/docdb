@@ -15,7 +15,7 @@ Each week, we are learning more about potential use cases, feature requests, and
 
 And not only that, but we are also able to deliver on these ideas with our growing team of developers (and we are still [hiring](http://www.ferretdb.io/careers)!)
 
-Today, [we released v.0.1.1](https://github.com/FerretDB/FerretDB/releases/tag/v0.1.1), with further enhancements and fixes on top of [FerretDB v.0.1.0](https://github.com/FerretDB/FerretDB/releases/tag/v0.1.0), which introduced exciting changes, enhancing our ability to match the behavior of MongoDB as closely as possible.
+Today, [we released v.0.1.1](https://github.com/hanzoai/docdb/releases/tag/v0.1.1), with further enhancements and fixes on top of [FerretDB v.0.1.0](https://github.com/hanzoai/docdb/releases/tag/v0.1.0), which introduced exciting changes, enhancing our ability to match the behavior of MongoDB as closely as possible.
 We will release a blog post with more emphasis on the tech side of things to share some more details with you on this.
 
 While the decision we outlined in the release notes comes with a certain reduction in performance, worry not - compatibility is our number one goal for now, but performance remains a priority.

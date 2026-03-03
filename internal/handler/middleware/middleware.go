@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,10 +31,10 @@ import (
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/observability"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/observability"
 )
 
 // Middleware connects listeners and handlers.
@@ -228,7 +228,7 @@ func (m *Middleware) startSpan(ctx context.Context, req *Request) context.Contex
 			otelsemconv.DBOperationName(command),
 			otelsemconv.DBNamespace(database),
 			otelsemconv.DBCollectionName(collection),
-			otelattribute.Int("db.ferretdb.request_id", int(req.WireHeader().RequestID)),
+			otelattribute.Int("db.docdb.request_id", int(req.WireHeader().RequestID)),
 		),
 	)
 
@@ -253,7 +253,7 @@ func (m *Middleware) endSpan(ctx context.Context, resp *Response) {
 		}
 
 		span.SetAttributes(
-			otelattribute.Int("db.ferretdb.response_id", int(resp.WireHeader().RequestID)),
+			otelattribute.Int("db.docdb.response_id", int(resp.WireHeader().RequestID)),
 		)
 	}
 

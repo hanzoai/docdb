@@ -175,10 +175,10 @@ response = [
 ### Other Changes
 
 To improve our documentation and content, we've included textlint rules for en-dashes and em-dashes so we don't wrongly document them.
-We've also updated our contribution guidelines to include description of our current test naming conventions – [have a look at that here](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md#integration-tests-naming-guidelines).
-To learn about other changes in this release, please see the [FerretDB release notes for v1.4.0](https://github.com/FerretDB/FerretDB/releases/tag/v1.4.0).
+We've also updated our contribution guidelines to include description of our current test naming conventions – [have a look at that here](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md#integration-tests-naming-guidelines).
+To learn about other changes in this release, please see the [FerretDB release notes for v1.4.0](https://github.com/hanzoai/docdb/releases/tag/v1.4.0).
 
 We're always looking to improve the features of FerretDB, so any suggestions, feedback, or questions you might have would be greatly appreciated.
 [Reach out to us here](https://docs.ferretdb.io/#community).
 
-[**Be a part of the FerretDB community - check us out on GitHub**](https://github.com/FerretDB/FerretDB/).
+[**Be a part of the FerretDB community - check us out on GitHub**](https://github.com/hanzoai/docdb/).

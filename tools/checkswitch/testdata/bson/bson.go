@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 // Package bson provides stubs for testing.
 //
 // We should remove this package.
-// TODO https://github.com/FerretDB/FerretDB/issues/5088
+// TODO https://github.com/hanzoai/docdb/issues/5088
 package bson
 
 type AnyDocument interface{}

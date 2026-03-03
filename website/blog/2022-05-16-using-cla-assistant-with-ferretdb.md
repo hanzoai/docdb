@@ -18,7 +18,7 @@ Signatures can be collected manually or with some custom scripts, but there is a
 That software is [open-source](https://github.com/cla-assistant/cla-assistant) and uses any MongoDB-compatible database.
 
 Recently, we released FerretDB 0.2 which implements enough functionality for CLA Assistant to work with our database without changes.
-Although FerretDB is [not production-ready yet](https://github.com/FerretDB/FerretDB/#scope-and-current-state), we are big fans of dogfooding, so we already run our own instance at [cla.ferretdb.io](https://cla.ferretdb.io) and use it in FerretDB development.
+Although FerretDB is [not production-ready yet](https://github.com/hanzoai/docdb/#scope-and-current-state), we are big fans of dogfooding, so we already run our own instance at [cla.ferretdb.io](https://cla.ferretdb.io) and use it in FerretDB development.
 In this blog post, we describe how you can host your installation using only open-source software.
 
 Let's start with FerretDB and PostgreSQL.
@@ -36,7 +36,7 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:0.2.0
+    image: ghcr.io/hanzoai/docdb:0.2.0
     restart: on-failure
     command: >
       -listen-addr=:27017
@@ -131,4 +131,4 @@ start following logs with `docker-compose logs -f`,
 and open our domain in the browser to login with GitHub and configure our first CLA.
 
 Hopefully, both CLA Assistant and FerretDB will work great for you; but if you encounter any problems, or just want to give us feedback about FerretDB,
-feel free to [join our community Slack or any other community place](https://github.com/FerretDB/FerretDB/#community) – we will be happy to help!
+feel free to [join our community Slack or any other community place](https://github.com/hanzoai/docdb/#community) – we will be happy to help!

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestUpdateFieldCompatCurrentDate(t *testing.T) {
@@ -110,7 +110,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 	testCases := map[string]updateCompatTestCase{
 		"Int32": {
 			update:           bson.D{{"$inc", bson.D{{"v", int32(42)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -130,7 +130,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 		},
 		"Int32Negative": {
 			update:           bson.D{{"$inc", bson.D{{"v", int32(-42)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -150,7 +150,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 		},
 		"Int64Max": {
 			update:           bson.D{{"$inc", bson.D{{"v", math.MaxInt64}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -163,7 +163,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 		},
 		"Int64Min": {
 			update:           bson.D{{"$inc", bson.D{{"v", math.MinInt64}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -176,7 +176,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 		},
 		"EmptyUpdatePath": {
 			update: bson.D{{"$inc", bson.D{{}}}},
-			skip:   "https://github.com/FerretDB/FerretDB/issues/673",
+			skip:   "https://github.com/hanzoai/docdb/issues/673",
 		},
 		"WrongIncTypeArray": {
 			update:     bson.D{{"$inc", bson.A{}}},
@@ -197,7 +197,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 	testCases := map[string]updateCompatTestCase{
 		"IntNegativeIncrement": {
 			update:           bson.D{{"$inc", bson.D{{"v", int32(-1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -218,7 +218,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DoubleIncrement": {
 			update:           bson.D{{"$inc", bson.D{{"v", float64(42.13)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -238,7 +238,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"LongNegativeIncrement": {
 			update:           bson.D{{"$inc", bson.D{{"v", int64(-1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -259,7 +259,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"IncTwoFields": {
 			update:           bson.D{{"$inc", bson.D{{"foo", int32(12)}, {"v", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -271,7 +271,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DoubleBigDoubleIncrement": {
 			update:           bson.D{{"$inc", bson.D{{"v", 42.13}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -291,7 +291,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DoubleIntIncrement": {
 			update:           bson.D{{"$inc", bson.D{{"v", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -312,7 +312,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"IntOverflow": {
 			update:           bson.D{{"$inc", bson.D{{"v", math.MaxInt64}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -325,7 +325,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DoubleIncrementIntField": {
 			update:           bson.D{{"$inc", bson.D{{"v", float64(1.13)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -345,7 +345,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DoubleLongIncrement": {
 			update:           bson.D{{"$inc", bson.D{{"v", int64(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -366,7 +366,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DoubleNegativeIncrement": {
 			update:           bson.D{{"$inc", bson.D{{"v", float64(-42.13)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -385,8 +385,8 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleDoubleBigIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", float64(1 << 61)}}}}, // TODO https://github.com/FerretDB/FerretDB/issues/3626
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			update:           bson.D{{"$inc", bson.D{{"v", float64(1 << 61)}}}}, // TODO https://github.com/hanzoai/docdb/issues/3626
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -399,7 +399,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DoubleIncOnNullValue": {
 			update:           bson.D{{"$inc", bson.D{{"v", float64(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -435,7 +435,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DotNotationFieldExist": {
 			update:           bson.D{{"$inc", bson.D{{"v.foo", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -457,7 +457,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DotNotationArrayValue": {
 			update:           bson.D{{"$inc", bson.D{{"v.0", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -474,7 +474,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$inc", bson.D{{"v.-1", int32(42)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -514,7 +514,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DotNotatArrayFieldNotExist": {
 			update:           bson.D{{"$inc", bson.D{{"v.array.foo", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -545,7 +545,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 		},
 		"DotNotatArrFieldExist": {
 			update:           bson.D{{"$inc", bson.D{{"v.array.0", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/421",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -591,7 +591,7 @@ func TestUpdateFieldCompatIncMulti(t *testing.T) {
 			update:     bson.D{{"$inc", bson.D{{"v", 1}}}},
 			updateOpts: options.Update().SetUpsert(true),
 			providers:  []shareddata.Provider{shareddata.Scalars},
-			skip:       "https://github.com/FerretDB/FerretDB/issues/3044",
+			skip:       "https://github.com/hanzoai/docdb/issues/3044",
 		},
 	}
 
@@ -702,8 +702,8 @@ func TestUpdateFieldCompatMax(t *testing.T) {
 		},
 		"DotNotation": {
 			update:           bson.D{{"$max", bson.D{{"v.foo", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -750,8 +750,8 @@ func TestUpdateFieldCompatMax(t *testing.T) {
 		},
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$max", bson.D{{"v.-1", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -794,8 +794,8 @@ func TestUpdateFieldCompatMax(t *testing.T) {
 		},
 		"DotNotationIndexOutsideArray": {
 			update:           bson.D{{"$max", bson.D{{"v.100", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -932,8 +932,8 @@ func TestUpdateFieldCompatMin(t *testing.T) {
 		},
 		"DotNotation": {
 			update:           bson.D{{"$min", bson.D{{"v.foo", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -980,8 +980,8 @@ func TestUpdateFieldCompatMin(t *testing.T) {
 		},
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$min", bson.D{{"v.-1", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1024,8 +1024,8 @@ func TestUpdateFieldCompatMin(t *testing.T) {
 		},
 		"DotNotationIndexOutOfArray": {
 			update:           bson.D{{"$min", bson.D{{"v.100", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1071,7 +1071,7 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 		"DuplicateField": {
 			update:           bson.D{{"$rename", bson.D{{"v", "v"}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"NonExistingField": {
 			update:     bson.D{{"$rename", bson.D{{"foo", "bar"}}}},
@@ -1115,8 +1115,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 		},
 		"DotNotationDocumentMove": {
 			update:           bson.D{{"$rename", bson.D{{"v.foo", "boo"}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1136,8 +1136,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 		},
 		"DotNotationDocumentDuplicate": {
 			update:           bson.D{{"$rename", bson.D{{"v.foo", "v.array"}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/429
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/429
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1192,8 +1192,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 		},
 		"DotNotationMultipleFields": {
 			update:           bson.D{{"$rename", bson.D{{"v.foo", "v.bar"}, {"v.42", "v.43"}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/429
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/429
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1241,8 +1241,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$rename", bson.D{{"v.-1.bar", "v.-1.baz"}}}},
 			resultType:       EmptyResult,
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/429
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/429
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1286,8 +1286,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 		"DotNotationIndexOutOfArray": {
 			update:           bson.D{{"$rename", bson.D{{"v.100.bar", "v.100.baz"}}}},
 			resultType:       EmptyResult,
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/449
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/448", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/449
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/449
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/449
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1359,8 +1359,8 @@ func TestUpdateFieldCompatUnset(t *testing.T) {
 		},
 		"DotNotation": {
 			update:           bson.D{{"$unset", bson.D{{"v.foo", ""}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/442", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/445
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/442", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/445
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/442", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/445
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/442", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/445
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1384,7 +1384,7 @@ func TestUpdateFieldCompatUnset(t *testing.T) {
 		},
 		"DotArrayField": {
 			update: bson.D{{"$unset", bson.D{{"v.array.0", ""}}}},
-			skip:   "https://github.com/FerretDB/FerretDB/issues/1242",
+			skip:   "https://github.com/hanzoai/docdb/issues/1242",
 		},
 		"DotNotationArrNonExistentPath": {
 			update:     bson.D{{"$unset", bson.D{{"non.0.existent", int32(1)}}}},
@@ -1393,13 +1393,13 @@ func TestUpdateFieldCompatUnset(t *testing.T) {
 		"DotNotationMissingField": {
 			update:           bson.D{{"$unset", bson.D{{"v..", ""}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$unset", bson.D{{"v.-1.bar", ""}}}},
 			resultType:       EmptyResult,
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/442",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/442",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/442",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/442",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1420,8 +1420,8 @@ func TestUpdateFieldCompatUnset(t *testing.T) {
 		"DotNotationIndexOutOfArray": {
 			update:           bson.D{{"$unset", bson.D{{"v.100.bar", ""}}}},
 			resultType:       EmptyResult,
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/445",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/445",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/445",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/445",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1509,7 +1509,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 		},
 		"DocDifferentNumberType": {
 			update:           bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int64(42)}}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/501",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/501",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1573,7 +1573,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 		},
 		"DocFieldExist": {
 			update:           bson.D{{"$set", bson.D{{"v.foo", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/479",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/479",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1596,7 +1596,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 		},
 		"ArrayFieldExist": {
 			update:           bson.D{{"$set", bson.D{{"v.array.0", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/479",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/479",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1632,7 +1632,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 		},
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$set", bson.D{{"v.-1.bar", int32(1)}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/479",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/479",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1748,7 +1748,7 @@ func TestUpdateFieldCompatSetArray(t *testing.T) {
 		},
 		"ArrayChangedNumberType": {
 			update:           bson.D{{"$set", bson.D{{"v", bson.A{int64(42), int64(43), 45.5}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/501",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/501",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1764,7 +1764,7 @@ func TestUpdateFieldCompatSetArray(t *testing.T) {
 		},
 		"DocDifferentNumberType": {
 			update:           bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int32(42)}, {"42", "foo"}, {"array", bson.A{int64(42), "foo", nil}}}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/501",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/501",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1804,7 +1804,7 @@ func TestUpdateFieldCompatSetOnInsert(t *testing.T) {
 		"DuplicateKeys": {
 			update:           bson.D{{"$setOnInsert", bson.D{{"v", 1}, {"v", 2}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1041",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1041",
 		},
 		"DocumentFieldExist": {
 			update:     bson.D{{"$setOnInsert", bson.D{{"v.foo", int32(1)}}}},
@@ -1829,7 +1829,7 @@ func TestUpdateFieldCompatSetOnInsert(t *testing.T) {
 		"DotNotationMissingField": {
 			update:           bson.D{{"$setOnInsert", bson.D{{"v..", int32(1)}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1041",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1041",
 		},
 		"DotNotationNegativeIdx": {
 			update:     bson.D{{"$setOnInsert", bson.D{{"v.-1.bar", int32(1)}}}},
@@ -1972,7 +1972,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		"Int32": {
 			update:           bson.D{{"$mul", bson.D{{"v", int32(42)}}}},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1983,7 +1983,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		"Int32Negative": {
 			update:           bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -1994,7 +1994,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		"Int32Min": {
 			update:           bson.D{{"$mul", bson.D{{"v", math.MinInt32}}}},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2009,7 +2009,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		"Int64": {
 			update:           bson.D{{"$mul", bson.D{{"v", int64(42)}}}},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2020,7 +2020,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		"Int64Negative": {
 			update:           bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2031,7 +2031,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		"Int64Min": {
 			update:           bson.D{{"$mul", bson.D{{"v", math.MinInt64}}}},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2054,7 +2054,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		"DoubleNegative": {
 			update:           bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2067,7 +2067,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			providers: providers,
 		},
 		"DoubleBig": {
-			update:    bson.D{{"$mul", bson.D{{"v", float64(1 << 61)}}}}, // TODO https://github.com/FerretDB/FerretDB/issues/3626
+			update:    bson.D{{"$mul", bson.D{{"v", float64(1 << 61)}}}}, // TODO https://github.com/hanzoai/docdb/issues/3626
 			providers: providers,
 		},
 		"Empty": {
@@ -2110,7 +2110,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 				{"$mul", bson.D{{"v", int32(42)}}},
 			},
 			providers:        providers,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/434",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2184,8 +2184,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		},
 		"DotNotation": {
 			update:           bson.D{{"$mul", bson.D{{"v.foo", int32(45)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2231,8 +2231,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		},
 		"DotNotationArrayFieldExist": {
 			update:           bson.D{{"$mul", bson.D{{"v.array.0", int32(45)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2275,8 +2275,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		},
 		"DotNotationArrayFieldNotExist": {
 			update:           bson.D{{"$mul", bson.D{{"v.array.0.foo", int32(45)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2323,8 +2323,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		},
 		"DotNotatIndexOverArrayLen": {
 			update:           bson.D{{"$mul", bson.D{{"v.100.bar", int32(45)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2357,8 +2357,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		},
 		"DotNotationFieldNumericName": {
 			update:           bson.D{{"$mul", bson.D{{"v.array.42", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2401,8 +2401,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 		},
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$mul", bson.D{{"v.array.-1", int32(42)}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2543,8 +2543,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 		},
 		"DotNotation": {
 			update:           bson.D{{"$bit", bson.D{{"v.foo", bson.D{{"xor", int32(1)}}}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2590,8 +2590,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 		},
 		"DotNotationArray": {
 			update:           bson.D{{"$bit", bson.D{{"v.0", bson.D{{"xor", int32(1)}}}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2631,8 +2631,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 		},
 		"DotNotationNegativeIndex": {
 			update:           bson.D{{"$bit", bson.D{{"v.-1", bson.D{{"or", int32(10)}}}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2678,8 +2678,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 		},
 		"DotNotationArrayFieldNotExist": {
 			update:           bson.D{{"$bit", bson.D{{"v.array.0.foo", bson.D{{"xor", int32(11)}}}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -2726,8 +2726,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 		},
 		"DotNotAtIndexOverArrayLen": {
 			update:           bson.D{{"$bit", bson.D{{"v.100.foo", bson.D{{"and", int32(11)}}}}}},
-			skip:             "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string

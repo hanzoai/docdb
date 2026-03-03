@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/devbuild"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/devbuild"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // msgGetLog implements `getLog` command.
@@ -71,7 +71,7 @@ func (h *Handler) msgGetLog(connCtx context.Context, req *middleware.Request) (*
 		)
 
 	case "global":
-		// TODO https://github.com/FerretDB/FerretDB/issues/4750
+		// TODO https://github.com/hanzoai/docdb/issues/4750
 		log, err := h.L.Handler().(*logging.Handler).RecentEntries()
 		if err != nil {
 			return nil, lazyerrors.Error(err)
@@ -88,7 +88,7 @@ func (h *Handler) msgGetLog(connCtx context.Context, req *middleware.Request) (*
 
 		info := version.Get()
 
-		poweredBy := fmt.Sprintf("Powered by FerretDB %s", info.Version)
+		poweredBy := fmt.Sprintf("Powered by DocDB %s", info.Version)
 
 		// it may be empty if no connection was established yet
 		if state.DocumentDBVersion != "" {
@@ -103,14 +103,14 @@ func (h *Handler) msgGetLog(connCtx context.Context, req *middleware.Request) (*
 
 		startupWarnings := []string{
 			poweredBy,
-			"Please star 🌟 us on GitHub: https://github.com/FerretDB/FerretDB.",
+			"Please star 🌟 us on GitHub: https://github.com/hanzoai/docdb.",
 		}
 
 		if state.DocumentDBVersion != "" && state.DocumentDBVersion != version.DocumentDB {
 			startupWarnings = append(
 				startupWarnings,
 				fmt.Sprintf(
-					"This version of FerretDB requires DocumentDB %q (%s). The currently installed version is %q. "+
+					"This version of DocDB requires DocumentDB %q (%s). The currently installed version is %q. "+
 						"Some functions may not behave correctly.",
 					version.DocumentDB, version.DocumentDBURL, state.DocumentDBVersion,
 				),
@@ -122,7 +122,7 @@ func (h *Handler) msgGetLog(connCtx context.Context, req *middleware.Request) (*
 			startupWarnings = append(
 				startupWarnings,
 				"The telemetry state is undecided. "+
-					"Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.com.",
+					"Read more about DocDB telemetry and how to opt out at https://beacon.docdb.hanzo.ai.",
 			)
 
 		case state.UpdateInfo != "", state.UpdateAvailable:

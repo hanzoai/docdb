@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestRenameCollectionCompat(t *testing.T) {
@@ -149,7 +149,7 @@ func TestRenameCollectionCompatErrors(t *testing.T) {
 	for name, tc := range map[string]struct {
 		from             any
 		to               any
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NilFrom": {
 			from: nil,
@@ -210,20 +210,20 @@ func TestRenameCollectionCompatErrors(t *testing.T) {
 		"InvalidNameTo": {
 			from:             dbName + "." + cName,
 			to:               dbName + ".new$Collection",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/341",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/341",
 		},
 		"LongNameTo": {
 			from:             dbName + "." + cName,
 			to:               dbName + "." + strings.Repeat("aB", 150),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/341",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/341",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			var targetRes bson.D

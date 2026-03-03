@@ -7,7 +7,7 @@ sidebar_position: 3
 To install the `.rpm` packages for FerretDB on your RHEL, CentOS, and other `.rpm`-based systems,
 you can use `rpm` tool.
 
-Download the latest FerretDB `.rpm` package from [our release pages](https://github.com/FerretDB/FerretDB/releases/latest),
+Download the latest FerretDB `.rpm` package from [our release pages](https://github.com/hanzoai/docdb/releases/latest),
 rename it to `ferretdb.rpm`,
 then run the following command in your terminal:
 

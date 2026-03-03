@@ -91,7 +91,7 @@ Here's the `docker-compose.yml` file:
 ```yaml
 services:
   postgres_primary:
-    image: ghcr.io/ferretdb/postgres-documentdb:17
+    image: ghcr.io/docdb/postgres-documentdb:17
     container_name: postgres_primary
     environment:
       - POSTGRES_USER=user
@@ -104,7 +104,7 @@ services:
       - '5432:5432'
 
   postgres_replica:
-    image: ghcr.io/ferretdb/postgres-documentdb:17
+    image: ghcr.io/docdb/postgres-documentdb:17
     container_name: postgres_replica
     environment:
       - POSTGRES_USER=user
@@ -116,7 +116,7 @@ services:
       - '5433:5432'
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:2
+    image: ghcr.io/hanzoai/docdb:2
     container_name: ferretdb
     environment:
       - FERRETDB_POSTGRESQL_URL=postgres://user:password@postgres_primary:5432/postgres
@@ -124,7 +124,7 @@ services:
       - '27017:27017'
 
   ferretdb_readonly:
-    image: ghcr.io/ferretdb/ferretdb:2
+    image: ghcr.io/hanzoai/docdb:2
     container_name: ferretdb_readonly
     environment:
       - FERRETDB_POSTGRESQL_URL=postgres://user:password@postgres_replica:5432/postgres

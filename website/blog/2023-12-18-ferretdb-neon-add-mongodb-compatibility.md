@@ -73,7 +73,7 @@ This URI will serve as the Postgres URI for your FerretDB instance.
 Run the following command to run FerretDB in a Docker container and connect it to your Neon Postgres database (`NEON_DB`):
 
 ```sh
-docker run -e FERRETDB_POSTGRESQL_URL=<NEON_DB> ghcr.io/ferretdb/ferretdb
+docker run -e FERRETDB_POSTGRESQL_URL=<NEON_DB> ghcr.io/hanzoai/docdb
 ```
 
 ### Test via `mongosh`
@@ -103,7 +103,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2023-12-15T10:19:28.991Z: Powered by FerretDB v1.17.0 and PostgreSQL 15.4 on x86_64-pc-linux-gnu, compiled by gcc.
-   2023-12-15T10:19:28.991Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2023-12-15T10:19:28.991Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2023-12-15T10:19:28.991Z: The telemetry state is undecided.
    2023-12-15T10:19:28.991Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.io.
 ------

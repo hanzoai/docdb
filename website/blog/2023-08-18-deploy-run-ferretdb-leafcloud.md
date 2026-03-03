@@ -323,7 +323,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb
+          image: ghcr.io/hanzoai/docdb
           ports:
             - containerPort: 27017
           env:
@@ -489,4 +489,4 @@ FerretDB offers a truly open source replacement for MongoDB.
 It is compatible with MongoDB, which means you can keep using your existing tools and frameworks.
 And with [Leafcloud](https://www.leaf.cloud/), you can deploy and run your FerretDB applications using Postgres clusters suitable for production, including persistent storage volumes, automated backups, autoscaling, connection pooling, monitoring, and more.
 
-To learn more about FerretDB, please visit our [GitHub page](https://github.com/FerretDB/FerretDB/).
+To learn more about FerretDB, please visit our [GitHub page](https://github.com/hanzoai/docdb/).

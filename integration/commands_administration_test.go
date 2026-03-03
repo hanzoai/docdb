@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,11 +31,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestCreateCollectionDropListCollections(t *testing.T) {
@@ -145,7 +145,7 @@ func TestListDatabases(t *testing.T) {
 		expectedNameOnly bool
 		expected         mongo.ListDatabasesResult
 
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"Exists": {
 			filter: bson.D{{Key: "name", Value: name}},
@@ -199,7 +199,7 @@ func TestListDatabases(t *testing.T) {
 			expected: mongo.ListDatabasesResult{
 				Databases: []mongo.DatabaseSpecification{},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4862",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4862",
 		},
 		"RegexNotFound": {
 			filter: bson.D{
@@ -209,7 +209,7 @@ func TestListDatabases(t *testing.T) {
 			expected: mongo.ListDatabasesResult{
 				Databases: []mongo.DatabaseSpecification{},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4862",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4862",
 		},
 		"RegexNotFoundNameOnly": {
 			filter: bson.D{
@@ -249,8 +249,8 @@ func TestListDatabases(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			actual, err := db.Client().ListDatabases(ctx, tc.filter, tc.opts...)
@@ -284,7 +284,7 @@ func TestListCollectionNames(t *testing.T) {
 	}
 
 	// We should remove shuffle there once it is implemented in the setup.
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/825
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/825
 
 	rand.Shuffle(len(filterNames), func(i, j int) { filterNames[i], filterNames[j] = filterNames[j], filterNames[i] })
 	filterNames = filterNames[:len(filterNames)-1]
@@ -386,7 +386,7 @@ func TestGetParameterCommand(t *testing.T) {
 		unexpected []string       // optional, unexpected keys of response
 
 		err        *mongo.CommandError // optional, expected error from MongoDB
-		altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string              // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"GetParameter_Asterisk1": {
 			command: bson.D{{"getParameter", "*"}},
@@ -864,7 +864,7 @@ func TestBuildInfoCommand(t *testing.T) {
 
 	for _, field := range actual {
 		switch field.Key {
-		case "ferretdb":
+		case "docdb":
 			value, ok := field.Value.(bson.D)
 			require.True(t, ok)
 			AssertEqualDocuments(t, bson.D{{"package", info.Package}, {"version", info.Version}}, value)
@@ -926,7 +926,7 @@ func TestBuildInfoCommand(t *testing.T) {
 
 func TestCollStatsCommandEmpty(tt *testing.T) {
 	tt.Parallel()
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4792")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4792")
 	ctx, collection := setup.Setup(tt)
 
 	var actual bson.D
@@ -954,7 +954,7 @@ func TestCollStatsCommandEmpty(tt *testing.T) {
 
 func TestCollStatsCommand(tt *testing.T) {
 	tt.Parallel()
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/555")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/555")
 
 	ctx, collection := setup.Setup(tt, shareddata.DocumentsStrings)
 
@@ -1037,22 +1037,22 @@ func TestCollStatsCommandScale(t *testing.T) {
 		scaleFactor      any
 		err              *mongo.CommandError
 		altMessage       string
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"scaleOne": {
 			scale:            int32(1),
 			scaleFactor:      int32(1),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4792",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleBig": {
 			scale:            int64(1000),
 			scaleFactor:      int32(1000),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4792",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleMaxInt": {
 			scale:            math.MaxInt64,
 			scaleFactor:      int32(math.MaxInt32),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4792",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleZero": {
 			scale: int32(0),
@@ -1073,7 +1073,7 @@ func TestCollStatsCommandScale(t *testing.T) {
 		"scaleFloat": {
 			scale:            2.8,
 			scaleFactor:      int32(2),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4792",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleFloatNegative": {
 			scale: -2.8,
@@ -1094,7 +1094,7 @@ func TestCollStatsCommandScale(t *testing.T) {
 		"scaleMaxFloat": {
 			scale:            math.MaxFloat64,
 			scaleFactor:      int32(math.MaxInt32),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4792",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleString": {
 			scale: "1",
@@ -1117,15 +1117,15 @@ func TestCollStatsCommandScale(t *testing.T) {
 		"scaleNull": {
 			scale:            nil,
 			scaleFactor:      int32(1),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/4792",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			var res bson.D
@@ -1182,7 +1182,7 @@ func TestCollStatsCommandScale(t *testing.T) {
 // approximation used by backends returns the correct count of documents from collStats.
 func TestCollStatsCommandCount(tt *testing.T) {
 	tt.Parallel()
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/555")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/555")
 
 	ctx, collection := setup.Setup(tt)
 
@@ -1234,7 +1234,7 @@ func TestCollStatsCommandCount(tt *testing.T) {
 }
 
 func TestCollStatsCommandScaleSize(tt *testing.T) {
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4792")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4792")
 
 	tt.Parallel()
 
@@ -1357,7 +1357,7 @@ func TestDataSizeCommand(t *testing.T) {
 	t.Run("Existing", func(tt *testing.T) {
 		tt.Parallel()
 
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/802")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/802")
 
 		ctx, collection := setup.Setup(tt, shareddata.DocumentsStrings)
 
@@ -1403,7 +1403,7 @@ func TestDataSizeCommand(t *testing.T) {
 	t.Run("NonExistent", func(tt *testing.T) {
 		tt.Parallel()
 
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/802")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/802")
 
 		ctx, collection := setup.Setup(tt)
 
@@ -1451,7 +1451,7 @@ func TestDataSizeCommandErrors(t *testing.T) {
 		command bson.D // required, command to run
 
 		err        *mongo.CommandError // required, expected error from MongoDB
-		altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string              // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"InvalidNamespace": {
 			command: bson.D{{"dataSize", "invalid"}},
@@ -1488,7 +1488,7 @@ func TestDataSizeCommandErrors(t *testing.T) {
 
 func TestDBStatsCommand(tt *testing.T) {
 	tt.Parallel()
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4821")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4821")
 
 	ctx, collection := setup.Setup(tt, shareddata.DocumentsStrings)
 
@@ -1542,7 +1542,7 @@ func TestDBStatsCommand(tt *testing.T) {
 
 func TestDBStatsCommandEmpty(tt *testing.T) {
 	tt.Parallel()
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4821")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4821")
 
 	ctx, collection := setup.Setup(tt)
 
@@ -1589,7 +1589,7 @@ func TestDBStatsCommandScale(tt *testing.T) {
 			tt.Helper()
 			tt.Parallel()
 
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4821")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4821")
 
 			var actual bson.D
 			command := bson.D{{"dbStats", int32(1)}, {"scale", tc.scale}}
@@ -1643,7 +1643,7 @@ func TestDBStatsCommandScale(tt *testing.T) {
 
 func TestDBStatsCommandScaleEmptyDatabase(tt *testing.T) {
 	tt.Parallel()
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4821")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4821")
 
 	ctx, collection := setup.Setup(tt)
 
@@ -1827,7 +1827,7 @@ func TestDBStatsCommandFreeStorage(tt *testing.T) {
 		tt.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4821")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4821")
 
 			var actual bson.D
 			err := collection.Database().RunCommand(ctx, tc.command).Decode(&actual)
@@ -1874,12 +1874,12 @@ func TestServerStatusCommand(t *testing.T) {
 	require.NoError(t, err)
 
 	var actualComparable bson.D
-	var freeMonitoringComparable bson.D // only for FerretDB
+	var freeMonitoringComparable bson.D // only for DocDB
 
 	for _, field := range actual {
 		switch field.Key {
-		case "ferretdb":
-			ferretdb, buildEnvironment := RemoveKey(t, field.Value.(bson.D), "buildEnvironment")
+		case "docdb":
+			docdb, buildEnvironment := RemoveKey(t, field.Value.(bson.D), "buildEnvironment")
 			assert.IsType(t, bson.D{}, buildEnvironment)
 
 			expected := bson.D{
@@ -1890,7 +1890,7 @@ func TestServerStatusCommand(t *testing.T) {
 				{"postgresql", version.PostgreSQLTest},
 				{"documentdb", version.DocumentDB},
 			}
-			AssertEqualDocuments(t, expected, ferretdb)
+			AssertEqualDocuments(t, expected, docdb)
 
 		case "freeMonitoring":
 			freeMonitoring, ok := field.Value.(bson.D)
@@ -1912,8 +1912,8 @@ func TestServerStatusCommand(t *testing.T) {
 			for _, subField := range catalogStats {
 				switch subField.Key {
 				case "capped", "csfle", "queryableEncryption":
-				// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/629
-				// Fields are not set in FerretDB
+				// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/629
+				// Fields are not set in DocDB
 
 				case "collections", "internalCollections", "internalViews":
 					assert.IsType(t, int32(0), subField.Value)
@@ -1957,8 +1957,8 @@ func TestServerStatusCommand(t *testing.T) {
 			"readConcernCounters", "readPreferenceCounters", "repl", "scramCache", "security", "shardSplits",
 			"storageEngine", "tcmalloc", "tenantMigrations", "trafficRecording", "transactions", "transportSecurity",
 			"twoPhaseCommitCoordinator", "mem", "collectionCatalog":
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/629
-			// Not implemented in FerretDB, we might want to support some of these fields
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/629
+			// Not implemented in DocDB, we might want to support some of these fields
 
 		default:
 			actualComparable = append(actualComparable, field)
@@ -2047,7 +2047,7 @@ func TestServerStatusCommandMetrics(t *testing.T) {
 
 			for _, field := range actual {
 				switch field.Key {
-				case "ferretdb":
+				case "docdb":
 					f, buildEnvironment := RemoveKey(t, field.Value.(bson.D), "buildEnvironment")
 					assert.IsType(t, bson.D{}, buildEnvironment)
 					actualComparable = append(actualComparable, bson.E{Key: field.Key, Value: f})
@@ -2152,7 +2152,7 @@ func TestServerStatusCommandMetrics(t *testing.T) {
 					{"timeseries", int32(0)},
 					{"views", int32(0)},
 				}},
-				{"ferretdb", bson.D{
+				{"docdb", bson.D{
 					{"version", info.Version},
 					{"gitVersion", info.Commit},
 					{"debug", true},
@@ -2216,7 +2216,7 @@ func TestServerStatusCommandFreeMonitoring(t *testing.T) {
 
 			for _, field := range actual {
 				switch field.Key {
-				case "ferretdb":
+				case "docdb":
 					f, buildEnvironment := RemoveKey(t, field.Value.(bson.D), "buildEnvironment")
 					assert.IsType(t, bson.D{}, buildEnvironment)
 					actualComparable = append(actualComparable, bson.E{Key: field.Key, Value: f})
@@ -2334,7 +2334,7 @@ func TestServerStatusCommandFreeMonitoring(t *testing.T) {
 					{"timeseries", int32(0)},
 					{"views", int32(0)},
 				}},
-				{"ferretdb", bson.D{
+				{"docdb", bson.D{
 					{"version", info.Version},
 					{"gitVersion", info.Commit},
 					{"debug", true},

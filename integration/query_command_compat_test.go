@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 // queryCommandCompatTestCase describes query compatibility test case.
@@ -38,7 +38,7 @@ type queryCommandCompatTestCase struct {
 	limit      *int64                   // defaults to nil to leave unset
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-	failsForFerretDB string
+	failsForDocDB string
 }
 
 // testQueryCommandCompat tests query compatibility test cases.
@@ -48,7 +48,7 @@ func testQueryCommandCompat(t *testing.T, testCases map[string]queryCommandCompa
 	// Use shared setup because find queries can't modify data.
 	//
 	// Use read-only user.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1025
+	// TODO https://github.com/hanzoai/docdb/issues/1025
 	ctx, targetCollections, compatCollections := setup.SetupCompat(t)
 
 	for name, tc := range testCases {
@@ -88,8 +88,8 @@ func testQueryCommandCompat(t *testing.T, testCases map[string]queryCommandCompa
 					tt.Helper()
 
 					var t testing.TB = tt
-					if tc.failsForFerretDB != "" {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					targetCommand := append(
@@ -141,7 +141,7 @@ func testQueryCommandCompat(t *testing.T, testCases map[string]queryCommandCompa
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -168,29 +168,29 @@ func TestQueryCommandCompatSkip(t *testing.T) {
 			filter:           bson.D{},
 			optSkip:          float64(1 << 86),
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/261",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/261",
 		},
 		"NegativeInt64": {
 			filter:           bson.D{},
 			optSkip:          int64(-2),
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"NegativeFloat64": {
 			filter:           bson.D{},
 			optSkip:          -2.8,
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"Float64": {
 			filter:           bson.D{},
 			optSkip:          2.8,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/261",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/261",
 		},
 		"Float64Ceil": {
 			filter:           bson.D{},
 			optSkip:          2.1,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/261",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/261",
 		},
 	}
 

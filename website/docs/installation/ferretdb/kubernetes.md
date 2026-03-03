@@ -15,7 +15,7 @@ We strongly recommend specifying the full image tag (e.g., `2.8.0`)
 to ensure consistency across deployments.
 Ensure to [enable telemetry](../../telemetry.md) to receive notifications on the latest versions.
 
-For more information on the best DocumentDB version to use, see the [corresponding release notes for the FerretDB version](https://github.com/FerretDB/FerretDB/releases/).
+For more information on the best DocumentDB version to use, see the [corresponding release notes for the FerretDB version](https://github.com/hanzoai/docdb/releases/).
 :::
 
 Create a `ferretdb.yaml` file with the following content:
@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb:2.8.0
+          image: ghcr.io/hanzoai/docdb:2.8.0
           ports:
             - containerPort: 27017
           env:

@@ -38,13 +38,13 @@ Without data, there's nothing to query!
 So we will start by adding some documents to our database instance.
 
 We already prepared a sample dataset to use; it's a collection of books with details like title, authors, genres, publication date, and price.
-See the [books.fixture.json](https://raw.githubusercontent.com/FerretDB/FerretDB/refs/tags/v2.0.0/website/docs/guides/requests/books.fixture.json) file for the data.
+See the [books.fixture.json](https://raw.githubusercontent.com/hanzoai/documentdb/refs/tags/v2.0.0/website/docs/guides/requests/books.fixture.json) file for the data.
 
 Since we are using the FerretDB `books` collection, we will start by downloading the data and then importing it:
 
 ```sh
 # Download the JSON data
-curl -LJO "https://raw.githubusercontent.com/FerretDB/FerretDB/refs/tags/v2.0.0/website/docs/guides/requests/books.fixture.json"
+curl -LJO "https://raw.githubusercontent.com/hanzoai/documentdb/refs/tags/v2.0.0/website/docs/guides/requests/books.fixture.json"
 
 # Import the data into FerretDB
 mongoimport --uri "mongodb://username:password@localhost:27017/" --db library --collection books --file books.fixture.json --jsonArray

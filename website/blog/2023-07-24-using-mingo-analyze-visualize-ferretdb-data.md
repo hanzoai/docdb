@@ -49,7 +49,7 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb
+    image: ghcr.io/hanzoai/docdb
     restart: on-failure
     ports:
       - 27017:27017

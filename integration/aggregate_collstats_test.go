@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestAggregateCommandCollStats(tt *testing.T) {
@@ -38,11 +38,11 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 		expected           bson.D // optional, defaults to the standard response with storageStats
 		expectedSizeIsZero bool   // optional, if true, the size field is expected to be 0 (due to scale factor)
 
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"EmptyCollStats": {
 			pipeline:         bson.A{bson.D{{"$collStats", bson.D{}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/534",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 			expected: bson.D{
 				{
 					"ns", collection.Database().Name() + "." + collection.Name(),
@@ -61,7 +61,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 				{"localTime", primitive.DateTime(0)},
 				{"count", int32(4)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/534",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 		},
 		"StorageStats": {
 			pipeline: bson.A{bson.D{{"$collStats", bson.D{{"storageStats", bson.D{}}}}}},
@@ -86,7 +86,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 					{"scaleFactor", int32(1)},
 				}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/534",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 		},
 		"StorageStatsWithScale": {
 			pipeline: bson.A{bson.D{{"$collStats", bson.D{{"storageStats", bson.D{{"scale", 1000}}}}}}},
@@ -112,7 +112,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 				}},
 			},
 			expectedSizeIsZero: true,
-			failsForFerretDB:   "https://github.com/FerretDB/FerretDB-DocumentDB/issues/534",
+			failsForDocDB:   "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 		},
 		"StorageStatsFloatScale": {
 			pipeline: bson.A{bson.D{{"$collStats", bson.D{{"storageStats", bson.D{{"scale", 42.42}}}}}}},
@@ -137,7 +137,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 					{"scaleFactor", int32(42)},
 				}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/534",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 		},
 		"CountAndStorageStats": {
 			pipeline: bson.A{bson.D{{"$collStats", bson.D{{"count", bson.D{}}, {"storageStats", bson.D{}}}}}},
@@ -164,7 +164,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 				{"count", int32(4)},
 			},
 
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/534",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 		},
 		"CollStatsCount": {
 			pipeline: bson.A{
@@ -181,8 +181,8 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 
 			require.NotNil(tt, tc.pipeline, "pipeline must be set")
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			// call validate to updated statistics
@@ -223,7 +223,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 							statsComparable = append(statsComparable, bson.E{Key: stat.Key, Value: int32(0)})
 
 						case "size":
-							// TODO https://github.com/FerretDB/FerretDB/issues/4792
+							// TODO https://github.com/hanzoai/docdb/issues/4792
 							size, ok := stat.Value.(int32)
 							require.True(t, ok)
 
@@ -236,7 +236,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 							statsComparable = append(statsComparable, bson.E{Key: stat.Key, Value: int32(0)})
 
 						case "count", "avgObjSize", "storageSize", "nindexes", "totalIndexSize", "totalSize":
-							// TODO https://github.com/FerretDB/FerretDB/issues/4792
+							// TODO https://github.com/hanzoai/docdb/issues/4792
 							val, ok := stat.Value.(int32)
 							require.True(t, ok)
 
@@ -292,7 +292,7 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NonExistentDatabase": {
 			database: collection.Database().Client().Database("non-existent"),
@@ -337,7 +337,7 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 				Message: `$collStats must take a nested object but found: $collStats: null`,
 			},
 			altMessage:       `$collStats must take a nested object but found: { $collStats: null }`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"StorageStatsNegativeScale": {
 			command: bson.D{
@@ -350,7 +350,7 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 				Name:    "Location51024",
 				Message: `BSON field 'scale' value must be >= 1, actual value '-1000'`,
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/536",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/536",
 		},
 		"StorageStatsInvalidScale": {
 			command: bson.D{
@@ -364,7 +364,7 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 				Message: `BSON field '$collStats.storageStats.scale' is the wrong type 'string', expected types '[long, int, decimal, double']`,
 			},
 			altMessage:       `BSON field '$collStats.storageStats.scale' is the wrong type 'string', expected types '[long, int, decimal, double]'`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/536",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/536",
 		},
 		"CountCollStatsCount": {
 			command: bson.D{
@@ -389,8 +389,8 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.err, "err must not be nil")
@@ -411,7 +411,7 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 func TestAggregateCommandCollStatsIndexSizes(tt *testing.T) {
 	tt.Parallel()
 
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/538")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/538")
 
 	ctx, collection := setup.Setup(tt, shareddata.DocumentsStrings)
 
@@ -485,7 +485,7 @@ func TestAggregateCommandCollStatsIndexSizes(tt *testing.T) {
 			for _, stat := range storageStats {
 				switch stat.Key {
 				case "size", "storageSize", "freeStorageSize", "totalIndexSize", "totalSize":
-					// TODO https://github.com/FerretDB/FerretDB/issues/4792
+					// TODO https://github.com/hanzoai/docdb/issues/4792
 					sizeNoScale, ok := stat.Value.(int32)
 					require.True(t, ok)
 
@@ -495,7 +495,7 @@ func TestAggregateCommandCollStatsIndexSizes(tt *testing.T) {
 					var indexSizesComparable bson.D
 
 					for _, indexSizeNoScale := range stat.Value.(bson.D) {
-						// TODO https://github.com/FerretDB/FerretDB/issues/4792
+						// TODO https://github.com/hanzoai/docdb/issues/4792
 						sizeNoScale, ok := indexSizeNoScale.Value.(int32)
 						require.True(t, ok)
 

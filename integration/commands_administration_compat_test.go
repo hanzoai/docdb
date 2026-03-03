@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestListCollectionsCompat(t *testing.T) {
@@ -39,7 +39,7 @@ func TestListCollectionsCompat(t *testing.T) {
 	}
 
 	// We should remove shuffle there once it is implemented in the setup.
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/825
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/825
 
 	rand.Shuffle(len(filterNames), func(i, j int) { filterNames[i], filterNames[j] = filterNames[j], filterNames[i] })
 	filterNames = filterNames[:len(filterNames)-1]

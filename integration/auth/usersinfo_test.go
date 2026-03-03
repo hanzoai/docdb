@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 // createUser creates a bson.D command payload to create an user with the given username and password.
@@ -107,7 +107,7 @@ func TestUsersInfoCommand(t *testing.T) {
 		},
 	}
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	testUsernames := map[string]string{
 		"one":             dbNames.A,
 		"two":             dbNames.A,
@@ -145,7 +145,7 @@ func TestUsersInfoCommand(t *testing.T) {
 		expectedComparable bson.D // field keys without values are compared for `userId`, `salt`, `serverKey` and `storedKey` fields
 		err                *mongo.CommandError
 		altMessage         string
-		failsForFerretDB   string
+		failsForDocDB   string
 	}{
 		"NoUserFound": {
 			dbName: "no_users",
@@ -156,7 +156,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				{"users", bson.A{}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"Nil": {
 			dbName: dbNames.A,
@@ -182,7 +182,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				Name:    "BadValue",
 			},
 			altMessage:       "UserName must contain a field named: user",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"Default": {
 			dbName: dbNames.A,
@@ -202,10 +202,10 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/961
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/962
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/961
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/962
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"WithSCRAMSHA256": {
 			dbName: dbNames.E,
@@ -234,7 +234,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"FromSameDatabase": {
 			dbName: dbNames.B,
@@ -264,7 +264,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"FromSameDatabaseWithMissingUser": {
 			dbName: dbNames.B,
@@ -294,7 +294,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"FromAnotherDatabase": {
 			dbName: dbNames.D,
@@ -317,7 +317,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/864",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/864",
 		},
 		"BadType": {
 			dbName: dbNames.B,
@@ -360,7 +360,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				Name:    "BadValue",
 			},
 			altMessage:       "UserName must contain a string field named: db. But, has type int32",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/964",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/964",
 		},
 		"FromOthersMultipleDatabases": {
 			dbName: dbNames.C,
@@ -397,7 +397,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"FromMixed": {
 			dbName: dbNames.C,
@@ -431,7 +431,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"SingleDatabaseInt": {
 			dbName: dbNames.B,
@@ -467,7 +467,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"SingleDatabaseLong": {
 			dbName: "no_users",
@@ -478,7 +478,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				{"users", bson.A{}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"SingleDatabaseFloat": {
 			dbName: "no_users",
@@ -489,7 +489,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				{"users", bson.A{}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"Multiple": {
 			dbName: dbNames.B,
@@ -520,7 +520,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"EmptyUsers": {
 			dbName: dbNames.B,
@@ -546,7 +546,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				Message: "UserName must contain a field named: db",
 				Name:    "BadValue",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"MissingUserFieldName": {
 			dbName: dbNames.B,
@@ -560,7 +560,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				Message: "UserName must contain a field named: user",
 				Name:    "BadValue",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"ForAllDBs": {
 			dbName: dbNames.B,
@@ -646,15 +646,15 @@ func TestUsersInfoCommand(t *testing.T) {
 				}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/963",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 	}
 
 	for name, tc := range testCases {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			tt.Parallel()
@@ -713,7 +713,7 @@ func TestUsersInfoCommand(t *testing.T) {
 							userComparable = append(userComparable, bson.E{Key: field.Key, Value: credentials})
 						case "user":
 							// use username to check if user was created by this test
-							// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+							// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 							_, ok := testUsernames[field.Value.(string)]
 							if !ok {
 								userCreatedByOtherTests = true

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,18 +19,18 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wireclient"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wireclient"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestKillSessions(t *testing.T) {
@@ -41,7 +41,7 @@ func TestKillSessions(t *testing.T) {
 
 	ctx := s.Ctx
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	db := s.Collection.Database().Client().Database("admin")
 	collection := db.Collection(s.Collection.Name())
 	cName, dbName := collection.Name(), db.Name()
@@ -195,7 +195,7 @@ func TestKillSessionsDifferentUser(t *testing.T) {
 
 	ctx := s.Ctx
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	db := s.Collection.Database().Client().Database("admin")
 	collection := db.Collection(s.Collection.Name())
 	cName, dbName := collection.Name(), db.Name()

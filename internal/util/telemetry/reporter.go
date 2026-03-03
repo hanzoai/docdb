@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/state"
 )
 
 // Time format for local file.
@@ -165,7 +165,7 @@ func (r *Reporter) Run(ctx context.Context) {
 func (r *Reporter) firstReportDelay(ctx context.Context) {
 	msg := fmt.Sprintf(
 		"The telemetry state is undecided; the first report will be sent in %s. "+
-			"Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.com",
+			"Read more about DocDB telemetry and how to opt out at https://beacon.docdb.hanzo.ai",
 		r.UndecidedDelay,
 	)
 	r.L.InfoContext(ctx, msg)

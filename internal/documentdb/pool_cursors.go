@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@ import (
 	"log/slog"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"go.opentelemetry.io/otel"
 
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb/documentdb_api"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/devbuild"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/devbuild"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // GetMore returns the next page of the cursor.
@@ -239,7 +239,7 @@ func (p *Pool) ListIndexes(ctx context.Context, db string, spec wirebson.RawDocu
 // It logs when persist is true but cursorID is zero or continuation is empty.
 // In debug builds, it also checks that cursorID matches the one in the page.
 // Both checks are workarounds for
-// TODO https://github.com/FerretDB/FerretDB/issues/5445
+// TODO https://github.com/hanzoai/docdb/issues/5445
 func (p *Pool) shouldStore(ctx context.Context, page, cont wirebson.RawDocument, cursorID int64) bool {
 	if devbuild.Enabled {
 		pageDoc := must.NotFail(page.Decode())

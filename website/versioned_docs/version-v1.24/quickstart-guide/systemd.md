@@ -31,11 +31,11 @@ This'll open a text editor that'll allow you to override the systemd options of 
 For example, if we want to use SQLite backend instead of PostgreSQL, we could write something like:
 
 ```systemd
-### Editing /etc/systemd/system/ferretdb.service.d/override.conf
+### Editing /etc/systemd/system/docdb.service.d/override.conf
 ### Anything between here and the comment below will become the new contents of the file
 
 [Service]
-Environment="FERRETDB_SQLITE_URL=file:/var/lib/ferretdb/data/"
+Environment="FERRETDB_SQLITE_URL=file:/var/lib/docdb/data/"
 Environment="FERRETDB_HANDLER=sqlite"
 
 ### Lines below this comment will be discarded

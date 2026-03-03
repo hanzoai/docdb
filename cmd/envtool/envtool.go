@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,9 +33,9 @@ import (
 
 	"github.com/alecthomas/kong"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 var (
@@ -123,7 +123,7 @@ func printDiagnosticData(w io.Writer, setupError error, logger *slog.Logger) err
 		"DockerVersion":  strings.TrimSpace(dockerVersion),
 		"ComposeVersion": strings.TrimSpace(composeVersion),
 
-		"NewIssueURL": "https://github.com/FerretDB/FerretDB/issues/new/choose",
+		"NewIssueURL": "https://github.com/hanzoai/docdb/issues/new/choose",
 	})
 }
 
@@ -167,7 +167,7 @@ func shellRead(w io.Writer, paths ...string) error {
 	return nil
 }
 
-// packageVersion will print out FerretDB's package version (omitting leading v).
+// packageVersion will print out DocDB package version (omitting leading v).
 func packageVersion(w io.Writer, file string) error {
 	b, err := os.ReadFile(file)
 	if err != nil {

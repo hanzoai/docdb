@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestCommandsFreeMonitoringGetFreeMonitoringStatus(t *testing.T) {
@@ -68,8 +68,8 @@ func TestCommandsFreeMonitoringSetFreeMonitoring(t *testing.T) {
 		expectedRes    bson.D              // optional, expected response
 		expectedStatus string              // optional, expected status
 		err            *mongo.CommandError // optional, expected error from MongoDB
-		altMessage     string              // optional, alternative error message for FerretDB, ignored if empty
-		skip           string              // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
+		altMessage     string              // optional, alternative error message for DocDB, ignored if empty
+		skip           string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 	}{
 		"Enable": {
 			command:        bson.D{{"setFreeMonitoring", 1}, {"action", "enable"}},
@@ -115,7 +115,7 @@ func TestCommandsFreeMonitoringSetFreeMonitoring(t *testing.T) {
 				Name:    "Location40414",
 				Message: `BSON field 'setFreeMonitoring.action' is missing but a required field`,
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2704",
+			skip: "https://github.com/hanzoai/docdb/issues/2704",
 		},
 		"ActionTypeDocument": {
 			command: bson.D{{"setFreeMonitoring", 1}, {"action", bson.D{}}},
@@ -124,7 +124,7 @@ func TestCommandsFreeMonitoringSetFreeMonitoring(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'setFreeMonitoring.action' is the wrong type 'object', expected type 'string'",
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2704",
+			skip: "https://github.com/hanzoai/docdb/issues/2704",
 		},
 	} {
 		t.Run(name, func(t *testing.T) {

@@ -35,7 +35,7 @@ So instead of needing a full-fledged backend just to store something in a databa
 
 For developers already familiar with REST, Data API is essential.
 There's no new learning curve – you can interact with your database via HTTP requests.
-It follows the defined [Data API OpenAPI documentation here](https://github.com/FerretDB/FerretDB/blob/main/internal/dataapi/api/openapi.json).
+It follows the defined [Data API OpenAPI documentation here](https://github.com/hanzoai/docdb/blob/main/internal/dataapi/api/openapi.json).
 
 With FerretDB's Data API stepping in as an alternative to MongoDB's deprecated service, we are ensuring developers can interact with their data without issues, no matter the stack they're working with.
 
@@ -63,7 +63,7 @@ Here's an example:
 ```yaml
 services:
   postgres:
-    image: ghcr.io/ferretdb/postgres-documentdb:16
+    image: ghcr.io/docdb/postgres-documentdb:16
     restart: on-failure
     environment:
       - POSTGRES_USER=username
@@ -73,7 +73,7 @@ services:
       - ./data:/var/lib/postgresql/data
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:2
+    image: ghcr.io/hanzoai/docdb:2
     restart: on-failure
     ports:
       - 27017:27017

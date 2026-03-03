@@ -270,7 +270,7 @@ ferretdb_deployment = Deployment(
            "spec": {
                "containers": [{
                    "name": "ferretdb",
-                   "image": "ferretdb/ferretdb:latest",
+                   "image": "hanzoai/docdb:latest",
                    # Update this URL with the correct connection string
                    "env": [{
                        "name": "FERRETDB_POSTGRESQL_URL",
@@ -419,7 +419,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2024-02-17T03:48:39.213Z: Powered by FerretDB v1.19.0 and PostgreSQL 15.5.
-   2024-02-17T03:48:39.213Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2024-02-17T03:48:39.213Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2024-02-17T03:48:39.213Z: The telemetry state is undecided.
    2024-02-17T03:48:39.213Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.io.
 ------

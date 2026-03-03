@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ func (s *Flag) UnmarshalText(text []byte) error {
 }
 
 // initialState returns initial telemetry state based on:
-//   - Kong flag value (including `FERRETDB_TELEMETRY` environment variable);
+//   - Kong flag value (including `DOCDB_TELEMETRY` environment variable);
 //   - common DO_NOT_TRACK environment variable;
 //   - executable name;
 //   - and the previously saved state.

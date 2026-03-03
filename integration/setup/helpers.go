@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FerretDB/xfail"
+	"github.com/hanzoai/xfail"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // IsMongoDB returns true if the current test is running for MongoDB,
-// and false if it's running for FerretDB/PostgreSQL/DocumentDB.
+// and false if it's running for DocDB/PostgreSQL/DocumentDB.
 //
 // This function should not be used lightly.
 func IsMongoDB(tb testing.TB) bool {
@@ -36,27 +36,27 @@ func IsMongoDB(tb testing.TB) bool {
 	return *targetBackendF == "mongodb"
 }
 
-// IsYugabyteDB returns true if the current test is running for `ferretdb-yugabytedb` backend.
+// IsYugabyteDB returns true if the current test is running for `docdb-yugabytedb` backend.
 //
 // This function should not be used lightly.
 func IsYugabyteDB(tb testing.TB) bool {
 	tb.Helper()
 
-	return *targetBackendF == "ferretdb-yugabytedb"
+	return *targetBackendF == "docdb-yugabytedb"
 }
 
-// ensureIssueURL panics if URL is not a valid FerretDB issue URL.
+// ensureIssueURL panics if URL is not a valid DocDB issue URL.
 func ensureIssueURL(url string) {
-	ferretDB := strings.HasPrefix(url, "https://github.com/FerretDB/FerretDB/issues/")
-	documentDB := strings.HasPrefix(url, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/")
-	must.BeTrue(ferretDB || documentDB)
+	docDB := strings.HasPrefix(url, "https://github.com/hanzoai/docdb/issues/")
+	documentDB := strings.HasPrefix(url, "https://github.com/hanzoai/docdb-DocumentDB/issues/")
+	must.BeTrue(docDB || documentDB)
 }
 
-// FailsForFerretDB return testing.TB that expects test to fail for FerretDB and pass for MongoDB.
+// FailsForDocDB return testing.TB that expects test to fail for DocDB and pass for MongoDB.
 // It returns original value if -no-xfail flag was passed.
 //
 // This function should not be used lightly and always with an issue URL.
-func FailsForFerretDB(tb testing.TB, url string) testing.TB {
+func FailsForDocDB(tb testing.TB, url string) testing.TB {
 	tb.Helper()
 
 	ensureIssueURL(url)
@@ -73,7 +73,7 @@ func FailsForFerretDB(tb testing.TB, url string) testing.TB {
 	return xfail.XFail(tb, url)
 }
 
-// FailsForMongoDB return testing.TB that expects test to fail for MongoDB and pass for FerretDB.
+// FailsForMongoDB return testing.TB that expects test to fail for MongoDB and pass for DocDB.
 // It returns original value if -no-xfail flag was passed.
 //
 // This function should not be used lightly.

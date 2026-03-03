@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // aggregateStagesCompatTestCase describes aggregation stages compatibility test case.
@@ -39,9 +39,9 @@ type aggregateStagesCompatTestCase struct {
 	maxTime  *time.Duration // optional, leave nil for unset maxTime
 
 	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
-	skip             string                   // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
-	failsForFerretDB string
-	failsProviders   []shareddata.Provider // use only if failsForFerretDB is set, defaults to all providers
+	skip             string                   // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+	failsForDocDB string
+	failsProviders   []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
 }
 
 // testAggregateStagesCompat tests aggregation stages compatibility test cases with all providers.
@@ -121,8 +121,8 @@ func testAggregateStagesCompatWithProviders(t *testing.T, providers shareddata.P
 
 					var t testing.TB = tt
 
-					if tc.failsForFerretDB != "" && failsForCollection {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" && failsForCollection {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					targetCursor, targetErr := targetCollection.Aggregate(ctx, pipeline, opts)
@@ -161,7 +161,7 @@ func testAggregateStagesCompatWithProviders(t *testing.T, providers shareddata.P
 			case NonEmptyResult:
 				assert.True(t, nonEmptyResults, "expected non-empty results")
 			case EmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -177,7 +177,7 @@ func testAggregateStagesCompatWithProviders(t *testing.T, providers shareddata.P
 type aggregateCommandCompatTestCase struct {
 	command          bson.D                   // required
 	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
-	failsForFerretDB string
+	failsForDocDB string
 }
 
 // testAggregateCommandCompat tests aggregate pipeline compatibility test cases using one collection.
@@ -208,8 +208,8 @@ func testAggregateCommandCompat(t *testing.T, testCases map[string]aggregateComm
 
 				var t testing.TB = tt
 
-				if tc.failsForFerretDB != "" {
-					t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+				if tc.failsForDocDB != "" {
+					t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 				}
 
 				var targetRes, compatRes bson.D
@@ -260,14 +260,14 @@ func TestAggregateCommandCompat(t *testing.T) {
 				{"aggregate", 1},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"FailedToParse": {
 			command: bson.D{
 				{"aggregate", 2},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"PipelineTypeMismatch": {
 			command: bson.D{
@@ -335,7 +335,7 @@ func TestAggregateCompatStages(t *testing.T) {
 				bson.D{{"$count", "v"}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/396",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/396",
 			failsProviders: []shareddata.Provider{
 				shareddata.OverflowVergeDoubles,
 				shareddata.Strings,
@@ -404,7 +404,7 @@ func TestAggregateCompatCount(t *testing.T) {
 		"CountGroupID": {
 			pipeline:         bson.A{bson.D{{"$count", "_id"}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"CountNonString": {
 			pipeline:   bson.A{bson.D{{"$count", 1}}},
@@ -413,7 +413,7 @@ func TestAggregateCompatCount(t *testing.T) {
 		"CountEmpty": {
 			pipeline:         bson.A{bson.D{{"$count", ""}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"CountBadValue": {
 			pipeline:   bson.A{bson.D{{"$count", "v.foo"}}},
@@ -437,10 +437,10 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 	// descending sort use the greatest element for comparison causing
 	// multiple documents with the same greatest element the same order,
 	// so compat and target results in different order.
-	// https://github.com/FerretDB/FerretDB/issues/2185
+	// https://github.com/hanzoai/docdb/issues/2185
 	//
 	// The Decimal128s are not included because they make tests flaky.
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/383
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/383
 
 	providers := shareddata.AllProviders().Remove(
 		shareddata.Composites, shareddata.Mixed,
@@ -459,10 +459,10 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 				// sort descending order, so ArrayDoubles has deterministic order.
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
-				shareddata.ArrayDocuments, // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/385
+				shareddata.ArrayDocuments, // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/385
 			},
 		},
 		"Distinct": {
@@ -478,7 +478,7 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 				// because _id of group can be an array
 				bson.D{{"$sort", bson.D{{"unique", 1}}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2185",
+			skip: "https://github.com/hanzoai/docdb/issues/2185",
 		},
 		"CountValue": {
 			pipeline: bson.A{
@@ -492,10 +492,10 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 				// sort descending order, so ArrayDoubles has deterministic order.
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
-				shareddata.ArrayDocuments, // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/385
+				shareddata.ArrayDocuments, // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/385
 			},
 		},
 
@@ -509,7 +509,7 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$limit", 5}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/385",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/385",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDocuments,
 			},
@@ -524,7 +524,7 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 				// sort descending order, so ArrayDoubles has deterministic order.
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/385",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/385",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDocuments,
 			},
@@ -539,10 +539,10 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$skip", 2}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
-				shareddata.ArrayDocuments, // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/385
+				shareddata.ArrayDocuments, // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/385
 			},
 		},
 		"SkipBefore": {
@@ -555,7 +555,7 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 				// sort descending order, so ArrayDoubles has deterministic order.
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 			},
@@ -566,8 +566,8 @@ func TestAggregateCompatGroupNonArrayProviders(t *testing.T) {
 }
 
 func TestAggregateCompatGroup(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/383
-	t.Skip("https://github.com/FerretDB/FerretDB-DocumentDB/issues/383")
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/383
+	t.Skip("https://github.com/hanzoai/docdb-DocumentDB/issues/383")
 
 	t.Parallel()
 
@@ -590,7 +590,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 			},
@@ -603,7 +603,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/388",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/388",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 				shareddata.Unsets,
@@ -618,7 +618,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/388",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/388",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -660,7 +660,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/388",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/388",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 				shareddata.Unsets,
@@ -684,7 +684,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/388",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/388",
 		},
 		"IDExpressionAndOperator": {
 			pipeline: bson.A{
@@ -697,7 +697,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/388",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/388",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets,
 				shareddata.Mixed,
@@ -716,7 +716,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDExpressionAndInvalidOperator": {
 			pipeline: bson.A{
@@ -730,7 +730,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/389",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"IDDocument": {
 			pipeline: bson.A{
@@ -775,14 +775,14 @@ func TestAggregateCompatGroup(t *testing.T) {
 				{"_id", "$"},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"EmptyVariable": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$$"},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"InvalidVariable$": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
@@ -801,14 +801,14 @@ func TestAggregateCompatGroup(t *testing.T) {
 				{"_id", "$$s"},
 			}}}},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/2275",
+			skip:       "https://github.com/hanzoai/docdb/issues/2275",
 		},
 		"SystemVariable": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$$NOW"},
 			}}}},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/2275",
+			skip:       "https://github.com/hanzoai/docdb/issues/2275",
 		},
 		"GroupInvalidFields": {
 			pipeline:   bson.A{bson.D{{"$group", 1}}},
@@ -823,7 +823,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				{"bla", 1},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/389",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"InvalidAccumulator": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
@@ -838,7 +838,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				{"v", bson.D{}},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/389",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"GroupMultipleAccumulator": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
@@ -853,7 +853,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				{"v", bson.D{{"invalid", "v"}}},
 			}}}},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/2123",
+			skip:       "https://github.com/hanzoai/docdb/issues/2123",
 		},
 		"IDType": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
@@ -867,7 +867,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				bson.D{{"$group", bson.D{{"_id", bson.D{{"$sum", "$v"}}}}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -879,7 +879,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				bson.D{{"$group", bson.D{{"_id", bson.D{{"sum", bson.D{{"$sum", "$v"}}}}}}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -891,7 +891,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				bson.D{{"$group", bson.D{{"_id", bson.D{{"nested", bson.D{{"sum", bson.D{{"$sum", "$v"}}}}}}}}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders: []shareddata.Provider{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -909,14 +909,14 @@ func TestAggregateCompatGroup(t *testing.T) {
 				bson.D{{"$group", bson.D{{"_id", bson.D{{"$sum", "$"}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDSumRecursiveInvalid": {
 			pipeline: bson.A{
 				bson.D{{"$group", bson.D{{"_id", bson.D{{"$sum", bson.D{{"$sum", "$"}}}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 	}
 
@@ -927,11 +927,11 @@ func TestAggregateCompatGroupExpressionDotNotation(t *testing.T) {
 	t.Parallel()
 
 	// Use all providers after fixing $sort problem:
-	// TODO https://github.com/FerretDB/FerretDB/issues/2276
+	// TODO https://github.com/hanzoai/docdb/issues/2276
 	//
 	// Currently, providers Composites, DocumentsDeeplyNested, ArrayAndDocuments and Mixed
 	// cannot be used due to sorting difference.
-	// FerretDB always sorts empty array is less than null.
+	// DocDB always sorts empty array is less than null.
 	// In compat, for `.sort()` an empty array is less than null.
 	// In compat, for aggregation `$sort` null is less than an empty array.
 	providers := shareddata.AllProviders().Remove(shareddata.Mixed, shareddata.Composites, shareddata.DocumentsDeeplyNested, shareddata.ArrayAndDocuments)
@@ -941,7 +941,7 @@ func TestAggregateCompatGroupExpressionDotNotation(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$v.foo"},
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/394",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/394",
 			failsProviders: shareddata.Providers{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -967,7 +967,7 @@ func TestAggregateCompatGroupExpressionDotNotation(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$v.a.b.c"},
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/394",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/394",
 			failsProviders: shareddata.Providers{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -993,7 +993,7 @@ func TestAggregateCompatGroupExpressionDotNotation(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$v.0"},
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/394",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/394",
 			failsProviders: shareddata.Providers{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -1019,7 +1019,7 @@ func TestAggregateCompatGroupExpressionDotNotation(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$v.0.foo"},
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/394",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/394",
 			failsProviders: shareddata.Providers{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -1045,7 +1045,7 @@ func TestAggregateCompatGroupExpressionDotNotation(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$v.non.existent"},
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/394",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/394",
 			failsProviders: shareddata.Providers{
 				shareddata.Scalars,
 				shareddata.Doubles,
@@ -1077,7 +1077,7 @@ func TestAggregateCompatGroupExpressionNestedDotNotation(t *testing.T) {
 
 	// Merge the current function with TestAggregateCompatGroupExpressionDottedFields
 	// and use all providers when $sort problem is fixed:
-	// TODO https://github.com/FerretDB/FerretDB/issues/2276
+	// TODO https://github.com/hanzoai/docdb/issues/2276
 
 	providers := []shareddata.Provider{
 		shareddata.DocumentsDeeplyNested,
@@ -1088,7 +1088,7 @@ func TestAggregateCompatGroupExpressionNestedDotNotation(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$v.a.b.c"},
 			}}}},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2276",
+			skip: "https://github.com/hanzoai/docdb/issues/2276",
 			// compat results [ { _id: null }, { _id: 12 }, { _id: { d: 123 } }, { _id: [ 1, 2 ] } ]
 			// target results [ { _id: null }, { _id: [ 1, 2 ] }, { _id: 12 }, { _id: { d: 123 } } ]
 		},
@@ -1119,7 +1119,7 @@ func TestAggregateCompatGroupCount(t *testing.T) {
 				{"count", bson.D{{"$count", ""}}},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"NonEmptyExpression": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
@@ -1127,7 +1127,7 @@ func TestAggregateCompatGroupCount(t *testing.T) {
 				{"count", bson.D{{"$count", bson.D{{"a", 1}}}}},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"NonExistentField": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
@@ -1142,7 +1142,7 @@ func TestAggregateCompatGroupCount(t *testing.T) {
 				{"count", bson.D{{"$count", bson.D{}}}},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 	}
 
@@ -1178,7 +1178,7 @@ func TestAggregateCompatLimit(t *testing.T) {
 				bson.D{{"$limit", "5"}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Double": {
 			pipeline: bson.A{
@@ -1226,7 +1226,7 @@ func TestAggregateCompatLimit(t *testing.T) {
 				bson.D{{"$limit", bson.D{}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Int64Overflow": {
 			pipeline: bson.A{
@@ -1271,16 +1271,16 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 	t.Parallel()
 
 	providers := shareddata.AllProviders().
-		// skipped due to https://github.com/FerretDB/FerretDB/issues/2185.
+		// skipped due to https://github.com/hanzoai/docdb/issues/2185.
 		Remove(shareddata.Composites).
 		Remove(shareddata.ArrayStrings).
 		Remove(shareddata.ArrayInt32s).
 		Remove(shareddata.Mixed).
 		Remove(shareddata.ArrayAndDocuments).
 		// Handle $sum of doubles near max precision.
-		// TODO https://github.com/FerretDB/FerretDB/issues/2300
+		// TODO https://github.com/hanzoai/docdb/issues/2300
 		Remove(shareddata.Doubles).
-		// TODO https://github.com/FerretDB/FerretDB/issues/2616
+		// TODO https://github.com/hanzoai/docdb/issues/2616
 		Remove(shareddata.ArrayDocuments)
 
 	testCases := map[string]aggregateStagesCompatTestCase{
@@ -1297,7 +1297,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				// ascending sort for shareddata collections.
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars, shareddata.Int64s, shareddata.Int32s},
 		},
 		"GroupByID": {
@@ -1319,7 +1319,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"EmptyString": {
@@ -1331,7 +1331,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"NonExpression": {
@@ -1353,7 +1353,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"Document": {
@@ -1366,7 +1366,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"Array": {
@@ -1379,7 +1379,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"Int32": {
 			pipeline: bson.A{
@@ -1390,7 +1390,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"MaxInt32": {
@@ -1402,7 +1402,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"NegativeInt32": {
@@ -1414,7 +1414,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"Int64": {
@@ -1426,7 +1426,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"Double": {
@@ -1438,7 +1438,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"MaxDouble": {
@@ -1450,7 +1450,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"Bool": {
@@ -1462,7 +1462,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/383",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars},
 		},
 		"Duplicate": {
@@ -1476,7 +1476,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"RecursiveOperator": {
 			pipeline: bson.A{
@@ -1500,7 +1500,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				bson.D{{"$group", bson.D{{"sum", bson.D{{"$sum", bson.D{{"$type", bson.A{"1", "2"}}}}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/389",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"RecursiveOperatorNonExistent": {
 			pipeline: bson.A{
@@ -1511,7 +1511,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/389",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 	}
 
@@ -1521,7 +1521,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 func TestAggregateCompatMatch(t *testing.T) {
 	t.Parallel()
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/2291
+	// TODO https://github.com/hanzoai/docdb/issues/2291
 	providers := shareddata.AllProviders().Remove(shareddata.ArrayAndDocuments)
 
 	testCases := map[string]aggregateStagesCompatTestCase{
@@ -1570,7 +1570,7 @@ func TestAggregateCompatMatch(t *testing.T) {
 			pipeline: bson.A{
 				bson.D{{"$match", bson.D{{"$expr", bson.D{{"$sum", "$v"}}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/362",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
 			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 	}
@@ -1593,7 +1593,7 @@ func TestAggregateCompatSort(t *testing.T) {
 				{"v", 1},
 				{"_id", 1}, // sort by _id when v is the same.
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/355",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
 			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites},
 		},
 		"DescendingValue": {
@@ -1601,7 +1601,7 @@ func TestAggregateCompatSort(t *testing.T) {
 				{"v", -1},
 				{"_id", 1}, // sort by _id when v is the same.
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/355",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
 			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"AscendingValueDescendingID": {
@@ -1609,7 +1609,7 @@ func TestAggregateCompatSort(t *testing.T) {
 				{"v", 1},
 				{"_id", -1},
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/355",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
 			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"DescendingValueDescendingID": {
@@ -1619,7 +1619,7 @@ func TestAggregateCompatSort(t *testing.T) {
 			}}}},
 		},
 
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/355
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/355
 		// "DotNotationIndex": {
 		// 	pipeline: bson.A{bson.D{{"$sort", bson.D{
 		// 		{"v.0", 1},
@@ -1638,18 +1638,18 @@ func TestAggregateCompatSort(t *testing.T) {
 				{"v..foo", 1},
 			}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 
 		"SortBadExpression": {
 			pipeline:         bson.A{bson.D{{"$sort", 1}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"SortBadOrder": {
 			pipeline:         bson.A{bson.D{{"$sort", bson.D{{"_id", 0}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"SortMissingKey": {
 			pipeline:   bson.A{bson.D{{"$sort", bson.D{}}}},
@@ -1658,7 +1658,7 @@ func TestAggregateCompatSort(t *testing.T) {
 		"BadDollarStart": {
 			pipeline:         bson.A{bson.D{{"$sort", bson.D{{"$v.foo", 1}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 	}
 
@@ -1669,7 +1669,7 @@ func TestAggregateCompatSortDotNotation(t *testing.T) {
 	t.Parallel()
 
 	providers := shareddata.AllProviders().
-		// TODO https://github.com/FerretDB/FerretDB/issues/2617
+		// TODO https://github.com/hanzoai/docdb/issues/2617
 		Remove(shareddata.ArrayDocuments)
 
 	testCases := map[string]aggregateStagesCompatTestCase{
@@ -1727,7 +1727,7 @@ func TestAggregateCompatUnwind(t *testing.T) {
 				bson.D{{"$unwind", "$v.0"}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/367",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/367",
 			failsProviders: shareddata.Providers{
 				shareddata.ArrayStrings,
 				shareddata.ArrayAndDocuments,
@@ -1746,7 +1746,7 @@ func TestAggregateCompatUnwind(t *testing.T) {
 				bson.D{{"$unwind", "$v.0.foo"}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/367",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/367",
 			failsProviders: shareddata.Providers{
 				shareddata.ArrayAndDocuments,
 				shareddata.ArrayDocuments,
@@ -1769,7 +1769,7 @@ func TestAggregateCompatUnwind(t *testing.T) {
 		"EmptyPath": {
 			pipeline:         bson.A{bson.D{{"$unwind", "$"}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"EmptyVariable": {
 			pipeline:   bson.A{bson.D{{"$unwind", "$$"}}},
@@ -1815,7 +1815,7 @@ func TestAggregateCompatSkip(t *testing.T) {
 		"Document": {
 			pipeline:         bson.A{bson.D{{"$skip", bson.D{}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Zero": {
 			pipeline: bson.A{
@@ -1842,7 +1842,7 @@ func TestAggregateCompatSkip(t *testing.T) {
 				bson.D{{"$skip", "1"}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"NegativeValue": {
 			pipeline:   bson.A{bson.D{{"$skip", int32(-1)}}},
@@ -1902,7 +1902,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$project", "invalid"}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/368",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"ZeroOperators": {
 			pipeline: bson.A{
@@ -1910,7 +1910,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$project", bson.D{{"v", bson.D{}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"TwoOperators": {
 			pipeline: bson.A{
@@ -1918,7 +1918,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$project", bson.D{{"v", bson.D{{"$type", "foo"}, {"$sum", 1}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/368",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"DollarSignField": {
 			pipeline: bson.A{
@@ -1971,7 +1971,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$project", bson.D{{"foo", int32(0)}, {"bar", true}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/368",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"Exclude1FieldInclude1Field": {
 			pipeline: bson.A{
@@ -2093,7 +2093,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$project", bson.D{{"foo", bson.D{}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"Document": {
 			pipeline: bson.A{
@@ -2152,7 +2152,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$project", bson.D{{"type", bson.D{{"$type", bson.D{{"$non-existent", "$v"}}}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/368",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"TypeRecursiveInvalid": {
 			pipeline: bson.A{
@@ -2251,7 +2251,7 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sum", bson.D{{"$sum", "$v"}}},
 				}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1078",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
 			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
 		},
 		"DotNotation": {
@@ -2303,7 +2303,7 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 				}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ArrayValue": {
 			pipeline: bson.A{
@@ -2311,7 +2311,7 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sum", bson.D{{"$sum", bson.A{"$v"}}}},
 				}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1078",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
 			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
 		},
 		"ArrayTwoValues": {
@@ -2341,7 +2341,7 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sumsum", bson.D{{"$sum", bson.D{{"$sum", "$v"}}}}},
 				}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1078",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
 			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
 		},
 		"RecursiveArrayValue": {
@@ -2350,7 +2350,7 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sumsum", bson.D{{"$sum", bson.D{{"$sum", bson.A{"$v"}}}}}},
 				}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1078",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
 			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
 		},
 		"ArrayValueRecursiveInt": {
@@ -2490,14 +2490,14 @@ func TestAggregateCompatAddFields(t *testing.T) {
 				bson.D{{"$addFields", bson.D{{"newField1", bson.D{{"$sum", 1}}}}}},
 			},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/1413",
+			skip:       "https://github.com/hanzoai/docdb/issues/1413",
 		},
 		"UnsupportedExpressionArray": {
 			pipeline: bson.A{
 				bson.D{{"$addFields", bson.D{{"newField1", bson.A{bson.D{{"$sum", 1}}}}}}},
 			},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/1413",
+			skip:       "https://github.com/hanzoai/docdb/issues/1413",
 		},
 
 		"InvalidOperator": {
@@ -2506,7 +2506,7 @@ func TestAggregateCompatAddFields(t *testing.T) {
 				bson.D{{"$addFields", bson.D{{"value", bson.D{{"$invalid-operator", "foo"}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Type": {
 			pipeline: bson.A{
@@ -2538,7 +2538,7 @@ func TestAggregateCompatAddFields(t *testing.T) {
 				bson.D{{"$addFields", bson.D{{"type", bson.D{{"$type", bson.D{{"$non-existent", "$v"}}}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"TypeRecursiveInvalid": {
 			pipeline: bson.A{
@@ -2597,7 +2597,7 @@ func TestAggregateCompatAddFields(t *testing.T) {
 				bson.D{{"$addFields", bson.D{{"type", bson.D{{"not-operator", "foo"}, {"$type", "foo"}}}}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"TypeArraySingleItem": {
 			pipeline: bson.A{
@@ -2636,7 +2636,7 @@ func TestAggregateCompatAddFields(t *testing.T) {
 					{"sum", bson.D{{"$sum", "$v"}}},
 				}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1078",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
 			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
 		},
 	}
@@ -2732,14 +2732,14 @@ func TestAggregateCompatSet(t *testing.T) {
 				bson.D{{"$set", bson.D{{"newField1", bson.D{{"$sum", 1}}}}}},
 			},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/1413",
+			skip:       "https://github.com/hanzoai/docdb/issues/1413",
 		},
 		"UnsupportedExpressionArray": {
 			pipeline: bson.A{
 				bson.D{{"$set", bson.D{{"newField1", bson.A{bson.D{{"$sum", 1}}}}}}},
 			},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/1413",
+			skip:       "https://github.com/hanzoai/docdb/issues/1413",
 		},
 		"SumValue": {
 			pipeline: bson.A{
@@ -2747,7 +2747,7 @@ func TestAggregateCompatSet(t *testing.T) {
 					{"sum", bson.D{{"$sum", "$v"}}},
 				}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1078",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
 			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
 		},
 	}

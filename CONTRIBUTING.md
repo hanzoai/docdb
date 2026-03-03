@@ -1,28 +1,28 @@
 # Contributing
 
-Thank you for your interest in making FerretDB better!
+Thank you for your interest in making DocDB better!
 
 ## Finding something to work on
 
 We are interested in all contributions, big or small, in code or documentation.
 But unless you are fixing a tiny issue like a typo,
-we kindly ask you first to [create an issue](https://github.com/FerretDB/FerretDB/issues/new/choose)
+we kindly ask you first to [create an issue](https://github.com/hanzoai/docdb/issues/new/choose)
 or leave a comment on an existing issue if you want to work on it.
 This way, we could assign the issue to you, marking it as being worked on,
 preventing others from wasting efforts working on it at the same time.
 Additionally, you can [join our Slack chat](./README.md#community) and leave a message for us in the `#dev` channel.
 
-You can find a list of good first issues for contributors [there](https://github.com/FerretDB/FerretDB/contribute).
-Once you have some experience with contributing to FerretDB,
+You can find a list of good first issues for contributors [there](https://github.com/hanzoai/docdb/contribute).
+Once you have some experience with contributing to DocDB,
 feel free to pick any issue
-[that is not assigned to anyone and doesn't have `not ready` label](https://github.com/FerretDB/FerretDB/issues?q=is%3Aissue+is%3Aopen+no%3Aassignee+-label%3A%22not+ready%22).
+[that is not assigned to anyone and doesn't have `not ready` label](https://github.com/hanzoai/docdb/issues?q=is%3Aissue+is%3Aopen+no%3Aassignee+-label%3A%22not+ready%22).
 Still, please leave a comment on it as described above.
 
 ## Setting up the environment
 
 ### Requirements
 
-The supported way of contributing to FerretDB is to modify and run it on the host (Linux, macOS, or Windows)
+The supported way of contributing to DocDB is to modify and run it on the host (Linux, macOS, or Windows)
 with PostgreSQL and other dependencies running inside Docker containers via Docker Compose.
 On Linux, `docker` (with `docker compose` subcommand a.k.a. [Compose V2](https://docs.docker.com/compose/compose-v2/),
 not old `docker-compose` tool) should be installed on the host.
@@ -41,18 +41,18 @@ Finally, you will also need [git-lfs](https://git-lfs.github.com) installed and 
 
 ### Making a working copy
 
-Fork the [FerretDB repository on GitHub](https://github.com/FerretDB/FerretDB/fork).
+Fork the [DocDB repository on GitHub](https://github.com/hanzoai/docdb/fork).
 After that, you can clone the repository and add the upstream repository as a remote:
 
 ```sh
-git clone git@github.com:<YOUR_GITHUB_USERNAME>/FerretDB.git
-cd FerretDB
-git remote add upstream https://github.com/FerretDB/FerretDB.git
+git clone git@github.com:<YOUR_GITHUB_USERNAME>/DocDB.git
+cd DocDB
+git remote add upstream https://github.com/hanzoai/docdb.git
 git fetch --all --tags
 ```
 
 The last command would fetch all Git tags from our repository that GitHub won't copy to fork by default.
-`git describe` command uses them to determine the FerretDB version during the build process.
+`git describe` command uses them to determine the DocDB version during the build process.
 
 To run development commands, you should first install the [`task`](https://taskfile.dev/) tool.
 You can do this by changing the directory to `tools` (`cd tools`) and running `go generate -x`.
@@ -110,7 +110,7 @@ Use these assertions to validate your test's assumptions and invariants.
 With `task` installed (see above), you may test your script using following steps:
 
 1. Start the development environment with `task env-up`.
-2. Start FerretDB with `task run`.
+2. Start DocDB with `task run`.
 3. Run the test script with `task testjs`.
 
 Please create a pull request and include the link of the pull request in the bug issue.
@@ -123,10 +123,10 @@ With `task` installed (see above), you may do the following:
 
 1. Start the development environment with `task env-up`.
 2. Run all tests with `task test` (see [below](#running-tests)).
-3. Start FerretDB with `task run`.
+3. Start DocDB with `task run`.
    The development environment uses `diff-normal` mode as the default mode.
    Set preferred mode such as `task run MODE=diff-proxy`.
-   (See [Operation modes](https://docs.ferretdb.io/configuration/operation-modes/) page in our documentation.)
+   (See [Operation modes](https://docs.docdb.io/configuration/operation-modes/) page in our documentation.)
 4. Fill collections in the `test` database with data for experiments with `task env-data`.
 5. Run `mongosh` with `task mongosh`.
    See what collections were created by the previous command with `show collections`.
@@ -134,23 +134,23 @@ With `task` installed (see above), you may do the following:
 #### Commands for authenticated connection
 
 1. Start the development environment with `task env-up`.
-2. Start FerretDB with `task run-secure MODE=normal` or `task run-secure MODE=proxy`.
+2. Start DocDB with `task run-secure MODE=normal` or `task run-secure MODE=proxy`.
 3. Run `task mongosh-secure` to establish an authenticated connection.
 
 ### Code overview
 
 The directory `cmd` provides commands implementation.
-Its subdirectory `ferretdb` is the main FerretDB binary; others are tools for development.
+Its subdirectory `docdb` is the main DocDB binary; others are tools for development.
 
 The package `tools` uses ["tools.go" approach](https://github.com/golang/go/issues/25922#issuecomment-402918061) to fix tools versions.
 They are installed into `bin/` by `cd tools; go generate -x`.
 
-The `internal` subpackages contain most of the FerretDB code:
+The `internal` subpackages contain most of the DocDB code:
 
 - `handler` provides implementations of command handlers.
   The logic of commands like `find` and `aggregate` is there.
 - `dataapi` provides an Data API wrapper for `handler`.
-  It allows FerretDB to be used over HTTP instead of MongoDB wire protocol.
+  It allows DocDB to be used over HTTP instead of MongoDB wire protocol.
 - `clientconn` provides wire protocol server implementation.
   It accepts client connections, reads wire protocol messages, and passes them to `handler`.
   Responses are then converted and sent back to the client.
@@ -159,7 +159,7 @@ The `internal` subpackages contain most of the FerretDB code:
   They are used by `handler` and `documentdb`.
 
 The wire protocol implementation and BSON handling code were extracted into a separate repository:
-https://github.com/FerretDB/wire
+https://github.com/hanzoai/docdb-wire
 
 #### Running tests
 
@@ -172,16 +172,16 @@ you can run those with `task test-unit` after starting the environment as descri
 
 We also have a set of "integration" tests in the `integration` directory.
 They use the Go MongoDB driver like a regular user application.
-They could test any MongoDB-compatible database (such as FerretDB or MongoDB itself) via a regular TCP or TLS port
+They could test any MongoDB-compatible database (such as DocDB or MongoDB itself) via a regular TCP or TLS port
 or Unix domain socket.
-They also could test in-process FerretDB instances
+They also could test in-process DocDB instances
 (meaning that integration tests start and stop them themselves).
 Finally, some integration tests (so-called compatibility or "compat" tests) connect to two systems
-("target" for FerretDB and "compat" for MongoDB) at the same time,
+("target" for DocDB and "compat" for MongoDB) at the same time,
 send the same queries to both, and compare results.
 You can run them with:
 
-- `task test-integration-postgresql` for in-process FerretDB and MongoDB;
+- `task test-integration-postgresql` for in-process DocDB and MongoDB;
 - `task test-integration-mongodb` for MongoDB only, skipping compat tests;
 - or `task test-integration` to run all in parallel.
 
@@ -191,7 +191,7 @@ If tests fail and the output is too confusing, try running them sequentially by 
 You can also run `task -C 1` to limit the number of concurrent tasks, which is useful for debugging.
 
 To run a subset of integration tests and test cases, you may use Task variable `TEST_RUN`.
-For example, to run all tests for the `getMore` command with in-process FerretDB
+For example, to run all tests for the `getMore` command with in-process DocDB
 you may use `task test-integration-postgresql TEST_RUN='(?i)GetMore'`.
 
 Finally, since all tests just run `go test` with various arguments and flags under the hood
@@ -220,7 +220,7 @@ and real objects over mocks.
 (You might disagree with our terminology for "unit" and "integration" tests;
 let's not fight over it.)
 
-We have an additional integration testing system in another repository: https://github.com/FerretDB/dance.
+We have an additional integration testing system in another repository: https://github.com/hanzoai/dance.
 
 #### Observability in tests
 
@@ -243,7 +243,7 @@ and some other pages such as [Spelling](https://go.dev/wiki/Spelling).
 Some of our idiosyncrasies are documented below.
 
 1. We use type switches over BSON types in many places in our code.
-   The order of `case`s follows this order: https://pkg.go.dev/github.com/FerretDB/wire/wirebson#hdr-Types
+   The order of `case`s follows this order: https://pkg.go.dev/github.com/hanzoai/docdb-wire/wirebson#hdr-Types
    It may seem random, but it is only pseudo-random and follows BSON spec: https://bsonspec.org/spec.html
 2. We generally pass and return `struct`s by pointers.
    There are some exceptions like `time.Time` that have value semantics, but when in doubt – use pointers.
@@ -277,9 +277,9 @@ Some of our idiosyncrasies are documented below.
 
 We prefer our integration tests to be straightforward and
 branchless (with a few, if any, `if` and `switch` statements).
-Ideally, the same test should work for both FerretDB and MongoDB.
+Ideally, the same test should work for both DocDB and MongoDB.
 If that's impossible without some branching, use helpers exported from the `setup` package,
-such us `FailsForFerretDB`, `SkipForMongoDB`, etc.
+such us `FailsForDocDB`, `SkipForMongoDB`, etc.
 Please use expected failure rather than skipping the test, whenever it's possible.
 It makes tracking development progress much easier.
 
@@ -310,7 +310,7 @@ Such test becomes flaky and hard to maintain.
 
 #### Integration tests naming guidelines
 
-<!-- https://github.com/FerretDB/FerretDB/issues/694 -->
+<!-- https://github.com/hanzoai/docdb/issues/694 -->
 
 Use `Test<Command><Operator><Scenario>` format for test names, omitting `<Operator>` and `<Scenario>` if unnecessary.
 
@@ -365,9 +365,9 @@ Before submitting a pull request, please make sure that:
 1. Please follow the pull request template.
 2. If the pull request is related to some issue,
    please mention the issue number in the pull request description like `Closes #<issue_number>.`
-   or `Closes FerretDB/<repo>#<issue_number>.`
-   Please do not use URLs like `https://github.com/FerretDB/<repo>/issue/<issue_number>`
-   or paths like `FerretDB/<repo>/issue/<issue_number>` even if they are rendered the same on GitHub.
+   or `Closes DocDB/<repo>#<issue_number>.`
+   Please do not use URLs like `https://github.com/hanzoai/<repo>/issue/<issue_number>`
+   or paths like `DocDB/<repo>/issue/<issue_number>` even if they are rendered the same on GitHub.
    If you propose a tiny fix, there is no needed to create a new issue.
 3. There is no need to use draft pull requests.
    If you want to get feedback on something you are working on,
@@ -407,4 +407,4 @@ Before submitting a pull request, please make sure that:
    created from the [current state](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
    of our main branch.
 2. Documentation is formatted, linted, and built with `task docs`.
-3. Documentation is written according to our [writing guide](https://docs.ferretdb.io/contributing/writing-guide/).
+3. Documentation is written according to our [writing guide](https://docs.docdb.io/contributing/writing-guide/).

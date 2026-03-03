@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // Replace `1<<XXX` with named constants.
-// TODO https://github.com/FerretDB/FerretDB/issues/3626
+// TODO https://github.com/hanzoai/docdb/issues/3626
 
 func TestQueryComparisonCompatImplicit(t *testing.T) {
 	t.Parallel()
@@ -990,7 +990,7 @@ func TestQueryComparisonCompatLte(t *testing.T) {
 func TestQueryComparisonCompatNin(t *testing.T) {
 	t.Parallel()
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/2291
+	// TODO https://github.com/hanzoai/docdb/issues/2291
 	providers := shareddata.AllProviders().Remove(shareddata.ArrayAndDocuments)
 
 	var scalarDataTypesFilter bson.A
@@ -1006,7 +1006,7 @@ func TestQueryComparisonCompatNin(t *testing.T) {
 	testCases := map[string]queryCompatTestCase{
 		"ForScalarDataTypes": {
 			filter: bson.D{{"v", bson.D{{"$nin", scalarDataTypesFilter}}}},
-			skip:   "https://github.com/FerretDB/FerretDB/issues/1781",
+			skip:   "https://github.com/hanzoai/docdb/issues/1781",
 		},
 		"ForCompositeDataTypes": {
 			filter: bson.D{{"v", bson.D{{"$nin", compositeDataTypesFilter}}}},
@@ -1014,11 +1014,11 @@ func TestQueryComparisonCompatNin(t *testing.T) {
 		"RegexString": {
 			filter:           bson.D{{"v", bson.D{{"$nin", bson.A{bson.D{{"$regex", "/foo/"}}}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/262",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/262",
 		},
 		"Regex": {
 			filter: bson.D{{"v", bson.D{{"$nin", bson.A{primitive.Regex{Pattern: "foo", Options: "i"}}}}}},
-			skip:   "https://github.com/FerretDB/FerretDB/issues/1781",
+			skip:   "https://github.com/hanzoai/docdb/issues/1781",
 		},
 		"NilInsteadOfArray": {
 			filter:     bson.D{{"v", bson.D{{"$nin", nil}}}},
@@ -1036,7 +1036,7 @@ func TestQueryComparisonCompatNin(t *testing.T) {
 func TestQueryComparisonCompatIn(t *testing.T) {
 	t.Parallel()
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/2291
+	// TODO https://github.com/hanzoai/docdb/issues/2291
 	providers := shareddata.AllProviders().Remove(shareddata.ArrayAndDocuments)
 
 	var scalarDataTypesFilter bson.A
@@ -1052,7 +1052,7 @@ func TestQueryComparisonCompatIn(t *testing.T) {
 	testCases := map[string]queryCompatTestCase{
 		"ForScalarDataTypes": {
 			filter: bson.D{{"v", bson.D{{"$in", scalarDataTypesFilter}}}},
-			skip:   "https://github.com/FerretDB/FerretDB/issues/1781",
+			skip:   "https://github.com/hanzoai/docdb/issues/1781",
 		},
 		"ForCompositeDataTypes": {
 			filter: bson.D{{"v", bson.D{{"$in", compositeDataTypesFilter}}}},
@@ -1060,11 +1060,11 @@ func TestQueryComparisonCompatIn(t *testing.T) {
 		"RegexString": {
 			filter:           bson.D{{"v", bson.D{{"$in", bson.A{bson.D{{"$regex", "/foo/"}}}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/262",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/262",
 		},
 		"Regex": {
 			filter: bson.D{{"v", bson.D{{"$in", bson.A{primitive.Regex{Pattern: "foo", Options: "i"}}}}}},
-			skip:   "https://github.com/FerretDB/FerretDB/issues/1781",
+			skip:   "https://github.com/hanzoai/docdb/issues/1781",
 		},
 		"NilInsteadOfArray": {
 			filter:     bson.D{{"v", bson.D{{"$in", nil}}}},

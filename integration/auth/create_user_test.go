@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestCreateUserCommand(t *testing.T) {
@@ -43,7 +43,7 @@ func TestCreateUserCommand(t *testing.T) {
 		expectedCredentialsComparable bson.D // field keys without values are compared for `salt`, `serverKey` and `storedKey` fields
 		err                           *mongo.CommandError
 		altMessage                    string
-		failsForFerretDB              string
+		failsForDocDB              string
 	}{
 		"Empty": {
 			payload: bson.D{
@@ -72,7 +72,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Message: "Error preflighting UTF-8 conversion: U_STRING_NOT_TERMINATED_WARNING",
 			},
 			altMessage:       "Password cannot be empty",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/934",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/934",
 		},
 		"BadPasswordValue": {
 			payload: bson.D{
@@ -86,7 +86,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "Location50692",
 				Message: "Error preflighting normalization: U_STRINGPREP_PROHIBITED_ERROR",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/941",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/941",
 		},
 		"BadPasswordType": {
 			payload: bson.D{
@@ -114,7 +114,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "Location51003",
 				Message: fmt.Sprintf("User \"should_already_exist@%s\" already exists", db.Name()),
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/934",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/934",
 		},
 		"EmptyMechanism": {
 			payload: bson.D{
@@ -129,7 +129,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "BadValue",
 				Message: "mechanisms field must not be empty",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/913",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/913",
 		},
 		"BadAuthMechanism": {
 			payload: bson.D{
@@ -144,7 +144,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "BadValue",
 				Message: "Unknown auth mechanism 'BAD'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/913",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/913",
 		},
 		"MissingPwdOrExternal": {
 			payload: bson.D{
@@ -178,7 +178,7 @@ func TestCreateUserCommand(t *testing.T) {
 					{Key: "serverKey"},
 				}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"SuccessWithSCRAMSHA256": {
 			payload: bson.D{
@@ -200,7 +200,7 @@ func TestCreateUserCommand(t *testing.T) {
 					{Key: "serverKey"},
 				}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"WithComment": {
 			payload: bson.D{
@@ -222,7 +222,7 @@ func TestCreateUserCommand(t *testing.T) {
 					{Key: "serverKey"},
 				}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"MissingRoles": {
 			payload: bson.D{
@@ -235,7 +235,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "Location40414",
 				Message: "BSON field 'createUser.roles' is missing but a required field",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/934",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/934",
 		},
 		"NilRoles": {
 			payload: bson.D{
@@ -249,7 +249,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "Location10065",
 				Message: "invalid parameter: expected an object (roles)",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/934",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/934",
 		},
 		"InvalidRoles": {
 			payload: bson.D{
@@ -263,11 +263,11 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'createUser.roles' is the wrong type 'string', expected type 'array'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/934",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/934",
 		},
 	}
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	_ = db.RunCommand(ctx, bson.D{{"dropUser", "should_already_exist"}})
 
 	// The subtest "AlreadyExists" tries to create the following user, which should fail with an error that the user already exists.
@@ -282,13 +282,13 @@ func TestCreateUserCommand(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(t, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(t, tc.failsForDocDB)
 			}
 
 			tt.Parallel()
 
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 			if tc.user != "should_already_exist" {
 				_ = db.RunCommand(ctx, bson.D{{"dropUser", tc.user}})
 			}

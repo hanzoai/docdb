@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 package middleware
 
-// Mode represents FerretDB mode of operation.
+// Mode represents DocDB mode of operation.
 type Mode string
 
 const (
@@ -25,7 +25,7 @@ const (
 	ProxyMode Mode = "proxy"
 
 	// DiffNormalMode both handles requests and proxies them, then logs the diff.
-	// Only the FerretDB response is sent to the client.
+	// Only the DocDB response is sent to the client.
 	DiffNormalMode Mode = "diff-normal"
 
 	// DiffProxyMode both handles requests and proxies them, then logs the diff.

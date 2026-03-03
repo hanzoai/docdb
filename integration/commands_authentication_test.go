@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestLogoutCommand(t *testing.T) {
@@ -55,7 +55,7 @@ func TestLogoutCommand(t *testing.T) {
 }
 
 func TestLogoutCommandAuthenticatedUser(tt *testing.T) {
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/953")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/953")
 
 	tt.Parallel()
 
@@ -63,7 +63,7 @@ func TestLogoutCommandAuthenticatedUser(tt *testing.T) {
 	ctx, db := s.Ctx, s.Collection.Database()
 	username, password, mechanism := "logoutuser", "testpass", "SCRAM-SHA-256"
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	_ = db.RunCommand(ctx, bson.D{{"dropUser", username}})
 
 	err := db.RunCommand(ctx, bson.D{
@@ -125,8 +125,8 @@ func TestLogoutCommandAuthenticatedUser(tt *testing.T) {
 
 	_, err = db.Collection(s.Collection.Name()).InsertOne(ctx, bson.D{{"foo", "bar"}})
 
-	// after logout FerretDB returns `(AuthenticationFailed) Authentication failed`
+	// after logout DocDB returns `(AuthenticationFailed) Authentication failed`
 	// after logout MongoDB returns `(Unauthorized) Command insert requires authentication`
-	// TODO https://github.com/FerretDB/FerretDB/issues/3974
+	// TODO https://github.com/hanzoai/docdb/issues/3974
 	require.Error(t, err)
 }

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,18 +20,18 @@ import (
 	"sync"
 	"time"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/resource"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/resource"
 )
 
 // Parts of Prometheus metric names.
 const (
-	namespace = "ferretdb"
+	namespace = "docdb"
 	subsystem = "cursors"
 )
 
@@ -175,7 +175,7 @@ func (r *Registry) UpdateCursor(ctx context.Context, id int64, continuation wire
 		return
 	}
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/5445
+	// TODO https://github.com/hanzoai/docdb/issues/5445
 	if len(continuation) == 0 {
 		r.l.DebugContext(
 			ctx, "Closing instead of updating cursor with empty continuation",

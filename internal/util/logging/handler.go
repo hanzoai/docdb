@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/devbuild"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/devbuild"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // Handler is a [slog.Handler] that wraps another handler with support for:
@@ -179,7 +179,7 @@ func (h *Handler) Handle(ctx context.Context, r slog.Record) error {
 		}
 
 		// Check duplicate attributes.
-		// TODO https://github.com/FerretDB/FerretDB/issues/4431
+		// TODO https://github.com/hanzoai/docdb/issues/4431
 	}
 
 	h.recentEntries.add(&r)

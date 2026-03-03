@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,12 +27,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.opentelemetry.io/otel"
 
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/observability"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/observability"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestCommandCaseSensitive(t *testing.T) {
@@ -281,8 +281,8 @@ func TestCreateCollection(t *testing.T) {
 		collection string // collection name, defaults to empty string
 
 		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"TooLongForBothDBs": {
 			collection: collectionName300,
@@ -299,7 +299,7 @@ func TestCreateCollection(t *testing.T) {
 		},
 		"LongEnough": {
 			collection:       collectionName235,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/380",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/380",
 		},
 		"Short": {
 			collection: "a",
@@ -370,8 +370,8 @@ func TestCreateCollection(t *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			db := collection.Database().Client().Database(dbName)
@@ -443,7 +443,7 @@ func TestCreateCollectionDatabaseName(t *testing.T) {
 			db string // database name, defaults to empty string
 
 			err        *mongo.CommandError // required, expected error from MongoDB
-			altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+			altMessage string              // optional, alternative error message for DocDB, ignored if empty
 		}{
 			"TooLongForBothDBs": {
 				db: dbName64,
@@ -517,7 +517,7 @@ func TestCreateCollectionDatabaseName(t *testing.T) {
 }
 
 func TestDebugCommandErrors(t *testing.T) {
-	setup.SkipForMongoDB(t, "FerretDB-specific command")
+	setup.SkipForMongoDB(t, "DocDB-specific command")
 
 	t.Parallel()
 
@@ -525,7 +525,7 @@ func TestDebugCommandErrors(t *testing.T) {
 	db := s.Collection.Database()
 
 	t.Run("NotString", func(t *testing.T) {
-		res := db.RunCommand(s.Ctx, bson.D{{"ferretDebugError", 207}})
+		res := db.RunCommand(s.Ctx, bson.D{{"docdbDebugError", 207}})
 
 		expected := mongo.CommandError{
 			Code: int32(mongoerrors.ErrBadValue),
@@ -533,7 +533,7 @@ func TestDebugCommandErrors(t *testing.T) {
 		}
 		AssertMatchesCommandError(t, expected, res.Err())
 
-		msg := `(BadValue) required parameter "ferretDebugError" has type int32 (expected string)`
+		msg := `(BadValue) required parameter "docdbDebugError" has type int32 (expected string)`
 		assert.EqualError(t, res.Err(), msg)
 
 		var doc bson.D
@@ -543,7 +543,7 @@ func TestDebugCommandErrors(t *testing.T) {
 	})
 
 	t.Run("ErrorCode", func(t *testing.T) {
-		res := db.RunCommand(s.Ctx, bson.D{{"ferretDebugError", "207"}})
+		res := db.RunCommand(s.Ctx, bson.D{{"docdbDebugError", "207"}})
 
 		expected := mongo.CommandError{
 			Code: int32(mongoerrors.ErrInvalidUUID),
@@ -560,7 +560,7 @@ func TestDebugCommandErrors(t *testing.T) {
 	})
 
 	t.Run("OK", func(t *testing.T) {
-		res := db.RunCommand(s.Ctx, bson.D{{"ferretDebugError", "ok"}})
+		res := db.RunCommand(s.Ctx, bson.D{{"docdbDebugError", "ok"}})
 
 		assert.NoError(t, res.Err())
 
@@ -572,7 +572,7 @@ func TestDebugCommandErrors(t *testing.T) {
 	})
 
 	t.Run("LazyError", func(t *testing.T) {
-		res := db.RunCommand(s.Ctx, bson.D{{"ferretDebugError", "lazy error"}})
+		res := db.RunCommand(s.Ctx, bson.D{{"docdbDebugError", "lazy error"}})
 
 		expected := mongo.CommandError{
 			Code: int32(mongoerrors.ErrInternalError),
@@ -580,7 +580,7 @@ func TestDebugCommandErrors(t *testing.T) {
 		}
 		AssertMatchesCommandError(t, expected, res.Err())
 
-		msg := `(InternalError) msg_ferretdebugerror.go:59 (handler.(*Handler).msgFerretDebugError): lazy error`
+		msg := `(InternalError) msg_docdbdebugerror.go:59 (handler.(*Handler).msgDocDBDebugError): lazy error`
 		assert.EqualError(t, res.Err(), msg)
 
 		var doc bson.D
@@ -590,7 +590,7 @@ func TestDebugCommandErrors(t *testing.T) {
 	})
 
 	t.Run("OtherError", func(t *testing.T) {
-		res := db.RunCommand(s.Ctx, bson.D{{"ferretDebugError", "other error"}})
+		res := db.RunCommand(s.Ctx, bson.D{{"docdbDebugError", "other error"}})
 
 		expected := mongo.CommandError{
 			Code: int32(mongoerrors.ErrInternalError),
@@ -713,7 +713,7 @@ func TestHelloIsMasterCommandMutatingClientMetadata(t *testing.T) {
 }
 
 func TestInsertNullStrings(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/420
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/420
 	t.Parallel()
 
 	ctx, collection := setup.Setup(t)
@@ -727,7 +727,7 @@ func TestInsertNullStrings(t *testing.T) {
 }
 
 func TestInsertUpdateNestedArrays(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/420
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/420
 	t.Parallel()
 
 	ctx, collection := setup.Setup(t, shareddata.Scalars)
@@ -748,7 +748,7 @@ func TestInsertUpdateNestedArrays(t *testing.T) {
 }
 
 func TestInsertUpdateFindNegativeZero(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/420
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/420
 	t.Parallel()
 
 	ctx, collection := setup.Setup(t)
@@ -799,7 +799,7 @@ func TestInsertUpdateFindNegativeZero(t *testing.T) {
 }
 
 func TestInsertDocumentValidation(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/420
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/420
 	t.Parallel()
 
 	ctx, collection := setup.Setup(t, shareddata.Scalars)
@@ -841,7 +841,7 @@ func TestInsertDocumentValidation(t *testing.T) {
 }
 
 func TestUpdateProduceInfinity(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/420
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/420
 	t.Parallel()
 
 	ctx, collection := setup.Setup(t)
@@ -853,7 +853,7 @@ func TestUpdateProduceInfinity(t *testing.T) {
 }
 
 func TestCreateCollectionDatabaseNameNonLatin(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/420
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/420
 	t.Parallel()
 
 	ctx, collection := setup.Setup(t)

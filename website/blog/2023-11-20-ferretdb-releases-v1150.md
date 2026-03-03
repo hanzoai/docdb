@@ -51,7 +51,7 @@ Check out [this blog post to see how it works](https://blog.ferretdb.io/mongodb-
 
 ## Other updates
 
-Please see [our release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.15.0) for more on this release and all its associated packages.
+Please see [our release notes](https://github.com/hanzoai/docdb/releases/tag/v1.15.0) for more on this release and all its associated packages.
 
 We continue to be overwhelmed by the massive support from the open source community, as we deliver the truly open-source document database alternative to MongoDB.
 Nowhere is this more evident than in our ever-increasing number of contributors.
@@ -60,7 +60,7 @@ Over the past three months, we've had 24 different community contributors, which
 
 Aside from this, FerretDB now has:
 
-- More than 20.9k [ghcr.io](https://github.com/FerretDB/FerretDB/pkgs/container/ferretdb) downloads; 500+ [downloads on Docker](https://hub.docker.com/r/ferretdb/ferretdb/tags)
+- More than 20.9k [ghcr.io](https://github.com/hanzoai/docdb/pkgs/container/ferretdb) downloads; 500+ [downloads on Docker](https://hub.docker.com/r/hanzoai/docdb/tags)
 - More cloud providers (like [Vultr](https://www.vultr.com/docs/ferretdb-managed-database-guide/), [Civo](https://www.civo.com/marketplace/FerretDB), and [Scaleway](https://www.scaleway.com/en/betas/#managed-document-database)) offering FerretDB as a managed service
 - Over 7.9k stars on GitHub
 

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import (
 	"testing"
 
 	"github.com/AlekSi/pointer"
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wiretest"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wiretest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Package dataapi provides a Data API wrapper,
-// which allows FerretDB to be used over HTTP instead of MongoDB wire protocol.
+// which allows DocDB to be used over HTTP instead of MongoDB wire protocol.
 package dataapi
 
 import (
@@ -27,11 +27,11 @@ import (
 	"github.com/AlekSi/lazyerrors"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/FerretDB/FerretDB/v2/internal/dataapi/api"
-	"github.com/FerretDB/FerretDB/v2/internal/dataapi/server"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/dataapi/api"
+	"github.com/hanzoai/docdb/internal/dataapi/server"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // Listener represents Data API TCP listener and HTTP handler.

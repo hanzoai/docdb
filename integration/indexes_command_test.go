@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@ package integration
 import (
 	"testing"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // TestListIndexesCommandNonExistentNS tests that the listIndexes command returns a particular error
@@ -73,7 +73,7 @@ func TestDropIndexesCommandErrors(t *testing.T) {
 		command  bson.D             // optional, if set it runs this command instead of dropping toDrop
 
 		err        *mongo.CommandError // required, expected error from MongoDB
-		altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string              // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"InvalidType": {
 			toDrop: true,
@@ -220,9 +220,9 @@ func TestCreateIndexesCommandInvalidSpec(t *testing.T) {
 		noProvider     bool // if set, no provider is added.
 
 		err        *mongo.CommandError // required, expected error from MongoDB
-		altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string              // optional, alternative error message for DocDB, ignored if empty
 
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"EmptyIndexes": {
 			indexes: bson.A{},
@@ -247,7 +247,7 @@ func TestCreateIndexesCommandInvalidSpec(t *testing.T) {
 				Name:    "Location10065",
 				Message: "invalid parameter: expected an object (indexes)",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/290",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/290",
 		},
 		"InvalidTypeObject": {
 			indexes: bson.D{},
@@ -287,7 +287,7 @@ func TestCreateIndexesCommandInvalidSpec(t *testing.T) {
 				Message: `The field 'unique' is not valid for an _id index specification.` +
 					` Specification: { key: { _id: 1 }, name: "_id_", unique: true, v: 2 }`,
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/290",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/290",
 		},
 		"MissingName": {
 			indexes: bson.A{
@@ -414,8 +414,8 @@ func TestCreateIndexesCommandInvalidSpec(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			if tc.missingIndexes {
@@ -532,7 +532,7 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 		indexName        any
 		err              *mongo.CommandError
 		altMessage       string
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NonExistentCollection": {
 			collectionName: "non-existent",
@@ -552,7 +552,7 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 				Message: "collection name has invalid type int",
 			},
 			altMessage:       "required parameter \"dropIndexes\" has type int32 (expected string)",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/305",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/305",
 		},
 		"NilCollection": {
 			collectionName: nil,
@@ -563,7 +563,7 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 				Message: "collection name has invalid type null",
 			},
 			altMessage:       "required parameter \"dropIndexes\" has type types.NullType (expected string)",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/305",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/305",
 		},
 		"EmptyCollection": {
 			collectionName: "",
@@ -573,7 +573,7 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 				Name:    "InvalidNamespace",
 				Message: "Invalid namespace specified 'TestDropIndexesCommandInvalidCollection-EmptyCollection.'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/305",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/305",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -581,8 +581,8 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			ctx, collection := setup.Setup(tt)
@@ -762,7 +762,7 @@ func TestReIndexCommand(t *testing.T) {
 						{"key", bson.D{{"v", int32(1)}}},
 						{"name", "v_1"},
 						// For MongoDB, `unique` is the 4th field of `listIndexes` command, but it's the 2nd field of `reIndex` command.
-						// For FerretDB, `unique` is the 4th field in both `listIndexes` and `reIndex` commands.
+						// For DocDB, `unique` is the 4th field in both `listIndexes` and `reIndex` commands.
 						{"unique", true},
 					},
 				}},

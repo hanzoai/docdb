@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,9 +28,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/FerretDB/gh"
+	"github.com/hanzoai/gh"
 
-	"github.com/FerretDB/FerretDB/v2/tools/github"
+	"github.com/hanzoai/docdb/tools/github"
 )
 
 func main() {
@@ -130,9 +130,9 @@ func getMarkdownFiles(path string) ([]string, error) {
 	return markdownFiles, nil
 }
 
-// issueRE represents FerretDB and documentdb issue url.
+// issueRE represents DocDB issue url.
 // It returns owner, repo and issue number as submatches.
-var issueRE = regexp.MustCompile(`\Qhttps://github.com/\E(FerretDB|documentdb)/([-\w]+)/issues/(\d+)`)
+var issueRE = regexp.MustCompile(`\Qhttps://github.com/\E(hanzoai|docdb)/([-\w]+)/issues/(\d+)`)
 
 // checkBlogFiles verifies that blog posts are correctly formatted.
 func checkBlogFiles(files []string) error {
@@ -322,7 +322,7 @@ func verifyTags(fm []byte) error {
 	return nil
 }
 
-// checkIssueURLs validates FerretDB and documentdb issues URLs if they occur in the r [io.Reader].
+// checkIssueURLs validates DocDB issues URLs if they occur in the r [io.Reader].
 // If URL formatting is invalid, the represented issue is closed or not found - the appropriate
 // message is sent to l [*log.Logger].
 //
