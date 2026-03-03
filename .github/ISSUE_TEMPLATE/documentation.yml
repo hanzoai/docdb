@@ -3,14 +3,14 @@
 
 name: Documentation
 description: Something is badly or not documented.
-assignees: ["ferretdb-bot"]
+assignees: ["docdb-bot"]
 labels: ["documentation", "not ready"]
 body:
   - type: markdown
     attributes:
       value: >
         Thanks for taking the time to fill out this form!
-        Please check if a similar issue is [already filed](https://github.com/FerretDB/FerretDB/issues).
+        Please check if a similar issue is [already filed](https://github.com/hanzoai/docdb/issues).
   - type: textarea
     id: what
     attributes:

@@ -12,7 +12,7 @@ We provide three Docker images for various deployments:
 and **a production image** for all other cases.
 
 All-in-one image is documented in the
-[README.md file in the repository](https://github.com/FerretDB/FerretDB#quickstart).
+[README.md file in the repository](https://github.com/hanzoai/docdb#quickstart).
 The rest are covered below.
 
 All Docker images include a [`HEALTHCHECK` instruction](https://docs.docker.com/reference/dockerfile/#healthcheck)
@@ -20,7 +20,7 @@ that behaves like a [readiness probe](../configuration/observability.md#probes).
 
 ## Production image
 
-Our [production image](https://ghcr.io/ferretdb/ferretdb) `ghcr.io/ferretdb/ferretdb`
+Our [production image](https://ghcr.io/hanzoai/docdb) `ghcr.io/hanzoai/docdb`
 is recommended for most deployments.
 It does not include PostgreSQL or other backends, so you must run them separately.
 You can do that with Docker Compose, Kubernetes, or other means.
@@ -44,7 +44,7 @@ The following steps describe a quick local setup:
          - ./data:/var/lib/postgresql/data
 
      ferretdb:
-       image: ghcr.io/ferretdb/ferretdb:1
+       image: ghcr.io/hanzoai/docdb:1
        restart: on-failure
        ports:
          - 27017:27017
@@ -77,7 +77,7 @@ The following steps describe a quick local setup:
 
    ```sh
    docker run --rm -it --network=ferretdb --entrypoint=mongosh mongo \
-     "mongodb://username:password@ferretdb/ferretdb?authMechanism=PLAIN"
+     "mongodb://username:password@hanzoai/docdb?authMechanism=PLAIN"
    ```
 
 You can improve that setup by:
@@ -99,7 +99,7 @@ The following steps describe the setup for SQLite:
    ```yaml
    services:
      ferretdb:
-       image: ghcr.io/ferretdb/ferretdb:1
+       image: ghcr.io/hanzoai/docdb:1
        restart: on-failure
        ports:
          - 27017:27017
@@ -128,7 +128,7 @@ The following steps describe the setup for SQLite:
 
    ```text
    docker run --rm -it --network=ferretdb --entrypoint=mongosh mongo \
-     "mongodb://ferretdb/ferretdb"
+     "mongodb://hanzoai/docdb"
    ```
 
 4. You can secure SQLite connections using the experimental authentication mode by setting the `FERRETDB_TEST_ENABLE_NEW_AUTH` environment variable to `true`.
@@ -136,8 +136,8 @@ The following steps describe the setup for SQLite:
 
 ## Development image
 
-The [development image](https://ghcr.io/ferretdb/ferretdb-dev) `ghcr.io/ferretdb/ferretdb-dev`
-contains the [debug build](https://pkg.go.dev/github.com/FerretDB/FerretDB/build/version#hdr-Debug_builds)
+The [development image](https://ghcr.io/hanzoai/docdb-dev) `ghcr.io/hanzoai/docdb-dev`
+contains the [debug build](https://pkg.go.dev/github.com/hanzoai/docdb/build/version#hdr-Debug_builds)
 of FerretDB with test coverage instrumentation, race detector,
 and other changes that make it more suitable for debugging problems.
 It can be used exactly the same way as the production image, as described above.

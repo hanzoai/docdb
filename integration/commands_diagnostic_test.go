@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil/teststress"
+	"github.com/hanzoai/docdb/internal/util/testutil/teststress"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestConnectionStatusCommand(t *testing.T) {
@@ -112,7 +112,7 @@ func TestExplainCommand(t *testing.T) {
 							assert.NotEmpty(t, subElem.Value)
 							elemComparable = append(elemComparable, bson.E{"gitVersion", ""})
 
-						case "ferretdb":
+						case "docdb":
 							// ignore
 
 						default:
@@ -166,7 +166,7 @@ func TestGetLogCommand(t *testing.T) {
 
 		expectedComparable bson.D
 		err                *mongo.CommandError // optional, expected error from MongoDB
-		altMessage         string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage         string              // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"Asterisk": {
 			command: bson.D{{"getLog", "*"}},
@@ -286,8 +286,8 @@ func TestHostInfoCommand(t *testing.T) {
 					elemForComparison = append(elemForComparison, bson.E{subElem.Key, int32(0)})
 
 				case "numPhysicalCores", "numCpuSockets", "numNumaNodes", "numaEnabled", "memSizeMB", "memLimitMB":
-					// not implemented in FerretDB, do nothing
-					// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/587
+					// not implemented in DocDB, do nothing
+					// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/587
 
 				default:
 					elemForComparison = append(elemForComparison, subElem)
@@ -368,8 +368,8 @@ func TestListCommandsCommand(t *testing.T) {
 							commandComparable = append(commandComparable, bson.E{"help", bson.D{}})
 
 						case "requiresAuth", "secondaryOk", "adminOnly", "apiVersions", "deprecatedApiVersions":
-							// not implemented in FerretDB, do nothing
-							// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/588
+							// not implemented in DocDB, do nothing
+							// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/588
 
 						default:
 							commandComparable = append(commandComparable, subV)
@@ -404,7 +404,7 @@ func TestValidateCommand(t *testing.T) {
 	t.Run("Basic", func(tt *testing.T) {
 		tt.Parallel()
 
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1015")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/1015")
 
 		ctx, collection := setup.Setup(tt, shareddata.Doubles)
 
@@ -452,7 +452,7 @@ func TestValidateCommand(t *testing.T) {
 	t.Run("TwoIndexes", func(tt *testing.T) {
 		tt.Parallel()
 
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1016")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/1016")
 
 		ctx, collection := setup.Setup(tt, shareddata.Doubles)
 
@@ -511,7 +511,7 @@ func TestValidateCommandError(t *testing.T) {
 		command bson.D
 
 		err              *mongo.CommandError
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"InvalidTypeDocument": {
 			command: bson.D{{"validate", bson.D{}}},
@@ -534,8 +534,8 @@ func TestValidateCommandError(t *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.command, "command must not be nil")

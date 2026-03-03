@@ -12,7 +12,7 @@ The most recent entries are also available via `getLog` command.
 
 :::note
 
-<!-- https://github.com/FerretDB/FerretDB/issues/3421 -->
+<!-- https://github.com/hanzoai/docdb/issues/3421 -->
 
 Structured log format is not stable yet; field names and formatting of values might change in minor releases.
 :::
@@ -34,7 +34,7 @@ There are four logging levels:
 - `info` is used for various information messages;
 - `debug` should only be used for debugging.
 
-The default level is `info`, except for [debug builds](https://pkg.go.dev/github.com/FerretDB/FerretDB/build/version#hdr-Debug_builds) that default to `debug`.
+The default level is `info`, except for [debug builds](https://pkg.go.dev/github.com/hanzoai/docdb/build/version#hdr-Debug_builds) that default to `debug`.
 
 :::caution
 `debug`-level messages include complete query and response bodies, full error messages, authentication credentials,
@@ -65,7 +65,7 @@ and get logs with `docker logs`:
 $ docker ps
 CONTAINER ID   IMAGE                       COMMAND                  CREATED              STATUS          PORTS                                           NAMES
 13db4c8800d3   postgres                    "docker-entrypoint.s…"   About a minute ago   Up 59 seconds   5432/tcp                                        my-postgres
-44fe6f4c3527   ghcr.io/ferretdb/ferretdb   "/ferretdb"              About a minute ago   Up 59 seconds   8088/tcp, 27018/tcp, 0.0.0.0:27017->27017/tcp   my-ferretdb
+44fe6f4c3527   ghcr.io/hanzoai/docdb   "/ferretdb"              About a minute ago   Up 59 seconds   8088/tcp, 27018/tcp, 0.0.0.0:27017->27017/tcp   my-ferretdb
 
 $ docker logs my-ferretdb
 ```
@@ -77,7 +77,7 @@ It can be changed with [`--otel-traces-url` flag](flags.md#miscellaneous).
 
 :::note
 
-<!-- https://github.com/FerretDB/FerretDB/issues/3422 -->
+<!-- https://github.com/hanzoai/docdb/issues/3422 -->
 
 Trace format is not stable yet; attribute names and values might change in minor releases.
 :::
@@ -107,7 +107,7 @@ There is no need to use an external exporter.
 
 :::note
 
-<!-- https://github.com/FerretDB/FerretDB/issues/3420 -->
+<!-- https://github.com/hanzoai/docdb/issues/3420 -->
 
 The set of metrics is not stable yet; metric and label names and value formatting might change in minor releases.
 :::

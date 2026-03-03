@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ func Convert(rows []map[string]any, l *slog.Logger) map[string]map[string]templa
 
 			if row["parameter_name"] == "p_transaction_id" {
 				// skip p_transaction_id, transaction is not supported yet
-				// TODO https://github.com/FerretDB/FerretDB/issues/8
+				// TODO https://github.com/hanzoai/docdb/issues/8
 				continue
 			}
 

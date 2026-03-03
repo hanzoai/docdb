@@ -1,19 +1,19 @@
-module github.com/FerretDB/FerretDB/v2/integration
+module github.com/hanzoai/docdb/integration
 
-go 1.25
+go 1.26
 
 toolchain go1.25.7
 
-replace github.com/FerretDB/FerretDB/v2 => ../
+replace github.com/hanzoai/docdb => ../
 
-// replace github.com/FerretDB/wire => ../../wire
+// replace github.com/hanzoai/docdb-wire => ../../wire
 
 require (
 	github.com/AlekSi/lazyerrors v0.5.0
 	github.com/AlekSi/pointer v1.2.0
-	github.com/FerretDB/FerretDB/v2 v2.0.0-00010101000000-000000000000
-	github.com/FerretDB/wire v0.1.7
-	github.com/FerretDB/xfail v0.1.0
+	github.com/hanzoai/docdb v2.0.0-00010101000000-000000000000
+	github.com/hanzoai/docdb-wire v0.1.7
+	github.com/hanzoai/xfail v0.1.0
 	github.com/google/uuid v1.6.0
 	github.com/prometheus/client_golang v1.23.2
 	github.com/stretchr/testify v1.11.1

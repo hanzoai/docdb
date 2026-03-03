@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 type countCommandCompatTestCase struct {
 	collectionName   any
 	command          bson.D
-	failsForFerretDB string
+	failsForDocDB string
 }
 
 // testCountCommandCompat tests query compatibility test cases.
@@ -38,7 +38,7 @@ func testCountCommandCompat(t *testing.T, testCases map[string]countCommandCompa
 	// Use shared setup because count queries can't modify data.
 	//
 	// Use read-only user.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1025
+	// TODO https://github.com/hanzoai/docdb/issues/1025
 	ctx, targetCollections, compatCollections := setup.SetupCompat(t)
 
 	for name, tc := range testCases {
@@ -56,8 +56,8 @@ func testCountCommandCompat(t *testing.T, testCases map[string]countCommandCompa
 
 					var t testing.TB = tt
 
-					if tc.failsForFerretDB != "" {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					targetCollectionName := tc.collectionName
@@ -127,49 +127,49 @@ func TestCountCommandCompatErrors(t *testing.T) {
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionArray": {
 			collectionName: primitive.A{},
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionDouble": {
 			collectionName: 3.14,
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionBinary": {
 			collectionName: primitive.Binary{},
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionObjectID": {
 			collectionName: primitive.ObjectID{},
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionBool": {
 			collectionName: true,
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionDate": {
 			collectionName: time.Now(),
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionNull": {
 			collectionName: nil,
@@ -182,28 +182,28 @@ func TestCountCommandCompatErrors(t *testing.T) {
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionInt": {
 			collectionName: int32(42),
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionTimestamp": {
 			collectionName: primitive.Timestamp{},
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"CollectionLong": {
 			collectionName: int64(42),
 			command: bson.D{
 				{"query", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/401",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/401",
 		},
 		"QueryArray": {
 			command: bson.D{

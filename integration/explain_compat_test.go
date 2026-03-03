@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // explainCompatTestCase describes explain compatibility test case.
@@ -32,8 +32,8 @@ type explainCompatTestCase struct {
 	pipeline   bson.A                   // ignored if nil
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-	failsForFerretDB string
-	skip             string // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
+	failsForDocDB string
+	skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 }
 
 // testExplainCompatError tests explain compatibility test cases.
@@ -67,8 +67,8 @@ func testExplainCompatError(tt *testing.T, testCases map[string]explainCompatTes
 				tt.Helper()
 
 				var t testing.TB = tt
-				if tc.failsForFerretDB != "" {
-					t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+				if tc.failsForDocDB != "" {
+					t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 				}
 
 				explainTarget := bson.D{{tc.command, targetCollection.Name()}}
@@ -140,7 +140,7 @@ func TestExplainCompatError(t *testing.T) {
 	testCases := map[string]explainCompatTestCase{
 		"AggregateMissingPipeline": {
 			command: "aggregate",
-			skip:    "https://github.com/FerretDB/FerretDB-DocumentDB/issues/958",
+			skip:    "https://github.com/hanzoai/docdb-DocumentDB/issues/958",
 		},
 		"AggregateInvalidPipeline": {
 			command:  "aggregate",
@@ -155,7 +155,7 @@ func TestExplainCompatError(t *testing.T) {
 		},
 		"InvalidCommandGetLog": {
 			command: "create",
-			skip:    "https://github.com/FerretDB/FerretDB/issues/2704",
+			skip:    "https://github.com/hanzoai/docdb/issues/2704",
 		},
 	}
 

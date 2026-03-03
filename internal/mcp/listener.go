@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/clientconn/conninfo"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // Listener represents MCP listener.
@@ -46,7 +46,7 @@ type ListenOpts struct { //nolint:vet // for readability
 	M       *middleware.Middleware
 	TCPAddr string
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/5309
+	// TODO https://github.com/hanzoai/docdb/issues/5309
 	// Auth bool
 }
 
@@ -69,13 +69,13 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 //
 // It exits when handler is stopped and listener closed.
 func (lis *Listener) Run(ctx context.Context) {
-	s := mcp.NewServer(&mcp.Implementation{Name: "FerretDB", Version: version.Get().Version}, nil)
+	s := mcp.NewServer(&mcp.Implementation{Name: "DocDB", Version: version.Get().Version}, nil)
 	lis.srv.addTools(s)
 
 	mcpHandler := mcp.NewStreamableHTTPHandler(func(req *http.Request) *mcp.Server { return s }, nil)
 	srvHandler := http.NewServeMux()
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/5309
+	// TODO https://github.com/hanzoai/docdb/issues/5309
 	srvHandler.Handle("/mcp", connInfoMiddleware(mcpHandler))
 
 	srv := &http.Server{

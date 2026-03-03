@@ -36,6 +36,6 @@ The new version of FerretDB now supports empty document field names, while we've
 Our [documentation page](https://docs.ferretdb.io/) is up and running!
 We've also added a local search plugin, set up pages on installation procedures, basic CRUD operations, and much more!
 
-Please see our [Changelog](https://github.com/FerretDB/FerretDB/releases/) for more details on the new releases.
+Please see our [Changelog](https://github.com/hanzoai/docdb/releases/) for more details on the new releases.
 
 (image credit: FetzlePetzit / [furaffinity.net](https://www.furaffinity.net/view/1920045/))

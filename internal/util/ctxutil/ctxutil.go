@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ func Sleep(ctx context.Context, d time.Duration) {
 
 // SleepWithJitter pauses the current goroutine until d + jitter has passed or ctx is canceled.
 //
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/811
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/811
 func SleepWithJitter(ctx context.Context, d time.Duration, attempt int64) {
 	sleepCtx, cancel := context.WithTimeout(ctx, durationWithJitter(d, attempt))
 	defer cancel()

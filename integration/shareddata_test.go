@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 // because some needed functionality is already available in setup helpers.
 // This file is skipped by default; we pass the build tag only in the `task env-data` command.
 
-//go:build ferretdb_testenvdata
+//go:build docdb_testenvdata
 
 package integration
 
@@ -29,8 +29,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestEnvData(t *testing.T) {
@@ -52,8 +52,8 @@ func TestEnvData(t *testing.T) {
 		require.True(t, inserted)
 	}
 
-	tb := setup.FailsForFerretDB(t, "https://github.com/FerretDB/FerretDB/issues/4303")
-	tb = setup.FailsForMongoDB(tb, "https://github.com/FerretDB/FerretDB/issues/4303")
+	tb := setup.FailsForDocDB(t, "https://github.com/hanzoai/docdb/issues/4303")
+	tb = setup.FailsForMongoDB(tb, "https://github.com/hanzoai/docdb/issues/4303")
 
 	inserted := setup.InsertProviders(tb, s.Ctx, db.Collection("All"), shareddata.AllProviders()...)
 	require.True(tb, inserted)

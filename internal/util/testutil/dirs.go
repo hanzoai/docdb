@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	// RootDir is the FerretDB <root> directory.
+	// RootDir is the DocDB <root> directory.
 	RootDir string
 
 	// BinDir is the <root>/bin directory.

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ func TestCircularBufferHandler(t *testing.T) {
 		t.Run(tc.msg, func(t *testing.T) {
 			slog.Default().Log(t.Context(), tc.level, tc.msg)
 
-			// TODO https://github.com/FerretDB/FerretDB/issues/4750
+			// TODO https://github.com/hanzoai/docdb/issues/4750
 			records := slog.Default().Handler().(*Handler).recentEntries.get()
 			actual := make([]slog.Record, len(records))
 

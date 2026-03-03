@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -156,7 +156,7 @@ func parseMessage(msg string, l *slog.Logger) (*message, error) {
 	var res message
 
 	// better check for gs2 header
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/901
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/901
 	if strings.HasPrefix(msg, "n,,") {
 		msg = strings.TrimPrefix(msg, "n,,")
 		res.gs2 = "n,"
@@ -167,7 +167,7 @@ func parseMessage(msg string, l *slog.Logger) (*message, error) {
 	// https://datatracker.ietf.org/doc/html/rfc5802#section-5.1 says:
 	// > Note that the order of attributes in client or server messages is fixed
 	// We should enforce that.
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/901
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/901
 
 	for _, field := range fields {
 		name, value, ok := strings.Cut(field, "=")
@@ -184,7 +184,7 @@ func parseMessage(msg string, l *slog.Logger) (*message, error) {
 
 		case "n":
 			// SASLprep, check if = is not followed by either 2C or 3D
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/901
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/901
 			value = strings.ReplaceAll(value, "=2C", ",")
 			value = strings.ReplaceAll(value, "=3D", "=")
 

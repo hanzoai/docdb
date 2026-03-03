@@ -27,7 +27,7 @@ We are constantly adding features to increase compatibility based on user feedba
 
 See our [public roadmap](https://github.com/orgs/FerretDB/projects/2/views/1),
 a list of [known differences with MongoDB](diff.md),
-and [contributing guidelines](https://github.com/FerretDB/FerretDB/blob/main-v1/CONTRIBUTING.md).
+and [contributing guidelines](https://github.com/hanzoai/docdb/blob/main-v1/CONTRIBUTING.md).
 
 ## Community
 
@@ -35,7 +35,7 @@ and [contributing guidelines](https://github.com/FerretDB/FerretDB/blob/main-v1/
 - Twitter: [@ferret_db](https://twitter.com/ferret_db).
 - Mastodon: [@ferretdb@techhub.social](https://techhub.social/@ferretdb).
 - [Slack chat](https://slack.ferretdb.io/) for quick questions.
-- [GitHub Discussions](https://github.com/FerretDB/FerretDB/discussions) for longer topics.
-- [GitHub Issues](https://github.com/FerretDB/FerretDB/issues) for bugs and missing features.
+- [GitHub Discussions](https://github.com/hanzoai/docdb/discussions) for longer topics.
+- [GitHub Issues](https://github.com/hanzoai/docdb/issues) for bugs and missing features.
 
 If you want to contact FerretDB Inc., please use [this form](https://www.ferretdb.com/contact/).

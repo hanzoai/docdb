@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package integration provides FerretDB integration tests.
+// Package integration provides DocDB integration tests.
 package integration
 
 import (
@@ -20,15 +20,15 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wiretest"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wiretest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 //go:generate ../bin/stringer -linecomment -type CompatTestCaseResultType
@@ -46,7 +46,7 @@ const (
 	EmptyResult
 )
 
-// convert converts given driver value ([bson.D], [bson.A], etc) to FerretDB's bson package value.
+// convert converts given driver value ([bson.D], [bson.A], etc) to DocDB bson package value.
 //
 // Deprecated: use [wirebson.FromDriver] instead.
 func convert(t testing.TB, v any) any {
@@ -69,8 +69,8 @@ func FixCluster(t testing.TB, doc *wirebson.Document) {
 // It does nothing if the current test is running for MongoDB.
 //
 // This function should eventually be removed.
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/410
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/348
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/410
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/348
 func fixOrder(t testing.TB, doc *wirebson.Document) {
 	t.Helper()
 
@@ -107,7 +107,7 @@ func fixOrder(t testing.TB, doc *wirebson.Document) {
 // It should be used only with actual/target document, not with expected/compat document.
 //
 // This function should eventually be removed.
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/359
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/359
 func fixActualUpdateN(t testing.TB, actual *wirebson.Document) {
 	t.Helper()
 
@@ -145,7 +145,7 @@ func fixActual(t testing.TB, actual *wirebson.Document) {
 	fixActualUpdateN(t, actual)
 }
 
-// convertDocument converts given driver's document to FerretDB's [*wirebson.Document].
+// convertDocument converts given driver document to DocDB's [*wirebson.Document].
 func convertDocument(t testing.TB, doc bson.D) *wirebson.Document {
 	t.Helper()
 
@@ -157,7 +157,7 @@ func convertDocument(t testing.TB, doc bson.D) *wirebson.Document {
 	return v.(*wirebson.Document)
 }
 
-// convertDocuments converts given driver's documents slice to FerretDB's []*wirebson.Document.
+// convertDocuments converts given driver documents to DocDB's []*wirebson.Document.
 func convertDocuments(t testing.TB, docs []bson.D) []*wirebson.Document {
 	t.Helper()
 
@@ -307,7 +307,7 @@ func AssertMatchesWriteError(t testing.TB, expected, actual error) {
 // AssertMatchesBulkException asserts that both errors are BulkWriteExceptions containing the same number of WriteErrors,
 // and those WriteErrors are equal, except messages (and ignoring the Raw part).
 //
-// TODO https://github.com/FerretDB/FerretDB/issues/3290
+// TODO https://github.com/hanzoai/docdb/issues/3290
 func AssertMatchesBulkException(t testing.TB, expected, actual error) {
 	t.Helper()
 
@@ -333,7 +333,7 @@ func AssertMatchesBulkException(t testing.TB, expected, actual error) {
 }
 
 // AssertEqualAltCommandError asserts that the expected MongoDB error is the same as the actual (ignoring the Raw part);
-// the alternative error message may be provided if FerretDB is unable to produce exactly the same text as MongoDB.
+// the alternative error message may be provided if DocDB is unable to produce exactly the same text as MongoDB.
 //
 // In general, error messages should be the same. Exceptions include:
 //
@@ -341,7 +341,7 @@ func AssertMatchesBulkException(t testing.TB, expected, actual error) {
 //   - MongoDB values formatting (e.g. we don't want to write additional code to format
 //     `{ $slice: { a: { b: 3 }, b: "string" } }` exactly the same way).
 //
-// In any case, the alternative error message returned by FerretDB should not mislead users.
+// In any case, the alternative error message returned by DocDB should not mislead users.
 func AssertEqualAltCommandError(t testing.TB, expected mongo.CommandError, altMessage string, actual error) bool {
 	t.Helper()
 
@@ -367,7 +367,7 @@ func AssertEqualAltCommandError(t testing.TB, expected mongo.CommandError, altMe
 }
 
 // AssertEqualAltWriteError asserts that the expected MongoDB error is the same as the actual;
-// the alternative error message may be provided if FerretDB is unable to produce exactly the same text as MongoDB.
+// the alternative error message may be provided if DocDB is unable to produce exactly the same text as MongoDB.
 func AssertEqualAltWriteError(t testing.TB, expected mongo.WriteError, altMessage string, actual error) bool {
 	t.Helper()
 

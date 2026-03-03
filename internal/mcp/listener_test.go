@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,18 +25,18 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/setup"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/setup"
+	"github.com/hanzoai/docdb/internal/util/state"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 )
 
 // llmModel is the model used in tests.
 const llmModel = "qwen3:0.6b" // sync with Taskfile.yml
 
 func TestBasic(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB/issues/5209
-	t.Skip("https://github.com/FerretDB/FerretDB/issues/5209")
+	// TODO https://github.com/hanzoai/docdb/issues/5209
+	t.Skip("https://github.com/hanzoai/docdb/issues/5209")
 
 	if testing.Short() {
 		t.Skip("skipping in -short mode")
@@ -57,7 +57,7 @@ func TestBasic(t *testing.T) {
 		)
 		res := askMCPHost(t, ctx, configF, prompt)
 
-		require.Contains(t, res, "ferretdb__insert")
+		require.Contains(t, res, "docdb__insert")
 		require.Contains(t, res, `{"n":{"$numberInt":"2"},"ok":{"$numberDouble":"1.0"}}`)
 	})
 
@@ -65,7 +65,7 @@ func TestBasic(t *testing.T) {
 		prompt := fmt.Sprintf("Find a British author from %s database authors collection.", db)
 		res := askMCPHost(t, ctx, configF, prompt)
 
-		require.Contains(t, res, "ferretdb__find")
+		require.Contains(t, res, "docdb__find")
 		require.Contains(t, res, "Jane Austen")
 	})
 
@@ -73,7 +73,7 @@ func TestBasic(t *testing.T) {
 		prompt := fmt.Sprintf("List all collections in %s database.", db)
 		res := askMCPHost(t, ctx, configF, prompt)
 
-		require.Contains(t, res, "ferretdb__listCollections")
+		require.Contains(t, res, "docdb__listCollections")
 		require.Contains(t, res, `authors`)
 	})
 
@@ -81,14 +81,14 @@ func TestBasic(t *testing.T) {
 		prompt := fmt.Sprintf("Delete database named %s.", db)
 		res := askMCPHost(t, ctx, configF, prompt)
 
-		require.Contains(t, res, "ferretdb__dropDatabase")
+		require.Contains(t, res, "docdb__dropDatabase")
 		require.Contains(t, res, `{"ok":{"$numberDouble":"1.0"}}`)
 	})
 }
 
 func TestAdmin(t *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB/issues/5209
-	t.Skip("https://github.com/FerretDB/FerretDB/issues/5209")
+	// TODO https://github.com/hanzoai/docdb/issues/5209
+	t.Skip("https://github.com/hanzoai/docdb/issues/5209")
 
 	if testing.Short() {
 		t.Skip("skipping in -short mode")
@@ -102,7 +102,7 @@ func TestAdmin(t *testing.T) {
 	t.Run("ListDatabases", func(t *testing.T) {
 		res := askMCPHost(t, ctx, configF, "list databases")
 
-		require.Contains(t, res, "ferretdb__listDatabases")
+		require.Contains(t, res, "docdb__listDatabases")
 		require.Contains(t, res, `{"databases":[`)
 		require.Contains(t, res, `],"totalSize":{`)
 		require.Contains(t, res, `},"ok":{"$numberDouble":"1.0"}`)
@@ -133,7 +133,7 @@ func askMCPHost(tb testing.TB, ctx context.Context, configF, prompt string) stri
 
 	res := string(output)
 	tb.Logf("output:\n%s", res)
-	//          [  ferretdb__listDatabases
+	//          [  docdb__listDatabases
 	//          ]  List
 	//          {"databases":[],"totalSize":{"$numberInt":"19967123"},"ok":{"$numberDouble":"1
 	//          .0"}}
@@ -201,7 +201,7 @@ func setupMCP(tb testing.TB, ctx context.Context) string {
 
 	config := fmt.Sprintf(`{
 	"mcpServers": {
-	  "FerretDB": {
+	  "DocDB": {
 	    "type": "remote",
 	    "url": "http://%s/mcp"
 	    }

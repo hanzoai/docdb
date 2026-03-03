@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 type insertCompatTestCase struct {
 	insert           []any // required, slice of bson.D to be insert
 	ordered          bool  // defaults to false
-	failsForFerretDB string
+	failsForDocDB string
 	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
 }
 
@@ -60,8 +60,8 @@ func testInsertCompat(t *testing.T, testCases map[string]insertCompatTestCase) {
 						tt.Helper()
 
 						var t testing.TB = tt
-						if tc.failsForFerretDB != "" {
-							t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+						if tc.failsForDocDB != "" {
+							t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 						}
 
 						for _, doc := range insert {
@@ -115,8 +115,8 @@ func testInsertCompat(t *testing.T, testCases map[string]insertCompatTestCase) {
 						tt.Helper()
 
 						var t testing.TB = tt
-						if tc.failsForFerretDB != "" {
-							t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+						if tc.failsForDocDB != "" {
+							t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 						}
 
 						opts := options.InsertMany().SetOrdered(tc.ordered)
@@ -180,12 +180,12 @@ func TestInsertCompat(t *testing.T) {
 		"IDArray": {
 			insert:           []any{bson.D{{"_id", bson.A{"foo", "bar"}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"IDRegex": {
 			insert:           []any{bson.D{{"_id", primitive.Regex{Pattern: "^regex$", Options: "i"}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 
 		"OrderedAllErrors": {
@@ -195,7 +195,7 @@ func TestInsertCompat(t *testing.T) {
 			},
 			ordered:          true,
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"UnorderedAllErrors": {
 			insert: []any{
@@ -204,7 +204,7 @@ func TestInsertCompat(t *testing.T) {
 			},
 			ordered:          false,
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 
 		"OrderedOneError": {
@@ -214,7 +214,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", "2"}},
 			},
 			ordered:          true,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"UnorderedTwoErrors": {
 			insert: []any{
@@ -224,7 +224,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", "2"}},
 			},
 			ordered:          false,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"OrderedThreeErrors": {
 			insert: []any{
@@ -236,7 +236,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", "4"}, {"_id", "4"}},
 			},
 			ordered:          true,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"UnorderedThreeErrors": {
 			insert: []any{
@@ -248,7 +248,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", "4"}, {"_id", "4"}},
 			},
 			ordered:          false,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 	}
 

@@ -52,7 +52,7 @@ Connecting HashiCorp Vault's database secrets engine to your FerretDB instance i
 Here's a step-by-step guide to get you started with a local Vault and FerretDB setup:
 
 1. **Ensure FerretDB is running:** Make sure your FerretDB instance is active and accessible, with authentication.
-   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/ferretdb/).
+   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/docdb/).
    You need a user with sufficient privileges to create, update, and revoke other users.
    This will be the "root user" Vault uses for its operations.
 
@@ -145,7 +145,7 @@ Here's a step-by-step guide to get you started with a local Vault and FerretDB s
    - `default_ttl`: The default lease duration for generated credentials.
    - `max_ttl`: The maximum lease duration.
 
-   If you require users with more granular access (e.g. `readWrite` on a specific database), monitor FerretDB's documentation for updates on broader role/authorization support or consider [contributing to the project](https://github.com/FerretDB/FerretDB).
+   If you require users with more granular access (e.g. `readWrite` on a specific database), monitor FerretDB's documentation for updates on broader role/authorization support or consider [contributing to the project](https://github.com/hanzoai/docdb).
 
 6. **Generate dynamic credentials:**
    Now, an application or user can request dynamic credentials from Vault by reading from the role's path:
@@ -208,7 +208,7 @@ This output demonstrates that HashiCorp Vault successfully creates users within 
 The integration of HashiCorp Vault's database secrets engine with FerretDB provides a robust and scalable solution for dynamic database credential management.
 By leveraging FerretDB, you can seamlessly integrate it into your existing security and secrets management workflows with Vault, providing your document database operations with enhanced, automated security.
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Explore HashiCorp Vault Documentation](https://developer.hashicorp.com/vault/docs)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

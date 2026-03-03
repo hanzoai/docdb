@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,19 +20,19 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wireclient"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wireclient"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestKillAllSessionsByPattern(t *testing.T) {
@@ -43,7 +43,7 @@ func TestKillAllSessionsByPattern(t *testing.T) {
 
 	ctx := s.Ctx
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	db := s.Collection.Database().Client().Database("admin")
 	collection := db.Collection(s.Collection.Name())
 	cName, dbName := collection.Name(), db.Name()
@@ -351,13 +351,13 @@ func TestKillAllSessionsByPattern(t *testing.T) {
 }
 
 func TestKillAllSessionsByPatternAllUsers(t *testing.T) {
-	// do not run this test in parallel as it kills sessions of other tests (except for in-process FerretDB)
+	// do not run this test in parallel as it kills sessions of other tests (except for in-process DocDB)
 	s := setup.SetupWithOpts(t, nil)
 	ctx := s.Ctx
 
-	testutil.Exclusive(ctx, "this test kills sessions of other tests (except for in-process FerretDB)")
+	testutil.Exclusive(ctx, "this test kills sessions of other tests (except for in-process DocDB)")
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	db := s.Collection.Database().Client().Database("admin")
 	collection := db.Collection(s.Collection.Name())
 	cName, dbName := collection.Name(), db.Name()
@@ -430,7 +430,7 @@ func TestKillAllSessionsByPatternAllUsers(t *testing.T) {
 		killAllSessionsByPattern(t, ctx, user1Conn, dbName, nonExistentUserPattern, nil)
 
 		// user1 does not match the pattern, but the cursor of user1 is deleted unexpectedly
-		// and FerretDB exhibits the same behavior for the compatibility
+		// and DocDB exhibits the same behavior for the compatibility
 		expectedErr := wirebson.MustDocument(
 			"ok", float64(0),
 			"errmsg", fmt.Sprintf("cursor id %d not found", user1CursorID),
@@ -474,7 +474,7 @@ func TestKillAllSessionsByPatternAllUsers(t *testing.T) {
 		killAllSessionsByPattern(t, ctx, user1Conn, dbName, user2Pattern, nil)
 
 		// sessions of user2 was killed, not user1, but the cursor of user1 is deleted unexpectedly
-		// and FerretDB exhibits the same behavior for the compatibility
+		// and DocDB exhibits the same behavior for the compatibility
 		expectedErr := wirebson.MustDocument(
 			"ok", float64(0),
 			"errmsg", fmt.Sprintf("cursor id %d not found", user1CursorID),
@@ -493,7 +493,7 @@ func TestKillAllSessionsByPatternErrors(t *testing.T) {
 
 	ctx := s.Ctx
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	db := s.Collection.Database().Client().Database("admin")
 	dbName := db.Name()
 
@@ -529,7 +529,7 @@ func TestKillAllSessionsByPatternErrors(t *testing.T) {
 	})
 
 	t.Run("UnknownPattern", func(tt *testing.T) {
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1091")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/1091")
 
 		pattern := wirebson.MustArray(wirebson.MustDocument("invalid", "foo"))
 
@@ -692,7 +692,7 @@ func TestKillAllSessionsByPatternUIDErrors(t *testing.T) {
 
 	ctx := s.Ctx
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	db := s.Collection.Database().Client().Database("admin")
 	dbName := db.Name()
 
@@ -755,7 +755,7 @@ func TestKillAllSessionsByPatternUsersErrors(t *testing.T) {
 
 	ctx := s.Ctx
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	db := s.Collection.Database().Client().Database("admin")
 	dbName := db.Name()
 
@@ -857,7 +857,7 @@ func TestKillAllSessionsByPatternUsersErrors(t *testing.T) {
 func createKillSessionUser(t *testing.T, ctx context.Context, db *mongo.Database, mongoDBURI, username string) *wireclient.Conn {
 	roles := bson.A{}
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/3974
+	// TODO https://github.com/hanzoai/docdb/issues/3974
 	if setup.IsMongoDB(t) {
 		impersonateRole := username + "Role"
 		roles = bson.A{"root", impersonateRole}
@@ -879,7 +879,7 @@ func createKillSessionUser(t *testing.T, ctx context.Context, db *mongo.Database
 		require.NoError(t, err)
 	}
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	_ = db.RunCommand(ctx, bson.D{{"dropUser", username}})
 
 	password := username + "pass"

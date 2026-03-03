@@ -6,8 +6,8 @@ sidebar_position: 1
 
 We provide evaluation images that come with FerretDB and PostgreSQL with DocumentDB extension.
 
-- [`ghcr.io/ferretdb/ferretdb-eval:2`](https://ghcr.io/ferretdb/ferretdb-eval:2) image for quick testing and experiments.
-- [`ghcr.io/ferretdb/ferretdb-eval-dev:2`](https://ghcr.io/ferretdb/ferretdb-eval-dev:2) image for debugging, with features that make it slower.
+- [`ghcr.io/hanzoai/docdb-eval:2`](https://ghcr.io/hanzoai/docdb-eval:2) image for quick testing and experiments.
+- [`ghcr.io/hanzoai/docdb-eval-dev:2`](https://ghcr.io/hanzoai/docdb-eval-dev:2) image for debugging, with features that make it slower.
 
 You'll need [Docker](https://docs.docker.com/get-docker/) installed to run it.
 
@@ -19,7 +19,7 @@ docker run -d --name ferretdb -p 27017:27017 \
   -e POSTGRES_USER=<username> \
   -e POSTGRES_PASSWORD=<password> \
   -v ./data:/var/lib/postgresql/data \
-  ghcr.io/ferretdb/ferretdb-eval:2
+  ghcr.io/hanzoai/docdb-eval:2
 ```
 
 This command will start a container with FerretDB, pre-packaged PostgreSQL with DocumentDB extension, and MongoDB Shell for quick testing and experiments.

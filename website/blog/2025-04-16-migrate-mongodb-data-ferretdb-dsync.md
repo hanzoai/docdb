@@ -30,7 +30,7 @@ In this post, you'll learn to use dsync to migrate the data from MongoDB to a ru
 
 Make sure to have the following ready before you start:
 
-- [Running FerretDB instance](https://docs.ferretdb.io/installation/ferretdb/).
+- [Running FerretDB instance](https://docs.ferretdb.io/installation/docdb/).
 - Running MongoDB instance (local or remote).
 
 ## Download dsync

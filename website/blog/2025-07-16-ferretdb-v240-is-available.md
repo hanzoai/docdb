@@ -15,10 +15,10 @@ This version continues our focus on improving compatibility, enhancing performan
 
 <!--truncate-->
 
-This release works best with [DocumentDB v0.105.0-ferretdb-2.4.0](https://github.com/FerretDB/documentdb/releases/tag/v0.105.0-ferretdb-2.4.0).
+This release works best with [DocumentDB v0.105.0-ferretdb-2.4.0](https://github.com/hanzoai/docdb/releases/tag/v0.105.0-ferretdb-2.4.0).
 
 Be sure to update to DocumentDB v0.105.0-ferretdb-2.4.0 before updating FerretDB to v2.4.0.
-Refer to [our guide for instructions on updating to the latest version](https://docs.ferretdb.io/installation/ferretdb/docker/#updating-to-a-new-version).
+Refer to [our guide for instructions on updating to the latest version](https://docs.ferretdb.io/installation/docdb/docker/#updating-to-a-new-version).
 
 ## New features
 
@@ -40,7 +40,7 @@ Explore these new guides on our [documentation page](https://docs.ferretdb.io/co
 ## Other changes
 
 In recent weeks, we've also been working on adding YugabyteDB support in local development setups.
-To see a complete list of all the changes, [check out the release notes](https://github.com/FerretDB/FerretDB/releases/tag/v2.4.0).
+To see a complete list of all the changes, [check out the release notes](https://github.com/hanzoai/docdb/releases/tag/v2.4.0).
 
 Thanks to everyone who contributed to this release.
 If you encounter any issues or have feedback, please reach out to us on any of [our community channels](https://docs.ferretdb.io/#community).

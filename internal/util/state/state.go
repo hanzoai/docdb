@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package state stores FerretDB process state.
+// Package state stores DocDB process state.
 package state
 
 import (
@@ -23,7 +23,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// State represents FerretDB process state.
+// State represents DocDB process state.
 type State struct {
 	UUID      string `json:"uuid"`
 	Telemetry *bool  `json:"telemetry,omitempty"` // nil for undecided
@@ -33,7 +33,7 @@ type State struct {
 	TelemetryLocked bool      `json:"-"`
 	Start           time.Time `json:"-"`
 
-	// may be empty if FerretDB did not connect to PostgreSQL yet
+	// may be empty if DocDB did not connect to PostgreSQL yet
 	PostgreSQLVersion string `json:"-"`
 	DocumentDBVersion string `json:"-"`
 

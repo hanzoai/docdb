@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import (
 
 	"github.com/AlekSi/lazyerrors"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
 )
 
 // msgListIndexes implements `listIndexes` command.

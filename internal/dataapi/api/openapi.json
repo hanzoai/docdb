@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "v1",
-    "title": "FerretDB Data API",
+    "title": "DocDB Data API",
     "description": "A truly Open Source alternative to MongoDB Atlas Data API."
   },
   "servers": [

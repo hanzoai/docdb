@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,13 +21,13 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // deleteCommandCompatTestCase describes delete compatibility test case.
 type deleteCommandCompatTestCase struct {
-	skip    string // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
+	skip    string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 	deletes bson.A // required
 }
 
@@ -98,21 +98,21 @@ func TestDeleteCommandCompat(t *testing.T) {
 			deletes: bson.A{
 				bson.D{{"q", bson.D{{"v", int32(0)}}}, {"limit", 1}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2935",
+			skip: "https://github.com/hanzoai/docdb/issues/2935",
 		},
 		"TwoLimited": {
 			deletes: bson.A{
 				bson.D{{"q", bson.D{{"v", int32(42)}}}, {"limit", 1}},
 				bson.D{{"q", bson.D{{"v", "foo"}}}, {"limit", 1}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2935",
+			skip: "https://github.com/hanzoai/docdb/issues/2935",
 		},
 		"DuplicateFilter": {
 			deletes: bson.A{
 				bson.D{{"q", bson.D{{"v", "foo"}}}, {"limit", 1}},
 				bson.D{{"q", bson.D{{"v", "foo"}}}, {"limit", 1}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2935",
+			skip: "https://github.com/hanzoai/docdb/issues/2935",
 		},
 	}
 

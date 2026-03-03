@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,10 +29,10 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/setup"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/setup"
+	"github.com/hanzoai/docdb/internal/util/state"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 )
 
 func TestSmokeDataAPI(t *testing.T) {
@@ -350,7 +350,7 @@ func TestOpenAPI(t *testing.T) {
 		assert.Contains(t, spec, "paths")
 
 		info := spec["info"].(map[string]any)
-		assert.Equal(t, "FerretDB Data API", info["title"])
+		assert.Equal(t, "DocDB Data API", info["title"])
 	})
 
 	t.Run("MethodNotAllowed", func(t *testing.T) {

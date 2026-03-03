@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,11 +28,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestGetMoreCommand(t *testing.T) {
@@ -58,8 +58,8 @@ func TestGetMoreCommand(t *testing.T) {
 		firstBatch       bson.A
 		nextBatch        bson.A              // optional, expected getMore nextBatch
 		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"Int": {
 			firstBatchSize:   1,
@@ -78,7 +78,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"IntZero": {
 			firstBatchSize:   1,
@@ -86,7 +86,7 @@ func TestGetMoreCommand(t *testing.T) {
 			collection:       collection.Name(),
 			firstBatch:       arr[:1],
 			nextBatch:        arr[1:],
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/336",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
 		},
 		"Long": {
 			firstBatchSize:   1,
@@ -105,7 +105,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"LongZero": {
 			firstBatchSize:   1,
@@ -113,7 +113,7 @@ func TestGetMoreCommand(t *testing.T) {
 			collection:       collection.Name(),
 			firstBatch:       arr[:1],
 			nextBatch:        arr[1:],
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/336",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
 		},
 		"Double": {
 			firstBatchSize:   1,
@@ -132,7 +132,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"DoubleZero": {
 			firstBatchSize:   1,
@@ -140,7 +140,7 @@ func TestGetMoreCommand(t *testing.T) {
 			collection:       collection.Name(),
 			firstBatch:       arr[:1],
 			nextBatch:        arr[1:],
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/336",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
 		},
 		"DoubleFloor": {
 			firstBatchSize:   1,
@@ -211,7 +211,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Message: "BSON field 'getMore.getMore' is the wrong type 'int', expected type 'long'",
 			},
 			altMessage:       "BSON field 'getMore.getMore' is the wrong type, expected type 'long'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"NotFoundCursorID": {
 			firstBatchSize:   1,
@@ -248,7 +248,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Message: "Requested getMore on namespace 'TestGetMoreCommand.invalid'," +
 					" but cursor belongs to a different namespace TestGetMoreCommand.TestGetMoreCommand",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/335",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/335",
 		},
 		"EmptyCollectionName": {
 			firstBatchSize:   1,
@@ -260,7 +260,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Name:    "InvalidNamespace",
 				Message: "Collection names cannot be empty",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/335",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/335",
 		},
 		"MissingCollectionName": {
 			firstBatchSize:   1,
@@ -272,7 +272,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Name:    "Location40414",
 				Message: "BSON field 'getMore.collection' is missing but a required field",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"UnsetAllBatchSize": {
 			firstBatchSize:   nil,
@@ -306,14 +306,14 @@ func TestGetMoreCommand(t *testing.T) {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			// Do not run subtests in t.Parallel() to eliminate the occurrence
 			// of session error.
 			// Supporting session would help us understand fix it.
-			// TODO https://github.com/FerretDB/FerretDB/issues/153
+			// TODO https://github.com/hanzoai/docdb/issues/153
 			//
 			// > Location50738
 			// > Cannot run getMore on cursor 2053655655200551971,
@@ -504,7 +504,7 @@ func TestGetMoreCommandBatchSize(t *testing.T) {
 
 			// next batch obtain from implicit call to `getMore` has the rest of the documents, not default batchSize
 			// 16MB batchSize limit
-			// TODO https://github.com/FerretDB/FerretDB/issues/2824
+			// TODO https://github.com/hanzoai/docdb/issues/2824
 			ok := cursor.Next(ctx)
 			require.True(t, ok, "expected to have next document")
 			require.Equal(t, 118, cursor.RemainingBatchLength())
@@ -524,7 +524,7 @@ func TestGetMoreCommandBatchSize(t *testing.T) {
 
 			// next batch obtain from implicit call to `getMore` has the rest of the documents, not 0 batchSize
 			// 16MB batchSize limit
-			// TODO https://github.com/FerretDB/FerretDB/issues/2824
+			// TODO https://github.com/hanzoai/docdb/issues/2824
 			ok := cursor.Next(ctx)
 			require.True(t, ok, "expected to have next document")
 			require.Equal(t, 219, cursor.RemainingBatchLength())
@@ -571,7 +571,7 @@ func TestGetMoreCommandConnection(t *testing.T) {
 		// Do not run subtests in t.Parallel() to eliminate the occurrence
 		// of session error.
 		// Supporting session would help us understand fix it.
-		// TODO https://github.com/FerretDB/FerretDB/issues/153
+		// TODO https://github.com/hanzoai/docdb/issues/153
 		//
 		// > Location50738
 		// > Cannot run getMore on cursor 2053655655200551971,
@@ -642,8 +642,8 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 		command bson.D // required, command to run
 
 		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"NegativeLong": {
 			command: bson.D{
@@ -657,7 +657,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "-1 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "-1 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"MaxLong": {
 			command: bson.D{
@@ -671,7 +671,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "9223372036854775807 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"Double": {
 			command: bson.D{
@@ -685,7 +685,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "maxTimeMS has non-integral value",
 			},
 			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'double', expected types '[long, int, decimal, double]'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"NegativeDouble": {
 			command: bson.D{
@@ -699,7 +699,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "-14245345234123246 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "-1.4245345234123246e+16 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"BigDouble": {
 			command: bson.D{
@@ -713,7 +713,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "1.797693134862316e+308 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"BigNegativeDouble": {
 			command: bson.D{
@@ -727,7 +727,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "-9223372036854775808 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "-1.797693134862316e+308 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"NegativeInt": {
 			command: bson.D{
@@ -741,7 +741,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "-1123123 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "-1123123 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"MaxInt": {
 			command: bson.D{
@@ -754,7 +754,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "2147483648 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 			altMessage:       "2147483648 value for maxTimeMS is out of range",
 		},
 		"Null": {
@@ -768,7 +768,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "maxTimeMS must be a number",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"String": {
 			command: bson.D{
@@ -782,7 +782,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'getMore.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double']",
 			},
 			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double]'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"Array": {
 			command: bson.D{
@@ -796,7 +796,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'getMore.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double']",
 			},
 			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double]'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"Document": {
 			command: bson.D{
@@ -809,7 +809,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'getMore.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double']",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/334",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double]'",
 		},
 	} {
@@ -817,8 +817,8 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.err, "err must not be nil")
@@ -841,7 +841,7 @@ func TestGetMoreCommandExhausted(tt *testing.T) {
 	_, err := collection.InsertMany(ctx, arr)
 	require.NoError(tt, err)
 
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/5445")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/5445")
 
 	var res bson.D
 	err = db.RunCommand(ctx, bson.D{
@@ -983,7 +983,7 @@ func TestFindGetMoreCommandRemoveDocument(t *testing.T) {
 	var res bson.D
 
 	t.Run("RemoveLastDocument", func(tt *testing.T) {
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/3818")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/3818")
 
 		err = collection.Database().RunCommand(ctx, bson.D{
 			{"find", collection.Name()},
@@ -1046,7 +1046,7 @@ func TestFindGetMoreCommandRemoveDocument(t *testing.T) {
 	})
 
 	t.Run("QueryPlanKilledByDrop", func(tt *testing.T) {
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/3818")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/3818")
 
 		err = collection.Database().RunCommand(ctx, bson.D{
 			{"find", collection.Name()},
@@ -1136,7 +1136,7 @@ func TestFindCommandFirstBatchMaxTimeMS(t *testing.T) {
 	}
 
 	t.Run("GetMore", func(tt *testing.T) {
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/5445")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/5445")
 
 		for i := 0; i < 2; i++ {
 			ctxutil.Sleep(ctx, 100*time.Millisecond)
@@ -1160,7 +1160,7 @@ func TestFindCommandFirstBatchMaxTimeMS(t *testing.T) {
 	})
 
 	t.Run("GetMoreEmpty", func(tt *testing.T) {
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/5445")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/5445")
 
 		ctxutil.Sleep(ctx, 100*time.Millisecond)
 
@@ -1233,7 +1233,7 @@ func TestGetMoreCommandAfterInsertion(t *testing.T) {
 	}
 
 	t.Run("GetMore", func(tt *testing.T) {
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/5445")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/5445")
 
 		for i := 0; i < 2; i++ {
 			var res bson.D
@@ -1255,7 +1255,7 @@ func TestGetMoreCommandAfterInsertion(t *testing.T) {
 	})
 
 	t.Run("GetMoreEmpty", func(tt *testing.T) {
-		t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/5445")
+		t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/5445")
 
 		var res bson.D
 		err = collection.Database().RunCommand(ctx, getMoreCmd).Decode(&res)

@@ -111,10 +111,10 @@ sudo systemctl status postgresql.service
 
 Now let's download the Debian package for FerretDB.
 We are going to download the latest version which is FerretDB v1.4.0.
-You can find the [latest version on the releases here](https://github.com/FerretDB/FerretDB/releases):
+You can find the [latest version on the releases here](https://github.com/hanzoai/docdb/releases):
 
 ```sh
-wget https://github.com/FerretDB/FerretDB/releases/download/v1.4.0/ferretdb.deb
+wget https://github.com/hanzoai/docdb/releases/download/v1.4.0/ferretdb.deb
 ```
 
 Once downloaded, install FerretDB using this command:
@@ -297,6 +297,6 @@ As we've showcased in this guide, FerretDB gives you the chance to run and manag
 For enterprise users already familiar with PostgreSQL management, this is a great way to also leverage your existing knowledge and skills, for backup, monitoring, security, replication, and so on.
 
 FerretDB is an open source project, and as such we welcome all contributions and feedback that can help us improve it.
-So please do check our [GitHub repository](https://github.com/FerretDB/FerretDB/) and feel free to leave a comment on [any of our channels](https://docs.ferretdb.io/#community).
+So please do check our [GitHub repository](https://github.com/hanzoai/docdb/) and feel free to leave a comment on [any of our channels](https://docs.ferretdb.io/#community).
 
 And if you would like to learn more on how to get started with FerretDB, please check out [our installation guide](https://docs.ferretdb.io/quickstart-guide/).

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import (
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // Dispatcher is a single-use object that sends a single request to a single handler,
@@ -98,7 +98,7 @@ func (d *dispatcher) Dispatch(ctx context.Context, req *Request) (resp *Response
 		}
 
 		// When both handlers are used, this metric is counted twice.
-		// TODO https://github.com/FerretDB/FerretDB/issues/4987
+		// TODO https://github.com/hanzoai/docdb/issues/4987
 		d.responses.With(prometheus.Labels{
 			"opcode":   opcode,
 			"command":  command,
@@ -138,7 +138,7 @@ func (d *dispatcher) Dispatch(ctx context.Context, req *Request) (resp *Response
 
 // enforceContract checks that [Handler]'s contract is not broken.
 func (d *dispatcher) enforceContract(ctx context.Context, req *Request, resp *Response, err error) (*Response, error) {
-	// TODO https://github.com/FerretDB/FerretDB/issues/4965
+	// TODO https://github.com/hanzoai/docdb/issues/4965
 	level := logging.LevelDPanic
 
 	if resp == nil && err == nil {
@@ -183,7 +183,7 @@ func (d *dispatcher) endSpan(ctx context.Context, resp *Response, res result) {
 		}
 
 		span.SetAttributes(
-			otelattribute.Int("db.ferretdb.response_id", int(resp.WireHeader().RequestID)),
+			otelattribute.Int("db.docdb.response_id", int(resp.WireHeader().RequestID)),
 		)
 	}
 

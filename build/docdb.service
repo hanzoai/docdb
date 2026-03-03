@@ -1,0 +1,17 @@
+[Unit]
+Description=DocDB Database
+Documentation=https://docs.docdb.io/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/docdb
+Restart=on-failure
+
+# Configure the DocDB service with `systemctl edit docdb`.
+# For more configuration options check https://docs.docdb.io/configuration/flags/
+
+Environment="DOCDB_POSTGRESQL_URL=postgres://127.0.0.1:5432/postgres"
+
+[Install]
+WantedBy=multi-user.target

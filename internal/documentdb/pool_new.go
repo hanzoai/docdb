@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/state"
 )
 
 // newPgxPool create a new pgx pool.
@@ -51,7 +51,7 @@ func newPgxPool(uri string, l *slog.Logger, tracer pgx.QueryTracer, sp *state.Pr
 		return nil, lazyerrors.Error(err)
 	}
 
-	// versions and parameters could change without FerretDB restart
+	// versions and parameters could change without DocDB restart
 	config.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		// see https://github.com/jackc/pgx/issues/1726#issuecomment-1711612138
 		ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -92,7 +92,7 @@ func newPgxPoolSetDefaults(values url.Values) {
 	}
 
 	// https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNECT-APPLICATION-NAME
-	values.Set("application_name", "FerretDB")
+	values.Set("application_name", "DocDB")
 
 	// That only affects text protocol; pgx mostly uses a binary one.
 	// See:
@@ -100,7 +100,7 @@ func newPgxPoolSetDefaults(values url.Values) {
 	//   - https://github.com/jackc/pgx/issues/789
 	//   - https://github.com/jackc/pgx/issues/863
 	//
-	// TODO https://github.com/FerretDB/FerretDB/issues/43
+	// TODO https://github.com/hanzoai/docdb/issues/43
 	values.Set("timezone", "UTC")
 }
 
@@ -124,7 +124,7 @@ func newPgxPoolCheckConn(ctx context.Context, conn *pgx.Conn, l *slog.Logger, sp
 			l.ErrorContext(ctx, "newPgxPoolCheckConn: failed to update state", logging.Error(err))
 		}
 
-		// TODO https://github.com/FerretDB/FerretDB/issues/4989
+		// TODO https://github.com/hanzoai/docdb/issues/4989
 		_ = version.DocumentDBSafeToUpdate
 
 		if s.DocumentDBVersion != "" && s.DocumentDBVersion != version.DocumentDB {
@@ -135,7 +135,7 @@ func newPgxPoolCheckConn(ctx context.Context, conn *pgx.Conn, l *slog.Logger, sp
 		}
 	}
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/5085
+	// TODO https://github.com/hanzoai/docdb/issues/5085
 	// if _, err := conn.Exec(ctx, "SET documentdb.enableUserCrud TO true"); err != nil {
 	// 	return lazyerrors.Error(err)
 	// }

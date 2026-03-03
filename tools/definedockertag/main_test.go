@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,20 +52,20 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "define-docker-tag",
 				"GITHUB_REF_NAME":   "1/merge",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ghcr.io/ferretdb/ferretdb-eval-dev:pr-define-docker-tag",
+					"ghcr.io/hanzoai/docdb-eval-dev:pr-define-docker-tag",
 				},
 				evalImages: []string{
-					"ghcr.io/ferretdb/ferretdb-eval:pr-define-docker-tag",
+					"ghcr.io/hanzoai/docdb-eval:pr-define-docker-tag",
 				},
 				developmentImages: []string{
-					"ghcr.io/ferretdb/ferretdb-dev:pr-define-docker-tag",
+					"ghcr.io/hanzoai/docdb-dev:pr-define-docker-tag",
 				},
 				productionImages: []string{
-					"ghcr.io/ferretdb/ferretdb-dev:pr-define-docker-tag-prod",
+					"ghcr.io/hanzoai/docdb-dev:pr-define-docker-tag-prod",
 				},
 			},
 		},
@@ -101,20 +101,20 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "dependabot/submodules/tests/mongo-go-driver-29d768e",
 				"GITHUB_REF_NAME":   "58/merge",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ghcr.io/ferretdb/ferretdb-eval-dev:pr-mongo-go-driver-29d768e",
+					"ghcr.io/hanzoai/docdb-eval-dev:pr-mongo-go-driver-29d768e",
 				},
 				evalImages: []string{
-					"ghcr.io/ferretdb/ferretdb-eval:pr-mongo-go-driver-29d768e",
+					"ghcr.io/hanzoai/docdb-eval:pr-mongo-go-driver-29d768e",
 				},
 				developmentImages: []string{
-					"ghcr.io/ferretdb/ferretdb-dev:pr-mongo-go-driver-29d768e",
+					"ghcr.io/hanzoai/docdb-dev:pr-mongo-go-driver-29d768e",
 				},
 				productionImages: []string{
-					"ghcr.io/ferretdb/ferretdb-dev:pr-mongo-go-driver-29d768e-prod",
+					"ghcr.io/hanzoai/docdb-dev:pr-mongo-go-driver-29d768e-prod",
 				},
 			},
 		},
@@ -150,20 +150,20 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "define-docker-tag",
 				"GITHUB_REF_NAME":   "main",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ghcr.io/ferretdb/ferretdb-eval-dev:pr-define-docker-tag",
+					"ghcr.io/hanzoai/docdb-eval-dev:pr-define-docker-tag",
 				},
 				evalImages: []string{
-					"ghcr.io/ferretdb/ferretdb-eval:pr-define-docker-tag",
+					"ghcr.io/hanzoai/docdb-eval:pr-define-docker-tag",
 				},
 				developmentImages: []string{
-					"ghcr.io/ferretdb/ferretdb-dev:pr-define-docker-tag",
+					"ghcr.io/hanzoai/docdb-dev:pr-define-docker-tag",
 				},
 				productionImages: []string{
-					"ghcr.io/ferretdb/ferretdb-dev:pr-define-docker-tag-prod",
+					"ghcr.io/hanzoai/docdb-dev:pr-define-docker-tag-prod",
 				},
 			},
 		},
@@ -199,28 +199,28 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "main",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:main",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:main",
-					"quay.io/ferretdb/ferretdb-eval-dev:main",
+					"hanzoai/docdb-eval-dev:main",
+					"ghcr.io/hanzoai/docdb-eval-dev:main",
+					"quay.io/hanzoai/docdb-eval-dev:main",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:main",
-					"ghcr.io/ferretdb/ferretdb-eval:main",
-					"quay.io/ferretdb/ferretdb-eval:main",
+					"hanzoai/docdb-eval:main",
+					"ghcr.io/hanzoai/docdb-eval:main",
+					"quay.io/hanzoai/docdb-eval:main",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:main",
-					"ghcr.io/ferretdb/ferretdb-dev:main",
-					"quay.io/ferretdb/ferretdb-dev:main",
+					"hanzoai/docdb-dev:main",
+					"ghcr.io/hanzoai/docdb-dev:main",
+					"quay.io/hanzoai/docdb-dev:main",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb-dev:main-prod",
-					"ghcr.io/ferretdb/ferretdb-dev:main-prod",
-					"quay.io/ferretdb/ferretdb-dev:main-prod",
+					"hanzoai/docdb-dev:main-prod",
+					"ghcr.io/hanzoai/docdb-dev:main-prod",
+					"quay.io/hanzoai/docdb-dev:main-prod",
 				},
 			},
 		},
@@ -256,28 +256,28 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "main-v1",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:main-v1",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:main-v1",
-					"quay.io/ferretdb/ferretdb-eval-dev:main-v1",
+					"hanzoai/docdb-eval-dev:main-v1",
+					"ghcr.io/hanzoai/docdb-eval-dev:main-v1",
+					"quay.io/hanzoai/docdb-eval-dev:main-v1",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:main-v1",
-					"ghcr.io/ferretdb/ferretdb-eval:main-v1",
-					"quay.io/ferretdb/ferretdb-eval:main-v1",
+					"hanzoai/docdb-eval:main-v1",
+					"ghcr.io/hanzoai/docdb-eval:main-v1",
+					"quay.io/hanzoai/docdb-eval:main-v1",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:main-v1",
-					"ghcr.io/ferretdb/ferretdb-dev:main-v1",
-					"quay.io/ferretdb/ferretdb-dev:main-v1",
+					"hanzoai/docdb-dev:main-v1",
+					"ghcr.io/hanzoai/docdb-dev:main-v1",
+					"quay.io/hanzoai/docdb-dev:main-v1",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb-dev:main-v1-prod",
-					"ghcr.io/ferretdb/ferretdb-dev:main-v1-prod",
-					"quay.io/ferretdb/ferretdb-dev:main-v1-prod",
+					"hanzoai/docdb-dev:main-v1-prod",
+					"ghcr.io/hanzoai/docdb-dev:main-v1-prod",
+					"quay.io/hanzoai/docdb-dev:main-v1-prod",
 				},
 			},
 		},
@@ -313,28 +313,28 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "releases/2.1",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:releases-2.1",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:releases-2.1",
-					"quay.io/ferretdb/ferretdb-eval-dev:releases-2.1",
+					"hanzoai/docdb-eval-dev:releases-2.1",
+					"ghcr.io/hanzoai/docdb-eval-dev:releases-2.1",
+					"quay.io/hanzoai/docdb-eval-dev:releases-2.1",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:releases-2.1",
-					"ghcr.io/ferretdb/ferretdb-eval:releases-2.1",
-					"quay.io/ferretdb/ferretdb-eval:releases-2.1",
+					"hanzoai/docdb-eval:releases-2.1",
+					"ghcr.io/hanzoai/docdb-eval:releases-2.1",
+					"quay.io/hanzoai/docdb-eval:releases-2.1",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:releases-2.1",
-					"ghcr.io/ferretdb/ferretdb-dev:releases-2.1",
-					"quay.io/ferretdb/ferretdb-dev:releases-2.1",
+					"hanzoai/docdb-dev:releases-2.1",
+					"ghcr.io/hanzoai/docdb-dev:releases-2.1",
+					"quay.io/hanzoai/docdb-dev:releases-2.1",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb-dev:releases-2.1-prod",
-					"ghcr.io/ferretdb/ferretdb-dev:releases-2.1-prod",
-					"quay.io/ferretdb/ferretdb-dev:releases-2.1-prod",
+					"hanzoai/docdb-dev:releases-2.1-prod",
+					"ghcr.io/hanzoai/docdb-dev:releases-2.1-prod",
+					"quay.io/hanzoai/docdb-dev:releases-2.1-prod",
 				},
 			},
 		},
@@ -370,28 +370,28 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "v1.26.0-beta",
 				"GITHUB_REF_TYPE":   "tag",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:1.26.0-beta",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:1.26.0-beta",
-					"quay.io/ferretdb/ferretdb-eval-dev:1.26.0-beta",
+					"hanzoai/docdb-eval-dev:1.26.0-beta",
+					"ghcr.io/hanzoai/docdb-eval-dev:1.26.0-beta",
+					"quay.io/hanzoai/docdb-eval-dev:1.26.0-beta",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:1.26.0-beta",
-					"ghcr.io/ferretdb/ferretdb-eval:1.26.0-beta",
-					"quay.io/ferretdb/ferretdb-eval:1.26.0-beta",
+					"hanzoai/docdb-eval:1.26.0-beta",
+					"ghcr.io/hanzoai/docdb-eval:1.26.0-beta",
+					"quay.io/hanzoai/docdb-eval:1.26.0-beta",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:1.26.0-beta",
-					"ghcr.io/ferretdb/ferretdb-dev:1.26.0-beta",
-					"quay.io/ferretdb/ferretdb-dev:1.26.0-beta",
+					"hanzoai/docdb-dev:1.26.0-beta",
+					"ghcr.io/hanzoai/docdb-dev:1.26.0-beta",
+					"quay.io/hanzoai/docdb-dev:1.26.0-beta",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb:1.26.0-beta",
-					"ghcr.io/ferretdb/ferretdb:1.26.0-beta",
-					"quay.io/ferretdb/ferretdb:1.26.0-beta",
+					"hanzoai/docdb:1.26.0-beta",
+					"ghcr.io/hanzoai/docdb:1.26.0-beta",
+					"quay.io/hanzoai/docdb:1.26.0-beta",
 				},
 			},
 		},
@@ -427,28 +427,28 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "v2.1.0-beta.1",
 				"GITHUB_REF_TYPE":   "tag",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:2.1.0-beta.1",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:2.1.0-beta.1",
-					"quay.io/ferretdb/ferretdb-eval-dev:2.1.0-beta.1",
+					"hanzoai/docdb-eval-dev:2.1.0-beta.1",
+					"ghcr.io/hanzoai/docdb-eval-dev:2.1.0-beta.1",
+					"quay.io/hanzoai/docdb-eval-dev:2.1.0-beta.1",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:2.1.0-beta.1",
-					"ghcr.io/ferretdb/ferretdb-eval:2.1.0-beta.1",
-					"quay.io/ferretdb/ferretdb-eval:2.1.0-beta.1",
+					"hanzoai/docdb-eval:2.1.0-beta.1",
+					"ghcr.io/hanzoai/docdb-eval:2.1.0-beta.1",
+					"quay.io/hanzoai/docdb-eval:2.1.0-beta.1",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:2.1.0-beta.1",
-					"ghcr.io/ferretdb/ferretdb-dev:2.1.0-beta.1",
-					"quay.io/ferretdb/ferretdb-dev:2.1.0-beta.1",
+					"hanzoai/docdb-dev:2.1.0-beta.1",
+					"ghcr.io/hanzoai/docdb-dev:2.1.0-beta.1",
+					"quay.io/hanzoai/docdb-dev:2.1.0-beta.1",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb:2.1.0-beta.1",
-					"ghcr.io/ferretdb/ferretdb:2.1.0-beta.1",
-					"quay.io/ferretdb/ferretdb:2.1.0-beta.1",
+					"hanzoai/docdb:2.1.0-beta.1",
+					"ghcr.io/hanzoai/docdb:2.1.0-beta.1",
+					"quay.io/hanzoai/docdb:2.1.0-beta.1",
 				},
 			},
 		},
@@ -484,52 +484,52 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "v1.26.0",
 				"GITHUB_REF_TYPE":   "tag",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:1",
-					"ferretdb/ferretdb-eval-dev:1.26",
-					"ferretdb/ferretdb-eval-dev:1.26.0",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:1",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:1.26",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:1.26.0",
-					"quay.io/ferretdb/ferretdb-eval-dev:1",
-					"quay.io/ferretdb/ferretdb-eval-dev:1.26",
-					"quay.io/ferretdb/ferretdb-eval-dev:1.26.0",
+					"hanzoai/docdb-eval-dev:1",
+					"hanzoai/docdb-eval-dev:1.26",
+					"hanzoai/docdb-eval-dev:1.26.0",
+					"ghcr.io/hanzoai/docdb-eval-dev:1",
+					"ghcr.io/hanzoai/docdb-eval-dev:1.26",
+					"ghcr.io/hanzoai/docdb-eval-dev:1.26.0",
+					"quay.io/hanzoai/docdb-eval-dev:1",
+					"quay.io/hanzoai/docdb-eval-dev:1.26",
+					"quay.io/hanzoai/docdb-eval-dev:1.26.0",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:1",
-					"ferretdb/ferretdb-eval:1.26",
-					"ferretdb/ferretdb-eval:1.26.0",
-					"ghcr.io/ferretdb/ferretdb-eval:1",
-					"ghcr.io/ferretdb/ferretdb-eval:1.26",
-					"ghcr.io/ferretdb/ferretdb-eval:1.26.0",
-					"quay.io/ferretdb/ferretdb-eval:1",
-					"quay.io/ferretdb/ferretdb-eval:1.26",
-					"quay.io/ferretdb/ferretdb-eval:1.26.0",
+					"hanzoai/docdb-eval:1",
+					"hanzoai/docdb-eval:1.26",
+					"hanzoai/docdb-eval:1.26.0",
+					"ghcr.io/hanzoai/docdb-eval:1",
+					"ghcr.io/hanzoai/docdb-eval:1.26",
+					"ghcr.io/hanzoai/docdb-eval:1.26.0",
+					"quay.io/hanzoai/docdb-eval:1",
+					"quay.io/hanzoai/docdb-eval:1.26",
+					"quay.io/hanzoai/docdb-eval:1.26.0",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:1",
-					"ferretdb/ferretdb-dev:1.26",
-					"ferretdb/ferretdb-dev:1.26.0",
-					"ghcr.io/ferretdb/ferretdb-dev:1",
-					"ghcr.io/ferretdb/ferretdb-dev:1.26",
-					"ghcr.io/ferretdb/ferretdb-dev:1.26.0",
-					"quay.io/ferretdb/ferretdb-dev:1",
-					"quay.io/ferretdb/ferretdb-dev:1.26",
-					"quay.io/ferretdb/ferretdb-dev:1.26.0",
+					"hanzoai/docdb-dev:1",
+					"hanzoai/docdb-dev:1.26",
+					"hanzoai/docdb-dev:1.26.0",
+					"ghcr.io/hanzoai/docdb-dev:1",
+					"ghcr.io/hanzoai/docdb-dev:1.26",
+					"ghcr.io/hanzoai/docdb-dev:1.26.0",
+					"quay.io/hanzoai/docdb-dev:1",
+					"quay.io/hanzoai/docdb-dev:1.26",
+					"quay.io/hanzoai/docdb-dev:1.26.0",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb:1",
-					"ferretdb/ferretdb:1.26",
-					"ferretdb/ferretdb:1.26.0",
-					"ghcr.io/ferretdb/ferretdb:1",
-					"ghcr.io/ferretdb/ferretdb:1.26",
-					"ghcr.io/ferretdb/ferretdb:1.26.0",
-					"quay.io/ferretdb/ferretdb:1",
-					"quay.io/ferretdb/ferretdb:1.26",
-					"quay.io/ferretdb/ferretdb:1.26.0",
+					"hanzoai/docdb:1",
+					"hanzoai/docdb:1.26",
+					"hanzoai/docdb:1.26.0",
+					"ghcr.io/hanzoai/docdb:1",
+					"ghcr.io/hanzoai/docdb:1.26",
+					"ghcr.io/hanzoai/docdb:1.26.0",
+					"quay.io/hanzoai/docdb:1",
+					"quay.io/hanzoai/docdb:1.26",
+					"quay.io/hanzoai/docdb:1.26.0",
 				},
 			},
 		},
@@ -573,64 +573,64 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "v2.0.0",
 				"GITHUB_REF_TYPE":   "tag",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:2",
-					"ferretdb/ferretdb-eval-dev:2.0",
-					"ferretdb/ferretdb-eval-dev:2.0.0",
-					"ferretdb/ferretdb-eval-dev:latest",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:2",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:2.0",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:2.0.0",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:latest",
-					"quay.io/ferretdb/ferretdb-eval-dev:2",
-					"quay.io/ferretdb/ferretdb-eval-dev:2.0",
-					"quay.io/ferretdb/ferretdb-eval-dev:2.0.0",
-					"quay.io/ferretdb/ferretdb-eval-dev:latest",
+					"hanzoai/docdb-eval-dev:2",
+					"hanzoai/docdb-eval-dev:2.0",
+					"hanzoai/docdb-eval-dev:2.0.0",
+					"hanzoai/docdb-eval-dev:latest",
+					"ghcr.io/hanzoai/docdb-eval-dev:2",
+					"ghcr.io/hanzoai/docdb-eval-dev:2.0",
+					"ghcr.io/hanzoai/docdb-eval-dev:2.0.0",
+					"ghcr.io/hanzoai/docdb-eval-dev:latest",
+					"quay.io/hanzoai/docdb-eval-dev:2",
+					"quay.io/hanzoai/docdb-eval-dev:2.0",
+					"quay.io/hanzoai/docdb-eval-dev:2.0.0",
+					"quay.io/hanzoai/docdb-eval-dev:latest",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:2",
-					"ferretdb/ferretdb-eval:2.0",
-					"ferretdb/ferretdb-eval:2.0.0",
-					"ferretdb/ferretdb-eval:latest",
-					"ghcr.io/ferretdb/ferretdb-eval:2",
-					"ghcr.io/ferretdb/ferretdb-eval:2.0",
-					"ghcr.io/ferretdb/ferretdb-eval:2.0.0",
-					"ghcr.io/ferretdb/ferretdb-eval:latest",
-					"quay.io/ferretdb/ferretdb-eval:2",
-					"quay.io/ferretdb/ferretdb-eval:2.0",
-					"quay.io/ferretdb/ferretdb-eval:2.0.0",
-					"quay.io/ferretdb/ferretdb-eval:latest",
+					"hanzoai/docdb-eval:2",
+					"hanzoai/docdb-eval:2.0",
+					"hanzoai/docdb-eval:2.0.0",
+					"hanzoai/docdb-eval:latest",
+					"ghcr.io/hanzoai/docdb-eval:2",
+					"ghcr.io/hanzoai/docdb-eval:2.0",
+					"ghcr.io/hanzoai/docdb-eval:2.0.0",
+					"ghcr.io/hanzoai/docdb-eval:latest",
+					"quay.io/hanzoai/docdb-eval:2",
+					"quay.io/hanzoai/docdb-eval:2.0",
+					"quay.io/hanzoai/docdb-eval:2.0.0",
+					"quay.io/hanzoai/docdb-eval:latest",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:2",
-					"ferretdb/ferretdb-dev:2.0",
-					"ferretdb/ferretdb-dev:2.0.0",
-					"ferretdb/ferretdb-dev:latest",
-					"ghcr.io/ferretdb/ferretdb-dev:2",
-					"ghcr.io/ferretdb/ferretdb-dev:2.0",
-					"ghcr.io/ferretdb/ferretdb-dev:2.0.0",
-					"ghcr.io/ferretdb/ferretdb-dev:latest",
-					"quay.io/ferretdb/ferretdb-dev:2",
-					"quay.io/ferretdb/ferretdb-dev:2.0",
-					"quay.io/ferretdb/ferretdb-dev:2.0.0",
-					"quay.io/ferretdb/ferretdb-dev:latest",
+					"hanzoai/docdb-dev:2",
+					"hanzoai/docdb-dev:2.0",
+					"hanzoai/docdb-dev:2.0.0",
+					"hanzoai/docdb-dev:latest",
+					"ghcr.io/hanzoai/docdb-dev:2",
+					"ghcr.io/hanzoai/docdb-dev:2.0",
+					"ghcr.io/hanzoai/docdb-dev:2.0.0",
+					"ghcr.io/hanzoai/docdb-dev:latest",
+					"quay.io/hanzoai/docdb-dev:2",
+					"quay.io/hanzoai/docdb-dev:2.0",
+					"quay.io/hanzoai/docdb-dev:2.0.0",
+					"quay.io/hanzoai/docdb-dev:latest",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb:2",
-					"ferretdb/ferretdb:2.0",
-					"ferretdb/ferretdb:2.0.0",
-					"ferretdb/ferretdb:latest",
-					"ghcr.io/ferretdb/ferretdb:2",
-					"ghcr.io/ferretdb/ferretdb:2.0",
-					"ghcr.io/ferretdb/ferretdb:2.0.0",
-					"ghcr.io/ferretdb/ferretdb:latest",
-					"quay.io/ferretdb/ferretdb:2",
-					"quay.io/ferretdb/ferretdb:2.0",
-					"quay.io/ferretdb/ferretdb:2.0.0",
-					"quay.io/ferretdb/ferretdb:latest",
+					"hanzoai/docdb:2",
+					"hanzoai/docdb:2.0",
+					"hanzoai/docdb:2.0.0",
+					"hanzoai/docdb:latest",
+					"ghcr.io/hanzoai/docdb:2",
+					"ghcr.io/hanzoai/docdb:2.0",
+					"ghcr.io/hanzoai/docdb:2.0.0",
+					"ghcr.io/hanzoai/docdb:latest",
+					"quay.io/hanzoai/docdb:2",
+					"quay.io/hanzoai/docdb:2.0",
+					"quay.io/hanzoai/docdb:2.0.0",
+					"quay.io/hanzoai/docdb:latest",
 				},
 			},
 		},
@@ -678,7 +678,7 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "2.1.0", // no leading v
 				"GITHUB_REF_TYPE":   "tag",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 		},
 		"push/tag/wrong-other": {
@@ -699,28 +699,28 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "main",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:main",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:main",
-					"quay.io/ferretdb/ferretdb-eval-dev:main",
+					"hanzoai/docdb-eval-dev:main",
+					"ghcr.io/hanzoai/docdb-eval-dev:main",
+					"quay.io/hanzoai/docdb-eval-dev:main",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:main",
-					"ghcr.io/ferretdb/ferretdb-eval:main",
-					"quay.io/ferretdb/ferretdb-eval:main",
+					"hanzoai/docdb-eval:main",
+					"ghcr.io/hanzoai/docdb-eval:main",
+					"quay.io/hanzoai/docdb-eval:main",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:main",
-					"ghcr.io/ferretdb/ferretdb-dev:main",
-					"quay.io/ferretdb/ferretdb-dev:main",
+					"hanzoai/docdb-dev:main",
+					"ghcr.io/hanzoai/docdb-dev:main",
+					"quay.io/hanzoai/docdb-dev:main",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb-dev:main-prod",
-					"ghcr.io/ferretdb/ferretdb-dev:main-prod",
-					"quay.io/ferretdb/ferretdb-dev:main-prod",
+					"hanzoai/docdb-dev:main-prod",
+					"ghcr.io/hanzoai/docdb-dev:main-prod",
+					"quay.io/hanzoai/docdb-dev:main-prod",
 				},
 			},
 		},
@@ -756,28 +756,28 @@ func TestDefine(t *testing.T) {
 				"GITHUB_HEAD_REF":   "",
 				"GITHUB_REF_NAME":   "main",
 				"GITHUB_REF_TYPE":   "branch",
-				"GITHUB_REPOSITORY": "FerretDB/FerretDB",
+				"GITHUB_REPOSITORY": "hanzoai/documentdb",
 			},
 			expected: &result{
 				evalDevImages: []string{
-					"ferretdb/ferretdb-eval-dev:main",
-					"ghcr.io/ferretdb/ferretdb-eval-dev:main",
-					"quay.io/ferretdb/ferretdb-eval-dev:main",
+					"hanzoai/docdb-eval-dev:main",
+					"ghcr.io/hanzoai/docdb-eval-dev:main",
+					"quay.io/hanzoai/docdb-eval-dev:main",
 				},
 				evalImages: []string{
-					"ferretdb/ferretdb-eval:main",
-					"ghcr.io/ferretdb/ferretdb-eval:main",
-					"quay.io/ferretdb/ferretdb-eval:main",
+					"hanzoai/docdb-eval:main",
+					"ghcr.io/hanzoai/docdb-eval:main",
+					"quay.io/hanzoai/docdb-eval:main",
 				},
 				developmentImages: []string{
-					"ferretdb/ferretdb-dev:main",
-					"ghcr.io/ferretdb/ferretdb-dev:main",
-					"quay.io/ferretdb/ferretdb-dev:main",
+					"hanzoai/docdb-dev:main",
+					"ghcr.io/hanzoai/docdb-dev:main",
+					"quay.io/hanzoai/docdb-dev:main",
 				},
 				productionImages: []string{
-					"ferretdb/ferretdb-dev:main-prod",
-					"ghcr.io/ferretdb/ferretdb-dev:main-prod",
-					"quay.io/ferretdb/ferretdb-dev:main-prod",
+					"hanzoai/docdb-dev:main-prod",
+					"ghcr.io/hanzoai/docdb-dev:main-prod",
+					"quay.io/hanzoai/docdb-dev:main-prod",
 				},
 			},
 		},
@@ -823,18 +823,18 @@ func TestImageURL(t *testing.T) {
 	// expected URLs should work
 	assert.Equal(
 		t,
-		"https://ghcr.io/ferretdb/ferretdb-eval:pr-define-docker-tag",
-		imageURL("ghcr.io/ferretdb/ferretdb-eval:pr-define-docker-tag"),
+		"https://ghcr.io/hanzoai/docdb-eval:pr-define-docker-tag",
+		imageURL("ghcr.io/hanzoai/docdb-eval:pr-define-docker-tag"),
 	)
 	assert.Equal(
 		t,
-		"https://quay.io/ferretdb/ferretdb-eval:pr-define-docker-tag",
-		imageURL("quay.io/ferretdb/ferretdb-eval:pr-define-docker-tag"),
+		"https://quay.io/hanzoai/docdb-eval:pr-define-docker-tag",
+		imageURL("quay.io/hanzoai/docdb-eval:pr-define-docker-tag"),
 	)
 	assert.Equal(
 		t,
-		"https://hub.docker.com/r/ferretdb/ferretdb-eval/tags",
-		imageURL("ferretdb/ferretdb-eval:pr-define-docker-tag"),
+		"https://hub.docker.com/r/hanzoai/docdb-eval/tags",
+		imageURL("hanzoai/docdb-eval:pr-define-docker-tag"),
 	)
 }
 
@@ -858,16 +858,16 @@ func TestResults(t *testing.T) {
 
 	result := &result{
 		evalDevImages: []string{
-			"ferretdb/ferretdb-eval-dev:2.1.0",
+			"hanzoai/docdb-eval-dev:2.1.0",
 		},
 		evalImages: []string{
-			"ferretdb/ferretdb-eval:2",
+			"hanzoai/docdb-eval:2",
 		},
 		developmentImages: []string{
-			"ghcr.io/ferretdb/ferretdb-dev:2",
+			"ghcr.io/hanzoai/docdb-dev:2",
 		},
 		productionImages: []string{
-			"quay.io/ferretdb/ferretdb:latest",
+			"quay.io/hanzoai/docdb:latest",
 		},
 	}
 
@@ -876,10 +876,10 @@ func TestResults(t *testing.T) {
 	expectedStdout := strings.ReplaceAll(`
  |Type                   |Image                                                                                          |
  |----                   |-----                                                                                          |
- |Evaluation Development |['ferretdb/ferretdb-eval-dev:2.1.0'](https://hub.docker.com/r/ferretdb/ferretdb-eval-dev/tags) |
- |Evaluation             |['ferretdb/ferretdb-eval:2'](https://hub.docker.com/r/ferretdb/ferretdb-eval/tags)             |
- |Development            |['ghcr.io/ferretdb/ferretdb-dev:2'](https://ghcr.io/ferretdb/ferretdb-dev:2)                   |
- |Production             |['quay.io/ferretdb/ferretdb:latest'](https://quay.io/ferretdb/ferretdb:latest)                 |
+ |Evaluation Development |['hanzoai/docdb-eval-dev:2.1.0'](https://hub.docker.com/r/hanzoai/docdb-eval-dev/tags) |
+ |Evaluation             |['hanzoai/docdb-eval:2'](https://hub.docker.com/r/hanzoai/docdb-eval/tags)             |
+ |Development            |['ghcr.io/hanzoai/docdb-dev:2'](https://ghcr.io/hanzoai/docdb-dev:2)                   |
+ |Production             |['quay.io/hanzoai/docdb:latest'](https://quay.io/hanzoai/docdb:latest)                 |
 
 `[1:], "'", "`",
 	)
@@ -888,10 +888,10 @@ func TestResults(t *testing.T) {
 	expectedSummary := strings.ReplaceAll(`
  |Type                   |Image                                                                                          |
  |----                   |-----                                                                                          |
- |Evaluation Development |['ferretdb/ferretdb-eval-dev:2.1.0'](https://hub.docker.com/r/ferretdb/ferretdb-eval-dev/tags) |
- |Evaluation             |['ferretdb/ferretdb-eval:2'](https://hub.docker.com/r/ferretdb/ferretdb-eval/tags)             |
- |Development            |['ghcr.io/ferretdb/ferretdb-dev:2'](https://ghcr.io/ferretdb/ferretdb-dev:2)                   |
- |Production             |['quay.io/ferretdb/ferretdb:latest'](https://quay.io/ferretdb/ferretdb:latest)                 |
+ |Evaluation Development |['hanzoai/docdb-eval-dev:2.1.0'](https://hub.docker.com/r/hanzoai/docdb-eval-dev/tags) |
+ |Evaluation             |['hanzoai/docdb-eval:2'](https://hub.docker.com/r/hanzoai/docdb-eval/tags)             |
+ |Development            |['ghcr.io/hanzoai/docdb-dev:2'](https://ghcr.io/hanzoai/docdb-dev:2)                   |
+ |Production             |['quay.io/hanzoai/docdb:latest'](https://quay.io/hanzoai/docdb:latest)                 |
 
 `[1:], "'", "`",
 	)
@@ -901,16 +901,16 @@ func TestResults(t *testing.T) {
 
 	expectedOutput := `
 eval_dev_images<<_GitHubActionsFileCommandDelimeter_
-ferretdb/ferretdb-eval-dev:2.1.0
+hanzoai/docdb-eval-dev:2.1.0
 _GitHubActionsFileCommandDelimeter_
 eval_images<<_GitHubActionsFileCommandDelimeter_
-ferretdb/ferretdb-eval:2
+hanzoai/docdb-eval:2
 _GitHubActionsFileCommandDelimeter_
 development_images<<_GitHubActionsFileCommandDelimeter_
-ghcr.io/ferretdb/ferretdb-dev:2
+ghcr.io/hanzoai/docdb-dev:2
 _GitHubActionsFileCommandDelimeter_
 production_images<<_GitHubActionsFileCommandDelimeter_
-quay.io/ferretdb/ferretdb:latest
+quay.io/hanzoai/docdb:latest
 _GitHubActionsFileCommandDelimeter_
 `[1:]
 	b, err = io.ReadAll(outputF)

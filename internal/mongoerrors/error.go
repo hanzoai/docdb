@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ func NewWithArgument(code Code, msg, argument string) *Error {
 // We overload [mongo.CommandError]'s method to ensure that Error is always passed by pointer.
 //
 // We probably should remove that method and un-embed mongo.CommandError to avoid typed nil error confusion.
-// TODO https://github.com/FerretDB/FerretDB/issues/4965
+// TODO https://github.com/hanzoai/docdb/issues/4965
 func (e *Error) Error() string {
 	return fmt.Sprintf("%[1]s (%[1]d): %[2]v", Code(e.Code), e.Message)
 }

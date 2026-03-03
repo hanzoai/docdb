@@ -31,7 +31,7 @@ We've also refactored our aggregation operators and accumulators to ensure that 
 
 As part of the process in providing production-ready access to the SQLite database backend, we've also added some new metrics to the SQLite backend pool statistics.
 
-You can check out all the [other changes in this release here](https://github.com/FerretDB/FerretDB/releases/tag/v1.9.0).
+You can check out all the [other changes in this release here](https://github.com/hanzoai/docdb/releases/tag/v1.9.0).
 
 ## What next?
 

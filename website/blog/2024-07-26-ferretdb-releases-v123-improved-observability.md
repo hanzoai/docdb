@@ -22,7 +22,7 @@ Read on to learn more.
 ## Embeddable package
 
 This release switches from the [`zap` logging package](https://github.com/uber-go/zap) to the standard [`slog`](https://pkg.go.dev/log/slog).
-If the logger was configured by Go programs that import [FerretDB package](https://pkg.go.dev/github.com/FerretDB/FerretDB/ferretdb), they should configure the `SLogger` field instead.
+If the logger was configured by Go programs that import [FerretDB package](https://pkg.go.dev/github.com/hanzoai/docdb/ferretdb), they should configure the `SLogger` field instead.
 Setting the old `Logger` field will make the program panic and make the issue immediately noticeable.
 
 Please note that the next release will completely remove `zap` and rename `SLogger` to just `Logger`.
@@ -68,7 +68,7 @@ Please note that there is a possibility that they will change in the future in a
 
 We updated our documentation to include information on logging, Kubernetes probes, and OpenTelemetry tracing with clearer guidelines on how to configure and use them.
 
-For a complete list of all changes in this release, please see our [FerretDB v1.23 release Changelog](https://github.com/FerretDB/FerretDB/releases/tag/v1.23.0).
+For a complete list of all changes in this release, please see our [FerretDB v1.23 release Changelog](https://github.com/hanzoai/docdb/releases/tag/v1.23.0).
 
 Our appreciation also goes out to open source community, our users, and all our contributors, especially [@PaveenV](https://github.com/PaveenV) who made their first contribution to FerretDB.
 

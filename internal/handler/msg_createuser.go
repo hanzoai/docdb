@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ import (
 	"log/slog"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/documentdb"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // msgCreateUser implements `createUser` command.
@@ -37,11 +37,11 @@ func (h *Handler) msgCreateUser(connCtx context.Context, req *middleware.Request
 		return nil, err
 	}
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/913
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/913
 	doc = doc.Copy()
 	doc.Remove("mechanisms")
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/911
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/911
 	roles, _ := doc.Get("roles").(*wirebson.Array)
 	if roles == nil || roles.Len() == 0 {
 		roles = wirebson.MustArray(

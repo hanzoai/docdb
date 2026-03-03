@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestHello(tt *testing.T) {
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/955")
 
 	tt.Parallel()
 
@@ -46,7 +46,7 @@ func TestHello(tt *testing.T) {
 	for _, field := range actual {
 		switch field.Key {
 		case "hosts", "setName", "topologyVersion", "setVersion", "secondary", "primary", "me", "electionId", "lastWrite":
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 			continue
 		case "connectionId":
 			assert.IsType(t, int32(0), field.Value)
@@ -96,7 +96,7 @@ func TestHelloWithSupportedMechs(t *testing.T) {
 	})
 	ctx, db := s.Ctx, s.Collection.Database()
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	_ = db.RunCommand(ctx, bson.D{{"dropUser", "hello_user_scram256"}})
 
 	require.NoError(t, db.RunCommand(ctx, bson.D{
@@ -111,15 +111,15 @@ func TestHelloWithSupportedMechs(t *testing.T) {
 		mechs bson.A
 
 		err              *mongo.CommandError
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NotFound": {
 			user:             db.Name() + ".not_found",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/955",
 		},
 		"AnotherDB": {
 			user:             db.Name() + "_not_found.another_db",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/955",
 		},
 		"HelloUserSCRAM256": {
 			user:  db.Name() + ".hello_user_scram256",
@@ -128,7 +128,7 @@ func TestHelloWithSupportedMechs(t *testing.T) {
 		"EmptyUsername": {
 			user:             db.Name() + ".",
 			mechs:            nil,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/955",
 		},
 		"MissingSeparator": {
 			user: db.Name(),
@@ -137,15 +137,15 @@ func TestHelloWithSupportedMechs(t *testing.T) {
 				Name:    "BadValue",
 				Message: "UserName must contain a '.' separated database.user pair",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/955",
 		},
 	}
 
 	for name, tc := range testCases {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(t, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(t, tc.failsForDocDB)
 			}
 
 			tt.Parallel()
@@ -166,7 +166,7 @@ func TestHelloWithSupportedMechs(t *testing.T) {
 			for _, field := range res {
 				switch field.Key {
 				case "hosts", "setName", "topologyVersion", "setVersion", "secondary", "primary", "me", "electionId", "lastWrite":
-					// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+					// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 					continue
 				case "connectionId":
 					assert.IsType(t, int32(0), field.Value)

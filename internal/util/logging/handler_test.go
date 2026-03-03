@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ func TestHandler(t *testing.T) {
 			`msg="multi\nline\nmessage" ` +
 			`g2.i=1 g2.g3.s=a g2.name=test.logger g2.g1.k1=42 g2.g1.k2=7s g2.k3=s g2.k3=dup` + "\n",
 		"json": `{"time":"2024-05-31T09:26:42Z","level":"INFO","source":` +
-			`{"function":"github.com/FerretDB/FerretDB/v2/internal/util/logging.TestHandler",` +
+			`{"function":"github.com/hanzoai/docdb/internal/util/logging.TestHandler",` +
 			`"file":"logging/handler_test.go","line":34},"msg":"multi\nline\nmessage"` +
 			`,"g2":{"i":1,"g3":{"s":"a"},"name":"test.logger","g1":{"k1":42,"k2":7000000000},"k3":"s","k3":"dup"}}` + "\n",
 	} {
@@ -95,7 +95,7 @@ func TestShortPath(t *testing.T) {
 	assert.Equal(t, "dir3/file.go", shortPath("/dir1/dir2/dir3/file.go"))
 
 	// with -trimpath
-	assert.Equal(t, "debug/debug.go", shortPath("github.com/FerretDB/FerretDB/v2/internal/util/debug/debug.go"))
-	assert.Equal(t, "util/debug.go", shortPath("github.com/FerretDB/FerretDB/v2/internal/util/debug.go"))
-	assert.Equal(t, "internal/debug.go", shortPath("github.com/FerretDB/FerretDB/v2/internal/debug.go"))
+	assert.Equal(t, "debug/debug.go", shortPath("github.com/hanzoai/docdb/internal/util/debug/debug.go"))
+	assert.Equal(t, "util/debug.go", shortPath("github.com/hanzoai/docdb/internal/util/debug.go"))
+	assert.Equal(t, "internal/debug.go", shortPath("github.com/hanzoai/docdb/internal/debug.go"))
 }

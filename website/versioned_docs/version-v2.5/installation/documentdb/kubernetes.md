@@ -14,7 +14,7 @@ Please see the [Docker installation docs](../documentdb/docker.md) to learn more
 :::tip
 We strongly recommend specifying the full image tag (e.g., `17-0.106.0-ferretdb-2.5.0`)
 to ensure consistency across deployments.
-For more information on the best FerretDB image to use, see the [DocumentDB release notes](https://github.com/FerretDB/documentdb/releases/).
+For more information on the best FerretDB image to use, see the [DocumentDB release notes](https://github.com/hanzoai/docdb/releases/).
 :::
 
 Create a `postgres.yaml` file with the following content:
@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: ghcr.io/ferretdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0
+          image: ghcr.io/docdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0
           ports:
             - containerPort: 5432
           env:
@@ -91,4 +91,4 @@ kubectl get pods -l app=postgres
 kubectl get svc -l app=postgres
 ```
 
-See [FerretDB Kubernetes installation](../ferretdb/kubernetes.md) for more details on connecting to FerretDB.
+See [FerretDB Kubernetes installation](../docdb/kubernetes.md) for more details on connecting to FerretDB.

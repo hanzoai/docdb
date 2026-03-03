@@ -134,7 +134,7 @@ Aside from that, we've also resolved a bug that occurs when attempting to use do
 
 ## Documentation
 
-For those interested in contributing to FerretDB, we've also updated our PR guide in [CONTRIBUTING.md](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md), with more details on squash and push, and other information related to PR management.
+For those interested in contributing to FerretDB, we've also updated our PR guide in [CONTRIBUTING.md](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md), with more details on squash and push, and other information related to PR management.
 
 In our documentation, you can now discover ways to get Docker and binary executable logs from FerretDB.
 [See here for more](https://docs.ferretdb.io/configuration/logging/#docker-logs).
@@ -142,7 +142,7 @@ We've also documented `createIndexes`, `listIndexes`, and `dropIndexes` commands
 
 ## Conclusion
 
-Of course, there are several other changes in this release, especially community contributions, and you can find a full list of them here in the [FerretDB version 1.1.0 release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.1.0).
+Of course, there are several other changes in this release, especially community contributions, and you can find a full list of them here in the [FerretDB version 1.1.0 release notes](https://github.com/hanzoai/docdb/releases/tag/v1.1.0).
 We appreciate every single word of support, bug discovery, code contributions, and feedback from the community.
 Your continuous support showcases the strength and belief in open source.
 

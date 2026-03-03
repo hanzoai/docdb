@@ -31,7 +31,7 @@ Here's what you need to do:
 
 1. **Ensure FerretDB is running:** Make sure your FerretDB instance is active and accessible.
    If you haven't set it up yet, refer to our
-   [FerretDB Installation Guide](https://docs.ferretdb.io/installation/ferretdb/).
+   [FerretDB Installation Guide](https://docs.ferretdb.io/installation/docdb/).
 2. **Launch MongoDB Compass:** Open the MongoDB Compass application on your system.
    If you don't have it installed, you can download it from the
    [MongoDB Compass download page](https://www.mongodb.com/try/download/compass).
@@ -77,6 +77,6 @@ and intuitive graphical interface for managing your FerretDB.
 We're continuously working to expand our integrations and support for various tools.
 Stay tuned for more updates, and feel free to reach out to us if you have any questions or suggestions!
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,20 +21,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestCurrentOpGetMore(tt *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB/issues/4871
-	tt.Skip("https://github.com/FerretDB/FerretDB/issues/4871")
+	// TODO https://github.com/hanzoai/docdb/issues/4871
+	tt.Skip("https://github.com/hanzoai/docdb/issues/4871")
 
 	tt.Parallel()
 
@@ -90,8 +90,8 @@ func TestCurrentOpGetMore(tt *testing.T) {
 
 	require.NotNil(tt, getMoreOp, "no in-progress getMore operation found")
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/4857
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4857")
+	// TODO https://github.com/hanzoai/docdb/issues/4857
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4857")
 
 	currentOpTime, ok := getMoreOp.Get("currentOpTime").(string)
 	require.True(t, ok, wirebson.LogMessageIndent(getMoreOp))
@@ -170,8 +170,8 @@ func TestCurrentOpGetMore(tt *testing.T) {
 }
 
 func TestCurrentOpExplain(tt *testing.T) {
-	// TODO https://github.com/FerretDB/FerretDB/issues/4871
-	tt.Skip("https://github.com/FerretDB/FerretDB/issues/4871")
+	// TODO https://github.com/hanzoai/docdb/issues/4871
+	tt.Skip("https://github.com/hanzoai/docdb/issues/4871")
 
 	tt.Parallel()
 
@@ -227,8 +227,8 @@ func TestCurrentOpExplain(tt *testing.T) {
 
 	require.NotNil(tt, op, "no in-progress explain operation found")
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/4857
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/4857")
+	// TODO https://github.com/hanzoai/docdb/issues/4857
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/4857")
 
 	currentOpTime, ok := op.Get("currentOpTime").(string)
 	require.True(t, ok, wirebson.LogMessageIndent(op))

@@ -1,6 +1,6 @@
 ---
 # New or experimental linters that should pass (or be reconfigured)
-# for new FerretDB and tools code (compared to `origin/main`).
+# for new DocDB and tools code (compared to `origin/main`).
 
 run:
   timeout: 3m
@@ -33,7 +33,7 @@ linters-settings:
   revive:
     ignore-generated-header: true
     severity: warning
-    # TODO enable-all-rules: true https://github.com/FerretDB/FerretDB/issues/2748
+    # TODO enable-all-rules: true https://github.com/hanzoai/docdb/issues/2748
     rules:
       # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md
       - name: exported
@@ -84,7 +84,7 @@ linters:
     - unused
     - whitespace
 
-    # TODO https://github.com/FerretDB/FerretDB/issues/2748
+    # TODO https://github.com/hanzoai/docdb/issues/2748
     - bidichk
     - bodyclose
     - canonicalheader

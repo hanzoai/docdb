@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package testdata
 
 func testCorrect() {
-	// TODO https://github.com/FerretDB/FerretDB/issues/178
+	// TODO https://github.com/hanzoai/docdb/issues/178
 }
 
 func testIncorrectNoURL() {
@@ -24,36 +24,36 @@ func testIncorrectNoURL() {
 }
 
 func testIncorrectFormat() {
-	// TODO: https://github.com/FerretDB/FerretDB/issues/178 // want "invalid TODO: incorrect format"
+	// TODO: https://github.com/hanzoai/docdb/issues/178 // want "invalid TODO: incorrect format"
 }
 
 // For https://github.com/github/codeql/issues/15894.
 func testIncorrectDomain() {
-	// TODO https://githubbcom/FerretDB/FerretDB/issues/3413 // want "invalid TODO: incorrect format"
+	// TODO https://github.com/hanzoai/docdb/issues/3413 // want "invalid TODO: incorrect format"
 }
 
 func testCorrectFormatClosed() {
-	// TODO https://github.com/FerretDB/FerretDB/issues/1 // want "invalid TODO: linked issue https://github.com/FerretDB/FerretDB/issues/1 is closed"
+	// TODO https://github.com/hanzoai/docdb/issues/1 // want "invalid TODO: linked issue https://github.com/hanzoai/docdb/issues/1 is closed"
 }
 
 func testIncorrectFormatClosed() {
-	// TODO: https://github.com/FerretDB/FerretDB/issues/1 // want "invalid TODO: incorrect format"
+	// TODO: https://github.com/hanzoai/docdb/issues/1 // want "invalid TODO: incorrect format"
 }
 
 func testCorrectFormatNotExists() {
-	// TODO https://github.com/FerretDB/FerretDB/issues/999999 // want "invalid TODO: linked issue https://github.com/FerretDB/FerretDB/issues/999999 is not found"
+	// TODO https://github.com/hanzoai/docdb/issues/999999 // want "invalid TODO: linked issue https://github.com/hanzoai/docdb/issues/999999 is not found"
 }
 
 func testIncorrectFormatNotExists() {
-	// TODO: https://github.com/FerretDB/FerretDB/issues/999999 // want "invalid TODO: incorrect format"
+	// TODO: https://github.com/hanzoai/docdb/issues/999999 // want "invalid TODO: incorrect format"
 }
 
 func testPrivateIssue() {
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1
 }
 
 func testIncorrectIssueNumber() {
-	// TODO https://github.com/FerretDB/FerretDB/issues/0 // want "invalid TODO: incorrect issue number"
+	// TODO https://github.com/hanzoai/docdb/issues/0 // want "invalid TODO: incorrect issue number"
 }
 
 func testDocumentDB() {

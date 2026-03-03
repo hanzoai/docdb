@@ -10,7 +10,7 @@ To make user experience cloud native, every flag has its environment variable eq
 There is no configuration file.
 
 :::info
-Some default values are overridden in [our Docker image](../installation/ferretdb/docker.md).
+Some default values are overridden in [our Docker image](../installation/docdb/docker.md).
 :::
 
 <!-- Keep order in sync with the `--help` output -->

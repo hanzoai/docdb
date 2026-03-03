@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // distinctCompatTestCase describes distinct compatibility test case.
@@ -30,7 +30,7 @@ type distinctCompatTestCase struct {
 	field            string                   // required
 	filter           bson.D                   // required
 	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
-	failsForFerretDB string
+	failsForDocDB string
 }
 
 func testDistinctCompat(t *testing.T, testCases map[string]distinctCompatTestCase) {
@@ -39,7 +39,7 @@ func testDistinctCompat(t *testing.T, testCases map[string]distinctCompatTestCas
 	// Use shared setup because distinct queries can't modify data.
 	//
 	// Use read-only user.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1025
+	// TODO https://github.com/hanzoai/docdb/issues/1025
 	s := setup.SetupCompatWithOpts(t, &setup.SetupCompatOpts{
 		Providers:                shareddata.AllProviders().Remove(shareddata.Scalars, shareddata.Decimal128s), // Remove providers with the same values with different types
 		AddNonExistentCollection: true,
@@ -64,8 +64,8 @@ func testDistinctCompat(t *testing.T, testCases map[string]distinctCompatTestCas
 					tt.Helper()
 
 					var t testing.TB = tt
-					if tc.failsForFerretDB != "" {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					var targetRes, compatRes bson.D
@@ -122,7 +122,7 @@ func TestDistinctCompat(t *testing.T) {
 			field:            "",
 			filter:           bson.D{},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/309",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/309",
 		},
 		"IDAny": {
 			field:  "_id",

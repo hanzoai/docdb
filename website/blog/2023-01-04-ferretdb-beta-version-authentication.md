@@ -100,7 +100,7 @@ This release should prevent unexpected updates on `unset` documents, and likewis
 
 The release includes one enhancement, which is updating our building documentation.
 We have documented our build process and Go build tags for those who use embedded packages or build FerretDB themselves.
-Please [check here](https://github.com/FerretDB/FerretDB/blob/main/README.md#building-and-packaging) for further details.
+Please [check here](https://github.com/hanzoai/docdb/blob/main/README.md#building-and-packaging) for further details.
 
 ## Documentation
 
@@ -117,7 +117,7 @@ However, this change is not a cause for concern, merely a signal that we will be
 This change will not affect the support for the `$elemMatch` query operator.
 For more information on the supported operators and commands, please check out our [updated documentation](https://docs.ferretdb.io/reference/supported_commands/).
 
-Please find more details about the new features and changes in the beta version [here](https://github.com/FerretDB/FerretDB/releases/tag/v0.8.0).
+Please find more details about the new features and changes in the beta version [here](https://github.com/hanzoai/docdb/releases/tag/v0.8.0).
 
 ## And to our amazing community and users
 
@@ -126,7 +126,7 @@ Not to mention the growing number of partnerships, compatible applications, and 
 In 2022, we had:
 
 - 👨🏻‍💻 Over 40 code contributors with more than 130 merged pull requests from our community of contributors
-- ⭐️ 5.1k Stars on GitHub(Have you given us a Star yet? Be sure to [Star us on GitHub](https://github.com/FerretDB/FerretDB)
+- ⭐️ 5.1k Stars on GitHub(Have you given us a Star yet? Be sure to [Star us on GitHub](https://github.com/hanzoai/docdb)
 - ⏫ More than 100 Docker image downloads
 
 We appreciate your continued and invaluable support and feedback, as we strive to make FerretDB even better.

@@ -47,7 +47,7 @@ From your local terminal, start by running the FerretDB container via Docker.
 You'll need the connection string for your PostgreSQL instance – available on the PostgreSQL deployment dashboard.
 
 ```sh
-docker run -e FERRETDB_POSTGRESQL_URL='postgresql://<username>:<password>@<host>/<database>' -p 27017:27017 ghcr.io/ferretdb/ferretdb
+docker run -e FERRETDB_POSTGRESQL_URL='postgresql://<username>:<password>@<host>/<database>' -p 27017:27017 ghcr.io/hanzoai/docdb
 ```
 
 Ensure to replace `username`, `password`, `host`, and `database` with your ScaleGrid for PostgreSQL connection details.

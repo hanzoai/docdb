@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestFindAndModifyCompatSimple(t *testing.T) {
@@ -121,7 +121,7 @@ func TestFindAndModifyCompatErrors(t *testing.T) {
 				{"maxTimeMS", "string"},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/318",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/318",
 		},
 		"DuplicateID": {
 			command: bson.D{
@@ -131,7 +131,7 @@ func TestFindAndModifyCompatErrors(t *testing.T) {
 			},
 			providers:        []shareddata.Provider{shareddata.Int32s},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/894",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/894",
 		},
 		"InvalidID": {
 			command: bson.D{
@@ -141,7 +141,7 @@ func TestFindAndModifyCompatErrors(t *testing.T) {
 			},
 			providers:        []shareddata.Provider{shareddata.Int32s},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/317",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/317",
 		},
 	}
 
@@ -292,7 +292,7 @@ func TestFindAndModifyCompatDotNotation(t *testing.T) {
 					{"$inc", bson.D{{"v.field", 4}}},
 				}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 			failsProviders:   []shareddata.Provider{shareddata.ArrayAndDocuments},
 		},
 		"ParentConflict": {
@@ -346,7 +346,7 @@ func TestFindAndModifyCompatUpdateSet(t *testing.T) {
 				{"query", bson.D{{"non-existent", bson.D{{"$exists", false}}}}},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Strings},
 		},
 		"ExistsTrue": {
@@ -354,7 +354,7 @@ func TestFindAndModifyCompatUpdateSet(t *testing.T) {
 				{"query", bson.D{{"_id", bson.D{{"$exists", true}}}}},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Strings},
 		},
 		"ExistsFalse": {
@@ -367,7 +367,7 @@ func TestFindAndModifyCompatUpdateSet(t *testing.T) {
 			command: bson.D{
 				{"update", bson.D{{"$set", bson.D{{"_id", "int32"}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Int32s},
 		},
 		"UpdateExistingID": {
@@ -381,7 +381,7 @@ func TestFindAndModifyCompatUpdateSet(t *testing.T) {
 				{"query", bson.D{{"_id", "int32"}}},
 				{"update", bson.D{{"$set", bson.D{{"_id", "int32"}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Int32s, shareddata.Scalars},
 		},
 	}
@@ -404,7 +404,7 @@ func TestFindAndModifyCompatUnset(t *testing.T) {
 				{"query", bson.D{{"non-existent", bson.D{{"$exists", false}}}}},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsTrue": {
@@ -412,7 +412,7 @@ func TestFindAndModifyCompatUnset(t *testing.T) {
 				{"query", bson.D{{"_id", bson.D{{"$exists", true}}}}},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsFalse": {
@@ -426,7 +426,7 @@ func TestFindAndModifyCompatUnset(t *testing.T) {
 				{"query", bson.D{{"_id", "double"}}},
 				{"update", bson.D{{"$unset", bson.D{{"non-existent-field", ""}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars, shareddata.Doubles, shareddata.SmallDoubles},
 		},
 	}
@@ -451,7 +451,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"update", bson.D{{"$currentDate", bson.D{{"v", bson.D{{"foo", int32(1)}}}}}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/323",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
 				shareddata.Regexes, shareddata.ArrayDocuments, shareddata.ArrayDoubles, shareddata.Int64s,
@@ -469,7 +469,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"update", bson.D{{"$currentDate", bson.D{{"v", bson.D{{"$type", int32(1)}}}}}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/323",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
 				shareddata.Regexes, shareddata.ArrayDocuments, shareddata.ArrayDoubles, shareddata.Int64s,
@@ -487,7 +487,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"update", bson.D{{"$currentDate", bson.D{{"v", bson.D{{"$type", "unknown"}}}}}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/323",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
 				shareddata.Regexes, shareddata.ArrayDocuments, shareddata.ArrayDoubles, shareddata.Int64s,
@@ -505,7 +505,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"update", bson.D{{"$currentDate", bson.D{{"v", 1}}}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/323",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
 				shareddata.Regexes, shareddata.ArrayDocuments, shareddata.ArrayDoubles, shareddata.Int64s,
@@ -546,7 +546,7 @@ func TestFindAndModifyCompatUpdateRename(t *testing.T) {
 				{"update", bson.D{{"$rename", bson.D{{"v", "v"}}}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/324",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/324",
 		},
 		"DuplicateSource": {
 			command: bson.D{
@@ -554,7 +554,7 @@ func TestFindAndModifyCompatUpdateRename(t *testing.T) {
 				{"update", bson.D{{"$rename", bson.D{{"v", "w"}, {"v", "x"}}}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/324",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/324",
 		},
 		"DuplicateTarget": {
 			command: bson.D{
@@ -601,7 +601,7 @@ func TestFindAndModifyCompatSort(t *testing.T) {
 				{"sort", bson.D{{"v..foo", 1}, {"_id", 1}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 		},
 		"DollarPrefixedFieldName": {
 			command: bson.D{
@@ -610,7 +610,7 @@ func TestFindAndModifyCompatSort(t *testing.T) {
 				{"sort", bson.D{{"$v.foo", 1}, {"_id", 1}}},
 			},
 			resultType:       integration.EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 		},
 	}
 
@@ -735,7 +735,7 @@ func TestFindAndModifyCompatUpsertSet(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Strings},
 		},
 		"ExistsTrue": {
@@ -744,7 +744,7 @@ func TestFindAndModifyCompatUpsertSet(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Strings},
 		},
 		"UpsertID": {
@@ -826,7 +826,7 @@ func TestFindAndModifyCompatSetOnInsert(t *testing.T) {
 				{"update", bson.D{{"$setOnInsert", bson.D{{"new", "val"}}}}},
 			},
 			providers:        []shareddata.Provider{shareddata.Int32s},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Int32s},
 		},
 		"IDNotExists": {
@@ -893,7 +893,7 @@ func TestFindAndModifyCompatUpsertUnset(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsTrue": {
@@ -902,7 +902,7 @@ func TestFindAndModifyCompatUpsertUnset(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsFalse": {
@@ -921,7 +921,7 @@ func TestFindAndModifyCompatUpsertUnset(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$unset", bson.D{{"non-existent-field", ""}}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Scalars, shareddata.Doubles, shareddata.SmallDoubles},
 		},
 	}
@@ -972,7 +972,7 @@ func TestFindAndModifyCompatReplacementDoc(t *testing.T) {
 			command: bson.D{
 				{"update", bson.D{}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/321",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 			failsProviders:   []shareddata.Provider{shareddata.Unsets},
 		},
 		"FilterAndUpsertTrue": {
@@ -1011,8 +1011,8 @@ type findAndModifyCompatTestCase struct {
 	resultType integration.CompatTestCaseResultType // defaults to NonEmptyResult
 	providers  []shareddata.Provider                // defaults to shareddata.AllProviders()
 
-	failsForFerretDB string
-	failsProviders   []shareddata.Provider // use only if failsForFerretDB is set, defaults to all providers
+	failsForDocDB string
+	failsProviders   []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
 }
 
 // testFindAndModifyCompat tests findAndModify compatibility test cases.
@@ -1054,8 +1054,8 @@ func testFindAndModifyCompat(t *testing.T, testCases map[string]findAndModifyCom
 
 					failsForCollection := len(tc.failsProviders) == 0 || slices.Contains(failsProviders, providerName)
 
-					if tc.failsForFerretDB != "" && failsForCollection {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" && failsForCollection {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					t.Helper()
@@ -1127,7 +1127,7 @@ func testFindAndModifyCompat(t *testing.T, testCases map[string]findAndModifyCom
 
 			switch tc.resultType {
 			case integration.NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 

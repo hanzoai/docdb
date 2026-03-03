@@ -55,7 +55,7 @@ Here's a step-by-step guide to get you started:
     -e POSTGRES_USER=<username> \
     -e POSTGRES_PASSWORD=<password> \
     -v ./data:/var/lib/postgresql/data \
-    ghcr.io/ferretdb/ferretdb-eval:2
+    ghcr.io/hanzoai/docdb-eval:2
    ```
 
    Replace `<username>` and `<password>` with your desired authentication credentials.
@@ -196,6 +196,6 @@ This output demonstrates that HyperDX successfully writes and reads its document
 
 The integration of HyperDX and FerretDB provides a robust, scalable, and fully open-source solution for centralizing and managing your full-stack observability data.
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

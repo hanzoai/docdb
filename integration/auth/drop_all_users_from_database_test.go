@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestDropAllUsersFromDatabaseCommand(tt *testing.T) {
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/864")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/864")
 
 	tt.Parallel()
 
@@ -42,7 +42,7 @@ func TestDropAllUsersFromDatabaseCommand(tt *testing.T) {
 	for i := 1; i <= quantity; i++ {
 		username := fmt.Sprintf("user_%d", i)
 
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 		_ = db.RunCommand(ctx, bson.D{{"dropUser", username}})
 
 		err := db.RunCommand(ctx, bson.D{

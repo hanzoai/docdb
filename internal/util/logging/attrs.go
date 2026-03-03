@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ type groupOrAttrs struct {
 // attrs returns record attributes, as well as handler attributes from goas in map.
 // Attributes with duplicate keys are overwritten, and the order of keys is ignored.
 //
-// TODO https://github.com/FerretDB/FerretDB/issues/4347
+// TODO https://github.com/hanzoai/docdb/issues/4347
 func attrs(r slog.Record, goas []groupOrAttrs) map[string]any {
 	m := make(map[string]any, r.NumAttrs())
 

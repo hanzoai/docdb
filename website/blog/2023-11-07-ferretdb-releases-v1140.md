@@ -32,7 +32,7 @@ We've also optimized `insert` performance by batching, so instead of inserting d
 
 We're also currently working on supporting capped collections, and we should have more updates on this in future releases, so keep an eye out for it.
 
-For a complete list of the new features and enhancements, [check out the release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.14.0)
+For a complete list of the new features and enhancements, [check out the release notes](https://github.com/hanzoai/docdb/releases/tag/v1.14.0)
 
 ## Our incredible community
 

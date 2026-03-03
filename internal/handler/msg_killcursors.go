@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ import (
 	"fmt"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/clientconn/conninfo"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // msgKillCursors implements `killCursors` command.
@@ -95,7 +95,7 @@ func (h *Handler) msgKillCursors(connCtx context.Context, req *middleware.Reques
 
 	for _, id := range ids {
 		// Should we check database and collection names?
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/17
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/17
 		_, _, _ = db, collection, username
 
 		if err = h.s.DeleteCursor(userID, id, db); err != nil {

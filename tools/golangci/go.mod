@@ -1,8 +1,8 @@
 // Use separate (sub-)module to prevent dependabot timeouts.
 
-module github.com/FerretDB/FerretDB/v2/tools/golangci
+module github.com/hanzoai/docdb/v2/tools/golangci
 
-go 1.25
+go 1.26
 
 toolchain go1.25.7
 

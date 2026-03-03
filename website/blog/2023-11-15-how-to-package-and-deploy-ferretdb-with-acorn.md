@@ -252,7 +252,7 @@ containers: {
     build: context: "."
     ports: publish: "8000/http"
     env: {
-      DB_URI: "mongodb://@{service.postgres.secrets.admin.username}:@{service.postgres.secrets.admin.password}@ferretdb/ferretdb?authMechanism=PLAIN"
+      DB_URI: "mongodb://@{service.postgres.secrets.admin.username}:@{service.postgres.secrets.admin.password}@hanzoai/docdb?authMechanism=PLAIN"
       DB_NAME: "ferretdb"
     }
     dependsOn: [
@@ -266,7 +266,7 @@ containers: {
   }
   }
   ferretdb: {
-    image: "ferretdb/ferretdb"
+    image: "hanzoai/docdb"
     ports: publish: "27017/tcp"
     consumes: ["postgres"]
     env: {

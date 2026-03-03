@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,15 +38,15 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	_ "golang.org/x/net/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // Parts of Prometheus metric names.
 const (
-	// TODO https://github.com/FerretDB/FerretDB/issues/3420
-	namespace = "ferretdb"
+	// TODO https://github.com/hanzoai/docdb/issues/3420
+	namespace = "docdb"
 	subsystem = "debug"
 )
 
@@ -121,7 +121,7 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 
 	svOpts := []statsviz.Option{
 		statsviz.Root("/debug/graphs"),
-		// TODO https://github.com/FerretDB/FerretDB/issues/3600
+		// TODO https://github.com/hanzoai/docdb/issues/3600
 	}
 	must.NoError(statsviz.Register(http.DefaultServeMux, svOpts...))
 

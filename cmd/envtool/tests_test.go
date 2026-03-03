@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 )
 
 var (
@@ -155,8 +155,8 @@ func TestRunGoTest(t *testing.T) {
 			"INFO	PASS TestNormal1 1/2",
 			"INFO	PASS TestNormal2 2/2",
 			"INFO	PASS",
-			"INFO	ok  	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata	<SEC>s",
-			"INFO	PASS github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata",
+			"INFO	ok  	github.com/hanzoai/docdb/cmd/envtool/testdata	<SEC>s",
+			"INFO	PASS github.com/hanzoai/docdb/cmd/envtool/testdata",
 		}
 
 		actual := toLogLines(buf)
@@ -179,8 +179,8 @@ func TestRunGoTest(t *testing.T) {
 			"INFO	Running go test -json ./testdata -count=1 -run=TestWithSubtest/Third",
 			"INFO	PASS TestWithSubtest 1/1",
 			"INFO	PASS",
-			"INFO	ok  	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata	<SEC>s",
-			"INFO	PASS github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata",
+			"INFO	ok  	github.com/hanzoai/docdb/cmd/envtool/testdata	<SEC>s",
+			"INFO	PASS github.com/hanzoai/docdb/cmd/envtool/testdata",
 		}
 
 		actual := toLogLines(buf)
@@ -204,8 +204,8 @@ func TestRunGoTest(t *testing.T) {
 			"INFO	PASS TestWithSubtest 1/1",
 			"INFO	testing: warning: no tests to run",
 			"INFO	PASS",
-			"INFO	ok  	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata	<SEC>s [no tests to run]",
-			"INFO	PASS github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata",
+			"INFO	ok  	github.com/hanzoai/docdb/cmd/envtool/testdata	<SEC>s [no tests to run]",
+			"INFO	PASS github.com/hanzoai/docdb/cmd/envtool/testdata",
 		}
 
 		actual := toLogLines(buf)
@@ -255,8 +255,8 @@ func TestRunGoTest(t *testing.T) {
 			"ERROR	--- FAIL: TestError2 (<SEC>s)",
 			"ERROR	",
 			"INFO	FAIL",
-			"INFO	FAIL	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata	<SEC>s",
-			"INFO	FAIL github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata",
+			"INFO	FAIL	github.com/hanzoai/docdb/cmd/envtool/testdata	<SEC>s",
+			"INFO	FAIL github.com/hanzoai/docdb/cmd/envtool/testdata",
 		}
 
 		actual := toLogLines(buf)
@@ -284,8 +284,8 @@ func TestRunGoTest(t *testing.T) {
 			"WARN	--- SKIP: TestSkip1 (<SEC>s)",
 			"WARN	",
 			"INFO	PASS",
-			"INFO	ok  	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata	<SEC>s",
-			"INFO	PASS github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata",
+			"INFO	ok  	github.com/hanzoai/docdb/cmd/envtool/testdata	<SEC>s",
+			"INFO	PASS github.com/hanzoai/docdb/cmd/envtool/testdata",
 		}
 
 		actual := toLogLines(buf)
@@ -306,20 +306,20 @@ func TestRunGoTest(t *testing.T) {
 
 		expected := []string{
 			"INFO	Running go test -json ./testdata -count=1 -run=TestPanic",
-			"INFO	FAIL	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata	<SEC>s",
-			"INFO	FAIL github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata",
+			"INFO	FAIL	github.com/hanzoai/docdb/cmd/envtool/testdata	<SEC>s",
+			"INFO	FAIL github.com/hanzoai/docdb/cmd/envtool/testdata",
 			"ERROR	",
 			"ERROR	Some tests did not finish:",
-			"ERROR	  github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata.TestPanic1",
+			"ERROR	  github.com/hanzoai/docdb/cmd/envtool/testdata.TestPanic1",
 			"ERROR	",
-			"ERROR	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata.TestPanic1:",
+			"ERROR	github.com/hanzoai/docdb/cmd/envtool/testdata.TestPanic1:",
 			"ERROR	=== RUN   TestPanic1",
 			"ERROR	panic: Panic 1",
 			"ERROR	",
 			"ERROR	goroutine <ID> [running]:",
-			"ERROR	github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata.TestPanic1.func1()",
+			"ERROR	github.com/hanzoai/docdb/cmd/envtool/testdata.TestPanic1.func1()",
 			"ERROR	<DIR>/cmd/envtool/testdata/panic_test.go:25 <ADDR>",
-			"ERROR	created by github.com/FerretDB/FerretDB/v2/cmd/envtool/testdata.TestPanic1 in goroutine <ID>",
+			"ERROR	created by github.com/hanzoai/docdb/cmd/envtool/testdata.TestPanic1 in goroutine <ID>",
 			"ERROR	<DIR>/cmd/envtool/testdata/panic_test.go:23 <ADDR>",
 			"ERROR",
 		}

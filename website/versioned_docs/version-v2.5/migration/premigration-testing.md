@@ -14,7 +14,7 @@ For more details, refer to the [operation modes](../configuration/operation-mode
 
 ### Manual and automated testing with `diff-normal` mode
 
-For details on how to install FerretDB, [refer to the installation guide](../installation/ferretdb/docker.md).
+For details on how to install FerretDB, [refer to the installation guide](../installation/docdb/docker.md).
 
 You can manually test your application or use integration tests, among other methods.
 Afterward, you can inspect the differential output for errors or inconsistencies between responses that require your attention.
@@ -120,7 +120,7 @@ Body diff:
 
 ### Response metrics
 
-Metrics are captured and written to standard output (`stdout`) upon exiting in [development builds](https://pkg.go.dev/github.com/FerretDB/FerretDB/v2/build/version#hdr-Development_builds).
+Metrics are captured and written to standard output (`stdout`) upon exiting in [development builds](https://pkg.go.dev/github.com/hanzoai/docdb/v2/build/version#hdr-Development_builds).
 This is a useful way to quickly determine what commands are not implemented for the client requests sent by your application.
 In the metrics provided below, we can observe that the `dataSize` command was invoked once.
 The operations resulted in `result="NotImplemented"`.
@@ -154,7 +154,7 @@ ferretdb_client_responses_total{argument="unknown",command="unknown",opcode="OP_
 
 ### Other tools
 
-We also have a fork of the Amazon DocumentDB Compatibility Tool [here](https://github.com/FerretDB/amazon-documentdb-tools/tree/master/compat-tool).
+We also have a fork of the Amazon DocumentDB Compatibility Tool [here](https://github.com/hanzoai/amazon-documentdb-tools/tree/master/compat-tool).
 The tool examines files to identify queries that use unsupported operators in FerretDB.
 Please note that this tool is not highly accurate and may generate inaccurate reports, as it does not parse query syntax with contextual information about the originating command.
 For example, an unsupported operator might appear within a `find` or `aggregate` command, which the tool does not differentiate.
@@ -164,6 +164,6 @@ Running the tool to check FerretDB compatibility:
 
 ```sh
 # clone the repository and run the compat-tool
-$ git clone https://github.com/FerretDB/amazon-documentdb-tools.git && cd amazon-documentdb-tools/compat-tool
+$ git clone https://github.com/hanzoai/amazon-documentdb-tools.git && cd amazon-documentdb-tools/compat-tool
 $ python3 compat.py --directory=/path/to/myapp --version=FerretDB
 ```

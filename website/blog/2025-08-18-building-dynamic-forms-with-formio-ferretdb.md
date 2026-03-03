@@ -49,7 +49,7 @@ Create a `docker-compose.yml` file with the following content to define the serv
 ```yaml
 services:
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb-eval:2
+    image: ghcr.io/hanzoai/docdb-eval:2
     restart: on-failure
     ports:
       - 27017:27017
@@ -135,6 +135,6 @@ Form.io writes and reads its data through FerretDB seamlessly, which in turn sto
 
 The integration of Form.io and FerretDB provides a robust, scalable, and fully open-source solution for building and managing dynamic online forms.
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

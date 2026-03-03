@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // queryCompatTestCase describes query compatibility test case.
@@ -43,9 +43,9 @@ type queryCompatTestCase struct {
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
 	skipIDCheck      bool   // skip check collected IDs, use it when no ids returned from query
-	skip             string // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
-	failsForFerretDB string
-	failsProviders   []shareddata.Provider // use only if failsForFerretDB is set, defaults to all providers
+	skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+	failsForDocDB string
+	failsProviders   []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
 }
 
 func testQueryCompatWithProviders(t *testing.T, providers shareddata.Providers, testCases map[string]queryCompatTestCase) {
@@ -56,7 +56,7 @@ func testQueryCompatWithProviders(t *testing.T, providers shareddata.Providers, 
 	// Use shared setup because find queries can't modify data.
 	//
 	// Use read-only user.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1025
+	// TODO https://github.com/hanzoai/docdb/issues/1025
 	s := setup.SetupCompatWithOpts(t, &setup.SetupCompatOpts{
 		Providers: providers,
 	})
@@ -121,8 +121,8 @@ func testQueryCompatWithProviders(t *testing.T, providers shareddata.Providers, 
 
 					failsForCollection := len(tc.failsProviders) == 0 || slices.Contains(failsProviders, providerName)
 
-					if tc.failsForFerretDB != "" && failsForCollection {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" && failsForCollection {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					targetIdx, targetErr := targetCollection.Indexes().CreateOne(ctx, mongo.IndexModel{
@@ -175,7 +175,7 @@ func testQueryCompatWithProviders(t *testing.T, providers shareddata.Providers, 
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -237,19 +237,19 @@ func TestQueryCompatSort(t *testing.T) {
 		"Asc": {
 			filter:           bson.D{},
 			sort:             bson.D{{"v", 1}, {"_id", 1}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/264",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
 			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites},
 		},
 		"Desc": {
 			filter:           bson.D{},
 			sort:             bson.D{{"v", -1}, {"_id", 1}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/264",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
 			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"AscDesc": {
 			filter:           bson.D{},
 			sort:             bson.D{{"v", 1}, {"_id", -1}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/264",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
 			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"DescDesc": {
@@ -269,22 +269,22 @@ func TestQueryCompatSort(t *testing.T) {
 			filter:           bson.D{},
 			sort:             bson.D{{"v", 13}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"BadZero": {
 			filter:           bson.D{},
 			sort:             bson.D{{"v", 0}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"BadNull": {
 			filter:           bson.D{},
 			sort:             bson.D{{"v", nil}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/355
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/355
 		// "DotNotationIndex": {
 		// 	filter: bson.D{},
 		// 	sort:   bson.D{{"v.0", 1}, {"_id", 1}},
@@ -298,26 +298,26 @@ func TestQueryCompatSort(t *testing.T) {
 			filter:           bson.D{},
 			sort:             bson.D{{"v..foo", 1}, {"_id", 1}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 
 		"BadDollarStart": {
 			filter:           bson.D{},
 			sort:             bson.D{{"$v.foo", 1}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/265",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/265",
 		},
 		"BadDollarMid": {
 			filter:           bson.D{},
 			sort:             bson.D{{"v.$foo.bar", 1}, {"_id", 1}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/265",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/265",
 		},
 		"BadDollarEnd": {
 			filter:           bson.D{},
 			sort:             bson.D{{"_id", 1}, {"v.$foo.bar", 1}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/265",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/265",
 		},
 		"DollarPossible": {
 			filter: bson.D{},
@@ -332,7 +332,7 @@ func TestQueryCompatSortDotNotation(t *testing.T) {
 	t.Parallel()
 
 	providers := shareddata.AllProviders().
-		// TODO https://github.com/FerretDB/FerretDB/issues/2618
+		// TODO https://github.com/hanzoai/docdb/issues/2618
 		Remove(shareddata.ArrayDocuments)
 
 	testCases := map[string]queryCompatTestCase{
@@ -382,7 +382,7 @@ func TestQueryCompatSkip(t *testing.T) {
 			filter:           bson.D{},
 			optSkip:          pointer.ToInt64(-1),
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"MaxInt64": {
 			filter:     bson.D{},
@@ -393,7 +393,7 @@ func TestQueryCompatSkip(t *testing.T) {
 			filter:           bson.D{},
 			optSkip:          pointer.ToInt64(math.MinInt64),
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 	}
 
@@ -432,7 +432,7 @@ func TestQueryCompatLimit(t *testing.T) {
 			// The meaning of negative limits is redefined by the Go driver:
 			// > A negative limit specifies that the resulting documents should be returned in a single batch.
 			// On the wire, "limit" can't be negative.
-			// TODO https://github.com/FerretDB/FerretDB/issues/2255
+			// TODO https://github.com/hanzoai/docdb/issues/2255
 			filter: bson.D{},
 			limit:  pointer.ToInt64(-1),
 		},
@@ -474,7 +474,7 @@ func TestQueryCompatBatchSize(t *testing.T) {
 			filter:           bson.D{},
 			batchSize:        pointer.ToInt32(-1),
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 	}
 
