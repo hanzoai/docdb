@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // updateCompatTestCase describes update compatibility test case.
@@ -43,8 +43,8 @@ type updateCompatTestCase struct {
 	resultType  CompatTestCaseResultType // defaults to NonEmptyResult
 	providers   []shareddata.Provider    // defaults to shareddata.AllProviders()
 
-	skip             string // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
-	failsForFerretDB string
+	skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+	failsForDocDB string
 	failsIDs         []struct {
 		provider shareddata.Provider
 		ids      []string // defaults to all IDs of the provider
@@ -118,8 +118,8 @@ func testUpdateCompat(t *testing.T, testCases map[string]updateCompatTestCase) {
 
 							var t testing.TB = tt
 
-							if tc.failsForFerretDB != "" && (allProvidersFail || allIDsFail || idFails) {
-								t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+							if tc.failsForDocDB != "" && (allProvidersFail || allIDsFail || idFails) {
+								t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 							}
 
 							filter := tc.filter
@@ -131,7 +131,7 @@ func testUpdateCompat(t *testing.T, testCases map[string]updateCompatTestCase) {
 							var targetErr, compatErr error
 
 							// Replace with UpdateMany/ReplaceMany.
-							// TODO https://github.com/FerretDB/FerretDB/issues/1507
+							// TODO https://github.com/hanzoai/docdb/issues/1507
 							if update != nil {
 								targetUpdateRes, targetErr = targetCollection.UpdateOne(ctx, filter, update, tc.updateOpts)
 								compatUpdateRes, compatErr = compatCollection.UpdateOne(ctx, filter, update, tc.updateOpts)
@@ -173,13 +173,13 @@ func testUpdateCompat(t *testing.T, testCases map[string]updateCompatTestCase) {
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
 				assert.True(t, nonEmptyResults, "expected non-empty results (some documents should be modified)")
 			case EmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -199,7 +199,7 @@ type testUpdateManyCompatTestCase struct { //nolint:vet // used for testing only
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 	providers  []shareddata.Provider    // defaults to shareddata.AllProviders()
 
-	skip string // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
+	skip string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 }
 
 // testUpdateManyCompat tests update compatibility test cases.
@@ -308,7 +308,7 @@ type updateCommandCompatTestCase struct {
 	filter     bson.D                   // defaults to bson.D{{"_id", id}}
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-	failsForFerretDB string
+	failsForDocDB string
 	failsIDs         []struct {
 		provider shareddata.Provider
 		ids      []string // defaults to all IDs of the provider
@@ -371,8 +371,8 @@ func testUpdateCommandCompat(tt *testing.T, testCases map[string]updateCommandCo
 
 							var t testing.TB = tt
 
-							if tc.failsForFerretDB != "" && (allProvidersFail || allIDsFail || idFails) {
-								t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+							if tc.failsForDocDB != "" && (allProvidersFail || allIDsFail || idFails) {
+								t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 							}
 
 							t.Helper()
@@ -463,7 +463,7 @@ func testUpdateCommandCompat(tt *testing.T, testCases map[string]updateCommandCo
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -484,11 +484,11 @@ type updateCurrentDateCompatTestCase struct {
 	filter     bson.D                   // defaults to bson.D{{"_id", id}}
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-	failsForFerretDB   string
+	failsForDocDB   string
 	failsProvidersDocs []struct {
 		provider shareddata.Provider
 		ids      []string
-	} // use only if failsForFerretDB is set, defaults to all providers and all documents
+	} // use only if failsForDocDB is set, defaults to all providers and all documents
 }
 
 // testUpdateCurrentDateCompat tests update compatibility test cases for current date.
@@ -543,8 +543,8 @@ func testUpdateCurrentDateCompat(tt *testing.T, testCases map[string]updateCurre
 
 							var t testing.TB = tt
 
-							if tc.failsForFerretDB != "" && failsForDoc {
-								t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+							if tc.failsForDocDB != "" && failsForDoc {
+								t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 							}
 
 							t.Helper()
@@ -621,7 +621,7 @@ func testUpdateCurrentDateCompat(tt *testing.T, testCases map[string]updateCurre
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -703,7 +703,7 @@ func TestUpdateCompat(t *testing.T) {
 		},
 		"ReplaceSimple": {
 			replace:          bson.D{{"v", "foo"}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/489",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/489",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -714,7 +714,7 @@ func TestUpdateCompat(t *testing.T) {
 		},
 		"ReplaceEmpty": {
 			replace:          bson.D{{"v", ""}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/489",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/489",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -725,7 +725,7 @@ func TestUpdateCompat(t *testing.T) {
 		},
 		"ReplaceNull": {
 			replace:          bson.D{{"v", nil}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/489",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/489",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string
@@ -946,7 +946,7 @@ func TestUpdateCompatReplacementDoc(t *testing.T) {
 			filter:           bson.D{{"_id", "non-existent"}},
 			update:           bson.D{{"v", int32(43)}},
 			upsert:           true,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/359",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/359",
 			failsIDs: []struct {
 				provider shareddata.Provider
 				ids      []string

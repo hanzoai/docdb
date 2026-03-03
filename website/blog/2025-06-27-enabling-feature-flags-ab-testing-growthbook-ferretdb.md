@@ -49,7 +49,7 @@ Connecting GrowthBook to your FerretDB instance is straightforward.
 Here's a step-by-step guide to get you started with a self-hosted GrowthBook instance:
 
 1. **Ensure FerretDB is running:** Make sure your FerretDB instance is active and accessible.
-   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/ferretdb/).
+   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/docdb/).
 2. **Set up GrowthBook:** You can self-host GrowthBook using Docker – see [GrowthBook Self-Hosting Documentation for more details](https://docs.growthbook.io/self-host).
    You can use the following Docker command to run GrowthBook with FerretDB:
 
@@ -96,6 +96,6 @@ This output demonstrates that GrowthBook successfully writes and reads its docum
 The integration of GrowthBook and FerretDB provides a robust, scalable, and fully open-source solution for managing your feature flags and A/B tests.
 By leveraging FerretDB, you can run your entire workloads in open source, without vendor lock-in or restrictive licenses.
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

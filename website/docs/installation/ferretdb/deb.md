@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # DEB package
 
-We provide different `.deb` packages for various deployments on [our release page](https://github.com/FerretDB/FerretDB/releases/).
+We provide different `.deb` packages for various deployments on [our release page](https://github.com/hanzoai/docdb/releases/).
 
 - For most use cases, we recommend using the production package (e.g., `ferretdb.deb`).
 - For debugging purposes, use the development package (contains a `-dev` suffix e.g., `ferretdb-dev.deb`).
@@ -36,7 +36,7 @@ see DocumentDB extension DEB package [installation guide](../documentdb/deb.md).
 
 :::tip
 Ensure to [enable telemetry](../../telemetry.md) to receive notifications on the latest versions.
-For more information on the best DocumentDB version to use, see the [corresponding release notes for the FerretDB package](https://github.com/FerretDB/FerretDB/releases/).
+For more information on the best DocumentDB version to use, see the [corresponding release notes for the FerretDB package](https://github.com/hanzoai/docdb/releases/).
 :::
 
 Find out more about:

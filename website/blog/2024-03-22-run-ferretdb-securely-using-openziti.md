@@ -55,7 +55,7 @@ postgres-db:
     - POSTGRES_PASSWORD=postgres
 
 ferretdb:
-  image: ghcr.io/ferretdb/ferretdb
+  image: ghcr.io/hanzoai/docdb
   restart: on-failure
   networks:
     - ziti

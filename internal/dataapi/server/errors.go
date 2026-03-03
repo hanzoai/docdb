@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/FerretDB/FerretDB/v2/internal/dataapi/api"
+	"github.com/hanzoai/docdb/internal/dataapi/api"
 )
 
 var (
@@ -38,7 +38,7 @@ var (
 
 // writeError encodes [api.Error] into JSON and writes it to w
 // with provided HTTP status code.
-// TODO https://github.com/FerretDB/FerretDB/issues/4965
+// TODO https://github.com/hanzoai/docdb/issues/4965
 func writeError(rw http.ResponseWriter, err api.Error, code int) {
 	rw.Header().Set("Content-Type", "application/json")
 

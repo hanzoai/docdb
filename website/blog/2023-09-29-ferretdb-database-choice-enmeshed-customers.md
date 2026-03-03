@@ -56,7 +56,7 @@ Using open source software can provide a lot of advantages: it's easy to report 
 Additionally, it gives the possibility of contributing to developers who are seeing what is important to them.
 At FerretDB, we're committed to supporting and listening to our customers, partners, and users' needs, with full support provided by our engineering team.
 
-You can influence FerretDB by checking the [list of open issues on our GitHub](https://github.com/FerretDB/FerretDB/issues) and voting, reporting bugs, or contributing to those that are most important for you.
+You can influence FerretDB by checking the [list of open issues on our GitHub](https://github.com/hanzoai/docdb/issues) and voting, reporting bugs, or contributing to those that are most important for you.
 
 ### About speakers
 

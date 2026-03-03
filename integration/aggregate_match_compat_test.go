@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestAggregateCompatMatchExpr(t *testing.T) {
@@ -30,21 +30,21 @@ func TestAggregateCompatMatchExpr(t *testing.T) {
 			pipeline: bson.A{
 				bson.D{{"$match", bson.D{{"$expr", "$v"}}}},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/362",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
 			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"Sum": {
 			pipeline: bson.A{bson.D{{"$match", bson.D{
 				{"$expr", bson.D{{"$sum", "$v"}}},
 			}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/362",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
 			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"Gt": {
 			pipeline: bson.A{bson.D{{"$match", bson.D{
 				{"$expr", bson.D{{"$gt", bson.A{"$v", 2}}}},
 			}}}},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1456",
+			skip: "https://github.com/hanzoai/docdb/issues/1456",
 		},
 	}
 

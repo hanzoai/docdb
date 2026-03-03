@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestInsertCommandErrors(t *testing.T) {
@@ -36,8 +36,8 @@ func TestInsertCommandErrors(t *testing.T) {
 
 		cerr             *mongo.CommandError // optional, expected command error from MongoDB
 		werr             *mongo.WriteError   // optional, expected write error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"InsertOrderedInvalid": {
 			toInsert: []any{
@@ -98,7 +98,7 @@ func TestInsertCommandErrors(t *testing.T) {
 				Code:    53,
 				Message: "The '_id' value cannot be of type array",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"InsertRegexAsDocumentID": {
 			toInsert: []any{
@@ -109,7 +109,7 @@ func TestInsertCommandErrors(t *testing.T) {
 				Code:    53,
 				Message: "The '_id' value cannot be of type regex",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/295",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"InsertDuplicateID": {
 			toInsert: []any{
@@ -121,14 +121,14 @@ func TestInsertCommandErrors(t *testing.T) {
 				Message: "can't have multiple _id fields in one document",
 			},
 			altMessage:       `invalid key: "_id" (duplicate keys are not allowed)`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/293",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/293",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			tt.Parallel()

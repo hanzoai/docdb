@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ var (
 	collectionNames  = map[string]string{}
 )
 
-// DatabaseName returns a stable FerretDB database name for that test.
+// DatabaseName returns a stable DocDB database name for that test.
 func DatabaseName(tb testing.TB) string {
 	tb.Helper()
 
@@ -57,7 +57,7 @@ func DatabaseName(tb testing.TB) string {
 	return name
 }
 
-// CollectionName returns a stable FerretDB collection name for that test.
+// CollectionName returns a stable DocDB collection name for that test.
 func CollectionName(tb testing.TB) string {
 	tb.Helper()
 

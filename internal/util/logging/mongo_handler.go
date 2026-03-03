@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // mongoHandler is a [slog.Handler] that writes logs by using mongo structured JSON format.
@@ -53,7 +53,7 @@ type mongoHandler struct {
 type MongoLogRecord struct {
 	Timestamp time.Time      `bson:"t"`
 	Severity  string         `bson:"s"`
-	Component string         `bson:"c"` // TODO https://github.com/FerretDB/FerretDB/issues/4431
+	Component string         `bson:"c"` // TODO https://github.com/hanzoai/docdb/issues/4431
 	ID        int            `bson:"id,omitempty"`
 	Ctx       string         `bson:"ctx"`
 	Msg       string         `bson:"msg"`

@@ -1,17 +1,17 @@
-module github.com/FerretDB/FerretDB/v2/tools
+module github.com/hanzoai/docdb/tools
 
-go 1.25.5
+go 1.26
 
 toolchain go1.25.7
 
-// replace github.com/FerretDB/wire => ../../wire
+// replace github.com/hanzoai/docdb-wire => ../../wire
 
 tool (
-	github.com/FerretDB/FerretDB/v2/tools/checkcomments
-	github.com/FerretDB/FerretDB/v2/tools/checkdocs
-	github.com/FerretDB/FerretDB/v2/tools/checkswitch
-	github.com/FerretDB/FerretDB/v2/tools/definedockertag
-	github.com/FerretDB/FerretDB/v2/tools/generatechangelog
+	github.com/hanzoai/docdb/tools/checkcomments
+	github.com/hanzoai/docdb/tools/checkdocs
+	github.com/hanzoai/docdb/tools/checkswitch
+	github.com/hanzoai/docdb/tools/definedockertag
+	github.com/hanzoai/docdb/tools/generatechangelog
 	github.com/OpenDocDB/cts/opendocdb-cts
 	github.com/go-task/task/v3/cmd/task
 	github.com/goreleaser/nfpm/v2/cmd/nfpm
@@ -29,7 +29,7 @@ tool (
 )
 
 require (
-	github.com/FerretDB/gh v0.2.0
+	github.com/hanzoai/gh v0.2.0
 	github.com/google/go-github/v70 v70.0.1-0.20250402125210-3a3f51bc7c5d
 	github.com/rogpeppe/go-internal v1.14.1
 	github.com/sethvargo/go-githubactions v1.3.2
@@ -51,7 +51,7 @@ require (
 	cloud.google.com/go/storage v1.58.0 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/AlekSi/pointer v1.2.0 // indirect
-	github.com/FerretDB/wire v0.1.0 // indirect
+	github.com/hanzoai/docdb-wire v0.1.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.29.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect

@@ -3,14 +3,14 @@
 
 name: Feature
 description: Some feature is not implemented yet.
-assignees: ["ferretdb-bot"]
+assignees: ["docdb-bot"]
 labels: ["code/feature", "not ready"]
 body:
   - type: markdown
     attributes:
       value: >
         Thanks for taking the time to fill out this form!
-        Please check if a similar issue is [already filed](https://github.com/FerretDB/FerretDB/issues).
+        Please check if a similar issue is [already filed](https://github.com/hanzoai/docdb/issues).
   - type: textarea
     id: what
     attributes:

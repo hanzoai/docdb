@@ -117,7 +117,7 @@ const config = {
             label: "Documentation",
           },
           {
-            href: "https://github.com/FerretDB/",
+            href: "https://github.com/hanzoai/",
             label: "GitHub",
             position: "right",
           },
@@ -145,7 +145,7 @@ const config = {
             items: [
               {
                 label: "GitHub Discussions",
-                href: "https://github.com/FerretDB/FerretDB/discussions/",
+                href: "https://github.com/hanzoai/docdb/discussions/",
               },
               {
                 label: "Slack",
@@ -175,7 +175,7 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/FerretDB/",
+                href: "https://github.com/hanzoai/",
               },
             ],
           },

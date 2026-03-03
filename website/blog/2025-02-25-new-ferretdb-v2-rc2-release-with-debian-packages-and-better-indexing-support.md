@@ -21,7 +21,7 @@ we received lots of amazing feedback and shoutouts from the community.
 So many of our users have been impressed with its overall performance improvements and range of compatible features,
 including vector search, full-text search, replication, and better aggregation pipeline support, among others.
 
-We've just released [FerretDB v2.0.0-rc.2](https://github.com/FerretDB/FerretDB/releases/tag/v2.0.0-rc.2),
+We've just released [FerretDB v2.0.0-rc.2](https://github.com/hanzoai/docdb/releases/tag/v2.0.0-rc.2),
 with new features and improvements that make it even better,
 and we're excited to share them with you!
 
@@ -29,14 +29,14 @@ and we're excited to share them with you!
 
 We've made some changes to our Docker image tags.
 The `latest` tag now points to v2, which means if you're pulling directly without specifying a tag
-(e.g., `ghcr.io/ferretdb/ferretdb`), you're getting FerretDB v2 by default.
+(e.g., `ghcr.io/hanzoai/docdb`), you're getting FerretDB v2 by default.
 If you're running FerretDB in production, we strongly recommend explicitly specifying the full version tag
-(e.g., `ghcr.io/ferretdb/ferretdb:2.0.0-rc.2`) to ensure consistency across deployments.
+(e.g., `ghcr.io/hanzoai/docdb:2.0.0-rc.2`) to ensure consistency across deployments.
 
 ## Embeddable Go package
 
 FerretDB is now even easier to integrate into other applications with the new
-[embeddable Go package](https://pkg.go.dev/github.com/FerretDB/FerretDB/v2/ferretdb).
+[embeddable Go package](https://pkg.go.dev/github.com/hanzoai/docdb/v2/ferretdb).
 This means you can run FerretDB within your own Go applications, giving you more flexibility in deployment and usage.
 
 ## Debian packages for DocumentDB
@@ -44,7 +44,7 @@ This means you can run FerretDB within your own Go applications, giving you more
 We now provide `.deb` packages for users who want to install the DocumentDB PostgreSQL extension
 on Debian-based systems.
 This makes installation and upgrades simpler for Debian and Ubuntu users.
-You can now install it from the [DocumentDB repository](https://github.com/FerretDB/documentdb/releases).
+You can now install it from the [DocumentDB repository](https://github.com/hanzoai/docdb/releases).
 
 ## TTL indexes and `reIndex` command
 
@@ -92,7 +92,7 @@ and we look forward to hearing more from you as we continue to improve FerretDB.
 
 If you're still on v1, you're missing out on all these new features and improvements.
 FerretDB v2 is the most feature-complete open source alternative to MongoDB – see our
-[releases page](https://github.com/FerretDB/FerretDB/releases) to try it out!
+[releases page](https://github.com/hanzoai/docdb/releases) to try it out!
 
 If you have any questions about FerretDB, please feel free to reach out on any of our channels listed
 [here](https://docs.ferretdb.io/#community).

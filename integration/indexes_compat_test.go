@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestListIndexesCompat(t *testing.T) {
@@ -82,8 +82,8 @@ func TestCreateIndexesCompat(t *testing.T) {
 		models     []mongo.IndexModel
 		resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-		skip             string // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
-		failsForFerretDB string
+		skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		failsForDocDB string
 	}{
 		"Empty": {
 			models:     []mongo.IndexModel{},
@@ -104,7 +104,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 				{Keys: bson.D{{"_id", -1}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/297",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/297",
 		},
 		"NonExistentField": {
 			models: []mongo.IndexModel{
@@ -121,7 +121,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 				{
 					Keys: bson.D{
 						{"v", 1},
-						{"foo'))); DROP TABlE test._ferretdb_database_metadata; CREATE INDEX IF NOT EXISTS test ON test.test (((_jsonb->'foo", 1},
+						{"foo'))); DROP TABlE test._docdb_database_metadata; CREATE INDEX IF NOT EXISTS test ON test.test (((_jsonb->'foo", 1},
 					},
 				},
 			},
@@ -131,7 +131,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 				{Keys: bson.D{{"v", -1}, {"v", 1}}},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/297",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/297",
 		},
 		"CustomName": {
 			models: []mongo.IndexModel{
@@ -168,7 +168,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 				{Keys: bson.D{{"v", 1}}},
 			},
 			resultType: EmptyResult,
-			skip:       "https://github.com/FerretDB/FerretDB/issues/2910",
+			skip:       "https://github.com/hanzoai/docdb/issues/2910",
 			// the error for existing and non-existing collection are different,
 			// below is the error for existing collection.
 			//
@@ -191,7 +191,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 				},
 			},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/297",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/297",
 		},
 		"SameKeyDifferentNames": {
 			models: []mongo.IndexModel{
@@ -242,8 +242,8 @@ func TestCreateIndexesCompat(t *testing.T) {
 
 				t.Run(targetCollection.Name(), func(tt *testing.T) {
 					var t testing.TB = tt
-					if tc.failsForFerretDB != "" {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					targetRes, targetErr := targetCollection.Indexes().CreateMany(ctx, tc.models)
@@ -317,7 +317,7 @@ func TestDropIndexesCompat(t *testing.T) {
 		dropAll          bool                     // set true for drop all indexes, if true dropIndexName must be empty.
 		resultType       CompatTestCaseResultType // defaults to NonEmptyResult
 		toCreate         []mongo.IndexModel       // optional, if not nil create indexes before dropping
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"DropAllCommand": {
 			toCreate: []mongo.IndexModel{
@@ -375,8 +375,8 @@ func TestDropIndexesCompat(t *testing.T) {
 				t.Run(targetCollection.Name(), func(tt *testing.T) {
 					var t testing.TB = tt
 
-					if tc.failsForFerretDB != "" {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					if tc.toCreate != nil {
@@ -432,7 +432,7 @@ func TestDropIndexesCompat(t *testing.T) {
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -453,7 +453,7 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 		models           []mongo.IndexModel // required, index to create
 		insertDoc        bson.D             // required, document to insert for uniqueness check
 		new              bool               // optional, insert new document before check uniqueness
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"IDIndex": {
 			models: []mongo.IndexModel{
@@ -463,7 +463,7 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 				},
 			},
 			insertDoc:        bson.D{{"_id", "int322"}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/296",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/296",
 		},
 		"ExistingFieldIndex": {
 			models: []mongo.IndexModel{
@@ -476,7 +476,7 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 			new:       true,
 			// This test case passes only because of our hack for
 			// TODO https://github.com/documentdb/documentdb/issues/25
-			// failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/296",
+			// failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/296",
 		},
 		"NotExistingFieldIndex": {
 			models: []mongo.IndexModel{
@@ -486,7 +486,7 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 				},
 			},
 			insertDoc:        bson.D{{"not-existing-field", "value"}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/296",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/296",
 		},
 		"NotUniqueIndex": {
 			models: []mongo.IndexModel{
@@ -516,15 +516,15 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 			insertDoc: bson.D{{"v", int32(42)}},
 			// This test case passes only because of our hack for
 			// TODO https://github.com/documentdb/documentdb/issues/25
-			// failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/296",
+			// failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/296",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			res := setup.SetupCompatWithOpts(tt,

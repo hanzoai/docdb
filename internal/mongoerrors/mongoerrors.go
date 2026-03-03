@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"log/slog"
 	"regexp"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -30,9 +30,9 @@ import (
 	otelcodes "go.opentelemetry.io/otel/codes"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/devbuild"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/devbuild"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 //go:generate go run ./generate.go
@@ -78,7 +78,7 @@ func goString(err error) string {
 //
 // This function performs double duty: it is used to convert errors in documentdb_api,
 // and to map error codes in conn.go. It probably should be split in two.
-// TODO https://github.com/FerretDB/FerretDB/issues/4965
+// TODO https://github.com/hanzoai/docdb/issues/4965
 func Make(ctx context.Context, err error, arg string, l *slog.Logger) *Error {
 	must.NotBeZero(err)
 
@@ -136,7 +136,7 @@ func Make(ctx context.Context, err error, arg string, l *slog.Logger) *Error {
 	if code == 0 {
 		level := logging.LevelDPanic
 
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/894
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/894
 		if arg == "documentdb_api.rename_collection" || arg == "documentdb_api.find_and_modify" {
 			level = slog.LevelError
 		}
@@ -146,7 +146,7 @@ func Make(ctx context.Context, err error, arg string, l *slog.Logger) *Error {
 			level = slog.LevelError
 		}
 
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/914
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/914
 		if arg == "documentdb_api.create_user" || arg == "documentdb_api.update_user" || arg == "documentdb_api.drop_user" {
 			level = slog.LevelError
 		}
@@ -169,8 +169,8 @@ func Make(ctx context.Context, err error, arg string, l *slog.Logger) *Error {
 // MapWrappedCode maps error code found inside "writeErrors" responses for insert/update/delete operations
 // and inside createIndexes responses.
 //
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/292
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/895
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/292
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/895
 func MapWrappedCode(code int32) Code {
 	switch code {
 	case 16777245:
@@ -209,7 +209,7 @@ func MapWrappedCode(code int32) Code {
 // MapWriteErrors replaces error codes inside "writeErrors" responses.
 //
 // The whole function is temporary workaround for:
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/895
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/895
 func MapWriteErrors(ctx context.Context, res wirebson.AnyDocument) wirebson.AnyDocument {
 	_, span := otel.Tracer("").Start(ctx, "mongoerrors.MapWriteErrors")
 	defer span.End()

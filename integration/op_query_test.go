@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestOpQuery(t *testing.T) {
@@ -121,7 +121,7 @@ func TestOpQueryIsMaster(t *testing.T) {
 		"Ismaster": {command: "ismaster"},
 	} {
 		t.Run(name, func(tt *testing.T) {
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/955")
 
 			q := wire.MustOpQuery(tc.command, int32(1))
 			q.FullCollectionName = "admin.$cmd"
@@ -142,7 +142,7 @@ func TestOpQueryIsMaster(t *testing.T) {
 			assert.IsType(t, time.Time{}, localTime)
 			res.Remove("localTime")
 
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 			res.Remove("hosts")
 			res.Remove("setName")
 			res.Remove("topologyVersion")
@@ -187,7 +187,7 @@ func TestOpQueryIsMasterHelloOk(t *testing.T) {
 		"Ismaster": {command: "ismaster"},
 	} {
 		t.Run(name, func(tt *testing.T) {
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/955")
 
 			q := wire.MustOpQuery(
 				tc.command, int32(1),
@@ -211,7 +211,7 @@ func TestOpQueryIsMasterHelloOk(t *testing.T) {
 			assert.IsType(t, time.Time{}, localTime)
 			res.Remove("localTime")
 
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 			res.Remove("hosts")
 			res.Remove("setName")
 			res.Remove("topologyVersion")
@@ -242,7 +242,7 @@ func TestOpQueryIsMasterHelloOk(t *testing.T) {
 }
 
 func TestOpQueryHello(tt *testing.T) {
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/955")
 
 	tt.Parallel()
 
@@ -272,7 +272,7 @@ func TestOpQueryHello(tt *testing.T) {
 	assert.IsType(t, time.Time{}, localTime)
 	res.Remove("localTime")
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 	res.Remove("topologyVersion")
 	res.Remove("hosts")
 	res.Remove("setName")

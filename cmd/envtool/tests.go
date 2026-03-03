@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ import (
 	otelcodes "go.opentelemetry.io/otel/codes"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/observability"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/observability"
 )
 
 // testEvent represents a single event emitted by `go test -json` or `go build -json`.
@@ -310,7 +310,7 @@ func runGoTest(runCtx context.Context, opts *runGoTestOpts) (resErr error) {
 	}
 
 	runCtx, runSpan := otel.Tracer("").Start(runCtx, "envtool.runGoTest")
-	runSpan.SetAttributes(otelattribute.String("db.ferretdb.envtool.total_tests", totalTests))
+	runSpan.SetAttributes(otelattribute.String("db.docdb.envtool.total_tests", totalTests))
 	defer runSpan.End()
 
 	d, cleanup, err := startGoTest(runCtx, opts.args, opts.rawPrefix, opts.logger)

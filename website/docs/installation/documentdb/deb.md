@@ -6,7 +6,7 @@ sidebar_position: 3
 
 FerretDB uses PostgreSQL with [DocumentDB extension](https://github.com/documentdb/documentdb) as a database engine.
 
-We provide different DocumentDB `.deb` packages for various deployments on our [release page](https://github.com/FerretDB/documentdb/releases/).
+We provide different DocumentDB `.deb` packages for various deployments on our [release page](https://github.com/hanzoai/docdb/releases/).
 
 - For most use cases, we recommend using the production package (e.g., `documentdb.deb`).
 - For debugging purposes, use the development package (contains either `-dev` or `-dbgsym` suffix e.g., `documentdb-dev.deb`/`documentdb-dbgsym.deb`).
@@ -30,7 +30,7 @@ Ensure to replace `/path/to/documentdb.deb` with the actual path and filename of
 Once installed, update your `postgresql.conf` to load the extension libraries on startup into the default `postgres` database.
 Add the following lines to `postgresql.conf`:
 
-<!-- Keep in sync with https://github.com/FerretDB/documentdb/blob/ferretdb/ferretdb_packaging/10-preload.sh -->
+<!-- Keep in sync with https://github.com/hanzoai/docdb/blob/hanzoai/docdb_packaging/10-preload.sh -->
 
 ```text
 shared_preload_libraries                      = 'pg_cron,pg_documentdb_core,pg_documentdb'
@@ -57,11 +57,11 @@ Then create the extension by running the following SQL command within the `postg
 CREATE EXTENSION documentdb CASCADE;
 ```
 
-You can now go ahead and set up FerretDB by following [this installation guide](../ferretdb/deb.md).
+You can now go ahead and set up FerretDB by following [this installation guide](../docdb/deb.md).
 
 ## Updating to a new version
 
-Before [updating to a new FerretDB release](../ferretdb/docker.md#updating-to-a-new-version), it is critical to install the matching DocumentDB package first.
+Before [updating to a new FerretDB release](../docdb/docker.md#updating-to-a-new-version), it is critical to install the matching DocumentDB package first.
 
 The following steps are critical to ensuring a successful update.
 

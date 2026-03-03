@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestFindAndModifyEmptyCollectionName(t *testing.T) {
@@ -75,7 +75,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 		err        *mongo.CommandError // required
 		altMessage string              // optional, alternative error message
 
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"UpsertAndRemove": {
 			command: bson.D{
@@ -150,7 +150,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 			},
 			altMessage: `Cannot create field 'foo' in element ` +
 				`{v: [ { foo: [ { bar: "hello" }, { bar: "world" } ] } ]}`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"SetImmutableID": {
 			command: bson.D{
@@ -201,7 +201,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 					`({v: [ { foo: [ { bar: "hello" }, { bar: "world" } ] } ]})`,
 			},
 			altMessage:       "cannot use path 'v.-1' to traverse the document",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"RenameUnsuitableValue": {
 			command: bson.D{
@@ -242,7 +242,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 			},
 			altMessage: `Cannot create field 'foo' in element ` +
 				`{v: [ { foo: [ { bar: "hello" }, { bar: "world" } ] } ]}`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"IncNonNumeric": {
 			command: bson.D{
@@ -305,7 +305,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 			},
 			altMessage: `Cannot create field 'foo' in element ` +
 				`{v: [ { foo: [ { bar: "hello" }, { bar: "world" } ] } ]}`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"MinUnsuitableValue": {
 			command: bson.D{
@@ -321,7 +321,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 			},
 			altMessage: `Cannot create field 'foo' in element ` +
 				`{v: [ { foo: [ { bar: "hello" }, { bar: "world" } ] } ]}`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"MulTypeMismatch": {
 			command: bson.D{
@@ -334,7 +334,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 				Message: `Cannot multiply with non-numeric argument: {v: "string"}`,
 			},
 			altMessage:       `Cannot multiply with non-numeric argument: { v: "string" }`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"MulTypeMismatchNonExistent": {
 			command: bson.D{
@@ -362,7 +362,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 			},
 			altMessage: `Cannot create field 'foo' in element ` +
 				`{v: [ { foo: [ { bar: "hello" }, { bar: "world" } ] } ]}`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/320",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"MulNonNumeric": {
 			command: bson.D{
@@ -469,8 +469,8 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			command := bson.D{{"findAndModify", collection.Name()}}

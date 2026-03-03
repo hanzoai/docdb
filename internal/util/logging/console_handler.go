@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import (
 
 	"golang.org/x/term"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // timeLayout is the format of date time used by the console handler.

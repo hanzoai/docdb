@@ -157,7 +157,7 @@ Body diff:
 
 ### Response metrics
 
-Metrics are captured and written to standard output (`stdout`) upon exiting in [Debug builds](https://pkg.go.dev/github.com/FerretDB/FerretDB/build/version#hdr-Debug_builds).
+Metrics are captured and written to standard output (`stdout`) upon exiting in [Debug builds](https://pkg.go.dev/github.com/hanzoai/docdb/build/version#hdr-Debug_builds).
 This is a useful way to quickly determine what commands are not implemented for the client requests sent by your application.
 In the metrics provided below, we can observe that the `$first` accumulator operator was invoked 18 times within the aggregate command, and the `findAndModify` command was executed 6 times with a `fields` projection document.
 Both of these operations resulted in `result="NotImplemented"`.
@@ -189,7 +189,7 @@ ferretdb_client_responses_total{argument="unknown",command="update",opcode="OP_M
 
 ### Other tools
 
-We also have a fork of the Amazon DocumentDB Compatibility Tool [here](https://github.com/FerretDB/amazon-documentdb-tools/tree/master/compat-tool).
+We also have a fork of the Amazon DocumentDB Compatibility Tool [here](https://github.com/hanzoai/amazon-documentdb-tools/tree/master/compat-tool).
 The tool examines files to identify queries that use unsupported operators in FerretDB.
 Please note that this tool is not highly accurate and may generate inaccurate reports, as it does not parse query syntax with contextual information about the originating command.
 For example, an unsupported operator might appear within a `find` or `aggregate` command, which the tool does not differentiate.
@@ -199,6 +199,6 @@ Running the tool to check FerretDB compatibility:
 
 ```sh
 # clone the repository and run the compat-tool
-$ git clone https://github.com/FerretDB/amazon-documentdb-tools.git && cd amazon-documentdb-tools/compat-tool
+$ git clone https://github.com/hanzoai/amazon-documentdb-tools.git && cd amazon-documentdb-tools/compat-tool
 $ python3 compat.py --directory=/path/to/myapp --version=FerretDB
 ```

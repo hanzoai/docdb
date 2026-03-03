@@ -101,20 +101,20 @@ ferretdb=>
 
 ### Step 2: Download and install FerretDB
 
-To download FerretDB on Ubuntu, go to the [official releases page of FerretDB](https://github.com/FerretDB/FerretDB/releases).
+To download FerretDB on Ubuntu, go to the [official releases page of FerretDB](https://github.com/hanzoai/docdb/releases).
 FerretDB offers both `amd64` and `arm64` binaries.
 
 Choose the package suitable for your Ubuntu operating system.
 For this tutorial, we are using the `arm64` deb package for FerretDB v1.12.1.
 
 ```sh
-wget https://github.com/FerretDB/FerretDB/releases/download/v1.12.1/ferretdb-arm64.deb
+wget https://github.com/hanzoai/docdb/releases/download/v1.12.1/ferretdb-arm64.deb
 ```
 
 Or you can use `curl` to download the package:
 
 ```sh
-curl -LJO https://github.com/FerretDB/FerretDB/releases/download/v1.12.1/ferretdb-arm64.deb
+curl -LJO https://github.com/hanzoai/docdb/releases/download/v1.12.1/ferretdb-arm64.deb
 ```
 
 From the directory where `ferretdb-arm64.deb` is located, install FerretDB:
@@ -242,7 +242,7 @@ su - ferret
 To create a `systemd` service file, open a new file in the `/etc/systemd/system` directory.
 
 ```sh
-sudo nano /etc/systemd/system/ferretdb.service
+sudo nano /etc/systemd/system/docdb.service
 ```
 
 Add the following content to the file (`User=` should be set to the non-root user):
@@ -318,7 +318,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2023-10-18T21:17:31.774Z: Powered by FerretDB v1.12.1 and PostgreSQL 14.9.
-   2023-10-18T21:17:31.774Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2023-10-18T21:17:31.774Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2023-10-18T21:17:31.774Z: The telemetry state is undecided.
    2023-10-18T21:17:31.774Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.io.
 ------
@@ -399,7 +399,7 @@ Then you can connect to the instance via the connection URI.
 mongodb://localhost:27017/ferretdb
 ```
 
-At present, FerretDB does not support authentication for SQLite, but you can [track its implementation here](https://github.com/FerretDB/FerretDB/issues/3008).
+At present, FerretDB does not support authentication for SQLite, but you can [track its implementation here](https://github.com/hanzoai/docdb/issues/3008).
 
 ```text
 ~$ mongosh "mongodb://username:password@localhost:27017/ferretdb?authMechanism=PLAIN"
@@ -413,7 +413,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2023-10-18T21:17:31.774Z: Powered by FerretDB v1.12.1 and PostgreSQL 14.9.
-   2023-10-18T21:17:31.774Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2023-10-18T21:17:31.774Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2023-10-18T21:17:31.774Z: The telemetry state is undecided.
    2023-10-18T21:17:31.774Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.io.
 ------

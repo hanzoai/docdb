@@ -29,7 +29,7 @@ This release also includes TLS support for proxy mode which means you can now ob
 
 We also made a few changes to our documentation and blog pages to be compatible with [Docusaurus v3](https://docusaurus.io/blog/preparing-your-site-for-docusaurus-v3), and now we've succesfully upgraded to the new version.
 
-Check out the [release notes for other changes in this release.](https://github.com/FerretDB/FerretDB/releases/tag/v1.16.0)
+Check out the [release notes for other changes in this release.](https://github.com/hanzoai/docdb/releases/tag/v1.16.0)
 
 ## Highlights of the year
 
@@ -52,4 +52,4 @@ Of course, there's still so many highlights in 2023 that we can't fit in this po
 None of this would be possible without the unwavering support of the open source community and the FerretDB users.
 Thank for believing in open source and supporting a true open-source MongoDB alternative suitable for many use cases.
 
-If you're just discovering FerretDB, we are always happy to have new members join our community – check [us out on GitHub](https://github.com/FerretDB/FerretDB).
+If you're just discovering FerretDB, we are always happy to have new members join our community – check [us out on GitHub](https://github.com/hanzoai/docdb).

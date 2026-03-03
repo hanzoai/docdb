@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestQueryEvaluationRegex(t *testing.T) {
 	// Move to compat.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1576
+	// TODO https://github.com/hanzoai/docdb/issues/1576
 
 	t.Parallel()
 	ctx, collection := setup.Setup(t, shareddata.Scalars)
@@ -98,8 +98,8 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		skip             string              // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
-		failsForFerretDB string
+		skip             string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		failsForDocDB string
 	}{
 		"TooManyFields": {
 			filter: bson.D{{"$expr", bson.D{{"$type", "v"}, {"$op", "v"}}}},
@@ -109,7 +109,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Message: `An object representing an expression must have exactly one field: { $type: "v", $op: "v" }`,
 			},
 			altMessage:       "An object representing an expression must have exactly one field",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/267",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/267",
 		},
 		"TypeWrongLen": {
 			filter: bson.D{{"$expr", bson.D{{"$type", bson.A{"foo", "bar"}}}}},
@@ -134,7 +134,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "InvalidPipelineOperator",
 				Message: "Unrecognized expression '$non-existent'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"EmptyPath": {
 			filter: bson.D{{"$expr", "$"}},
@@ -143,7 +143,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "Location16872",
 				Message: "'$' by itself is not a valid FieldPath",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/268",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/268",
 		},
 		"EmptyVariable": {
 			filter: bson.D{{"$expr", "$$"}},
@@ -152,7 +152,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "FailedToParse",
 				Message: "empty variable names are not allowed",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/268",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/268",
 		},
 		"InvalidVariable$": {
 			filter: bson.D{{"$expr", "$$$"}},
@@ -177,7 +177,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "InvalidPipelineOperator",
 				Message: "Unrecognized expression '$expr'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"ExpressionWithinField": {
 			filter: bson.D{{"v", bson.D{{"$expr", int32(1)}}}},
@@ -194,7 +194,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "Location16020",
 				Message: "Expression $gt takes exactly 2 arguments. 1 were passed in.",
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1456",
+			skip: "https://github.com/hanzoai/docdb/issues/1456",
 		},
 		"GtOneParameter": {
 			filter: bson.D{{"$expr", bson.D{{"$gt", bson.A{1}}}}},
@@ -203,7 +203,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "Location16020",
 				Message: "Expression $gt takes exactly 2 arguments. 1 were passed in.",
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1456",
+			skip: "https://github.com/hanzoai/docdb/issues/1456",
 		},
 		"GtThreeParameters": {
 			filter: bson.D{{"$expr", bson.D{{"$gt", bson.A{1, 2, 3}}}}},
@@ -212,7 +212,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "Location16020",
 				Message: "Expression $gt takes exactly 2 arguments. 3 were passed in.",
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/1456",
+			skip: "https://github.com/hanzoai/docdb/issues/1456",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -223,8 +223,8 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.filter, "filter must not be nil")

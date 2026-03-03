@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/google/uuid"
 
-	"github.com/FerretDB/FerretDB/v2/internal/clientconn/conninfo"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/resource"
+	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/resource"
 )
 
 // LogicalSessionTimeoutMinutes is the session timeout in minutes.
@@ -133,7 +133,7 @@ func getUserID(ctx context.Context) UserID {
 	var username, db string
 
 	if conv := conninfo.Get(ctx).Conv(); conv != nil {
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 		username = conv.Username()
 		db = "admin"
 	}

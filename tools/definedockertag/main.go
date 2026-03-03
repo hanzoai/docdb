@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -213,24 +213,24 @@ func defineForBranch(owner, repo, branch string) (*result, error) {
 	}
 
 	// forks don't have Quay.io and Docker Hub orgs
-	if owner != "ferretdb" {
+	if owner != "docdb" {
 		return res, nil
 	}
 
 	// we don't have Quay.io and Docker Hub repos for other GitHub repos
-	if repo != "ferretdb" {
+	if repo != "docdb" {
 		return res, nil
 	}
 
-	res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("quay.io/ferretdb/ferretdb-eval-dev:%s", branch))
-	res.evalImages = append(res.evalImages, fmt.Sprintf("quay.io/ferretdb/ferretdb-eval:%s", branch))
-	res.developmentImages = append(res.developmentImages, fmt.Sprintf("quay.io/ferretdb/ferretdb-dev:%s", branch))
-	res.productionImages = append(res.productionImages, fmt.Sprintf("quay.io/ferretdb/ferretdb-dev:%s-prod", branch))
+	res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("quay.io/hanzoai/docdb-eval-dev:%s", branch))
+	res.evalImages = append(res.evalImages, fmt.Sprintf("quay.io/hanzoai/docdb-eval:%s", branch))
+	res.developmentImages = append(res.developmentImages, fmt.Sprintf("quay.io/hanzoai/docdb-dev:%s", branch))
+	res.productionImages = append(res.productionImages, fmt.Sprintf("quay.io/hanzoai/docdb-dev:%s-prod", branch))
 
-	res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("ferretdb/ferretdb-eval-dev:%s", branch))
-	res.evalImages = append(res.evalImages, fmt.Sprintf("ferretdb/ferretdb-eval:%s", branch))
-	res.developmentImages = append(res.developmentImages, fmt.Sprintf("ferretdb/ferretdb-dev:%s", branch))
-	res.productionImages = append(res.productionImages, fmt.Sprintf("ferretdb/ferretdb-dev:%s-prod", branch))
+	res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("hanzoai/docdb-eval-dev:%s", branch))
+	res.evalImages = append(res.evalImages, fmt.Sprintf("hanzoai/docdb-eval:%s", branch))
+	res.developmentImages = append(res.developmentImages, fmt.Sprintf("hanzoai/docdb-dev:%s", branch))
+	res.productionImages = append(res.productionImages, fmt.Sprintf("hanzoai/docdb-dev:%s-prod", branch))
 
 	return res, nil
 }
@@ -247,25 +247,25 @@ func defineForTag(owner, repo string, tags []string) *result {
 	}
 
 	// forks don't have Quay.io and Docker Hub orgs
-	if owner != "ferretdb" {
+	if owner != "docdb" {
 		return res
 	}
 
 	// we don't have Quay.io and Docker Hub repos for other GitHub repos
-	if repo != "ferretdb" {
+	if repo != "docdb" {
 		return res
 	}
 
 	for _, t := range tags {
-		res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("quay.io/ferretdb/ferretdb-eval-dev:%s", t))
-		res.evalImages = append(res.evalImages, fmt.Sprintf("quay.io/ferretdb/ferretdb-eval:%s", t))
-		res.developmentImages = append(res.developmentImages, fmt.Sprintf("quay.io/ferretdb/ferretdb-dev:%s", t))
-		res.productionImages = append(res.productionImages, fmt.Sprintf("quay.io/ferretdb/ferretdb:%s", t))
+		res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("quay.io/hanzoai/docdb-eval-dev:%s", t))
+		res.evalImages = append(res.evalImages, fmt.Sprintf("quay.io/hanzoai/docdb-eval:%s", t))
+		res.developmentImages = append(res.developmentImages, fmt.Sprintf("quay.io/hanzoai/docdb-dev:%s", t))
+		res.productionImages = append(res.productionImages, fmt.Sprintf("quay.io/hanzoai/docdb:%s", t))
 
-		res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("ferretdb/ferretdb-eval-dev:%s", t))
-		res.evalImages = append(res.evalImages, fmt.Sprintf("ferretdb/ferretdb-eval:%s", t))
-		res.developmentImages = append(res.developmentImages, fmt.Sprintf("ferretdb/ferretdb-dev:%s", t))
-		res.productionImages = append(res.productionImages, fmt.Sprintf("ferretdb/ferretdb:%s", t))
+		res.evalDevImages = append(res.evalDevImages, fmt.Sprintf("hanzoai/docdb-eval-dev:%s", t))
+		res.evalImages = append(res.evalImages, fmt.Sprintf("hanzoai/docdb-eval:%s", t))
+		res.developmentImages = append(res.developmentImages, fmt.Sprintf("hanzoai/docdb-dev:%s", t))
+		res.productionImages = append(res.productionImages, fmt.Sprintf("hanzoai/docdb:%s", t))
 	}
 
 	return res

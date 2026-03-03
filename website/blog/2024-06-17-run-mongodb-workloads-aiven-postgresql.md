@@ -57,7 +57,7 @@ Using Docker, run the following command to set it up.
 
 ```sh
 docker run -e FERRETDB_POSTGRESQL_URL='postgres://<username>:<password>@<host>:<port>/ferretdb?sslmode=require' -p 27017:27017
- ghcr.io/ferretdb/ferretdb
+ ghcr.io/hanzoai/docdb
 ```
 
 Ensure to replace `<username>`, `<password>`, `<host>`, and `<port>` with the correct credentials.

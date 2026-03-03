@@ -1,0 +1,143 @@
+# syntax=docker/dockerfile:1
+
+# for development releases (`docdb-dev` image)
+
+# While we already know commit and version from commit.txt and version.txt inside image,
+# it is not possible to use them in LABELs for the final image.
+# We need to pass them as build arguments.
+# Defining ARGs there makes them global.
+ARG LABEL_VERSION
+ARG LABEL_COMMIT
+
+
+# prepare stage
+
+# TODO https://github.com/hanzoai/docdb/issues/5449
+FROM --platform=$BUILDPLATFORM golang:1.25.7-bookworm AS development-prepare
+
+# use a single directory for all Go caches to simplify RUN --mount commands below
+ENV GOPATH=/cache/gopath
+ENV GOCACHE=/cache/gocache
+ENV GOMODCACHE=/cache/gomodcache
+
+# remove ",direct"
+ENV GOPROXY=https://proxy.golang.org
+
+COPY go.mod go.sum /src/
+
+WORKDIR /src
+
+RUN --mount=type=cache,target=/cache <<EOF
+set -ex
+
+go mod download
+go mod verify
+EOF
+
+
+# build stage
+
+# TODO https://github.com/hanzoai/docdb/issues/5449
+FROM golang:1.25.7-bookworm AS development-build
+
+ARG TARGETARCH
+
+ARG LABEL_VERSION
+ARG LABEL_COMMIT
+RUN test -n "$LABEL_VERSION"
+RUN test -n "$LABEL_COMMIT"
+
+# use the same directories for Go caches as above
+ENV GOPATH=/cache/gopath
+ENV GOCACHE=/cache/gocache
+ENV GOMODCACHE=/cache/gomodcache
+
+# modules are already downloaded
+ENV GOPROXY=off
+
+# see .dockerignore
+WORKDIR /src
+COPY . .
+
+# to add a dependency
+COPY --from=development-prepare /src/go.mod /src/go.sum /src/
+
+RUN --mount=type=cache,target=/cache <<EOF
+set -ex
+
+git status
+
+# Do not raise without providing separate builds with those values
+# because higher versions are problematic for some virtualization platforms and older hardware.
+export GOAMD64=v1
+export GOARM64=v8.0
+
+export CGO_ENABLED=1
+
+# Disable race detector on arm64 due to https://github.com/golang/go/issues/29948
+# (and that happens on GitHub-hosted Actions runners).
+RACE=false
+if test "$TARGETARCH" = "amd64"
+then
+    RACE=true
+fi
+
+go env
+
+# Do not trim paths to make debugging with delve easier.
+
+# check if stdlib was cached
+go install -v -race=$RACE std
+
+go build -v -o=bin/docdb -race=$RACE -tags=docdb_dev -coverpkg=./... ./cmd/docdb
+
+go version -m bin/docdb
+bin/docdb --version
+EOF
+
+
+# stage for binary only
+
+FROM scratch AS development-binary
+
+COPY --from=development-build /src/bin/docdb /docdb
+
+
+# final stage
+
+# TODO https://github.com/hanzoai/docdb/issues/5449
+FROM golang:1.25.7-bookworm AS development
+
+ENV GOCOVERDIR=/tmp/cover
+ENV GORACE=halt_on_error=1,history_size=2
+
+RUN mkdir /tmp/cover
+
+COPY --from=development-build /src/bin/docdb /docdb
+
+ENTRYPOINT [ "/docdb" ]
+
+HEALTHCHECK --interval=1m --timeout=5s --retries=1 --start-period=30s --start-interval=5s \
+  CMD ["/docdb", "ping"]
+
+WORKDIR /
+VOLUME /state
+EXPOSE 27017 27018 8088
+
+# don't forget to update documentation if you change defaults
+ENV DOCDB_LISTEN_ADDR=:27017
+# ENV DOCDB_LISTEN_TLS=:27018
+ENV DOCDB_DEBUG_ADDR=:8088
+ENV DOCDB_STATE_DIR=/state
+
+ARG LABEL_VERSION
+ARG LABEL_COMMIT
+
+# TODO https://github.com/hanzoai/docdb/issues/2212
+LABEL org.opencontainers.image.description="A truly Open Source MongoDB alternative (development image)"
+LABEL org.opencontainers.image.revision="${LABEL_COMMIT}"
+LABEL org.opencontainers.image.source="https://github.com/hanzoai/docdb"
+LABEL org.opencontainers.image.title="DocDB (development image)"
+LABEL org.opencontainers.image.url="https://www.docdb.hanzo.ai/"
+LABEL org.opencontainers.image.vendor="DocDB Inc."
+LABEL org.opencontainers.image.version="${LABEL_VERSION}"

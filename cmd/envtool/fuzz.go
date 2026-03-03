@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ func copyFile(src, dst string) error {
 	return nil
 }
 
-// fuzzGeneratedCorpus returns $GOCACHE/fuzz/github.com/FerretDB/FerretDB/v2,
+// fuzzGeneratedCorpus returns $GOCACHE/fuzz/github.com/hanzoai/docdb,
 // ensuring that this directory exists.
 func fuzzGeneratedCorpus() (string, error) {
 	b, err := exec.Command("go", "env", "GOCACHE").Output()
@@ -76,7 +76,7 @@ func fuzzGeneratedCorpus() (string, error) {
 		return "", lazyerrors.Error(err)
 	}
 
-	path := filepath.Join(string(bytes.TrimSpace(b)), "fuzz", "github.com", "FerretDB", "FerretDB", "v2")
+	path := filepath.Join(string(bytes.TrimSpace(b)), "fuzz", "github.com", "DocDB", "DocDB", "v2")
 
 	if _, err = os.Stat(path); err != nil {
 		if errors.Is(err, fs.ErrNotExist) {

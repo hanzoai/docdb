@@ -36,7 +36,7 @@ As with any database, before moving to production, please verify if it is suitab
 
 See our [public roadmap](https://github.com/orgs/FerretDB/projects/2/views/1),
 lists of [known differences and supported commands](migration/compatibility.md),
-and [contributing guidelines](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md).
+and [contributing guidelines](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md).
 
 :::tip
 New to FerretDB?
@@ -44,7 +44,7 @@ New to FerretDB?
 See our:
 
 - [Evaluation setup guide for quick testing and experiments](installation/evaluation.md)
-- [FerretDB installation](installation/ferretdb/)
+- [FerretDB installation](installation/docdb/)
 - [DocumentDB installation](installation/documentdb/)
 - [Usage guides](usage/)
 
@@ -61,7 +61,7 @@ Please check out our [compatible applications](./compatible-applications/index.m
 - Twitter: [@ferret_db](https://twitter.com/ferret_db).
 - Mastodon: [@ferretdb@techhub.social](https://techhub.social/@ferretdb).
 - [Slack chat](https://slack.ferretdb.io/) for quick questions.
-- [GitHub Discussions](https://github.com/FerretDB/FerretDB/discussions) for longer topics.
-- [GitHub Issues](https://github.com/FerretDB/FerretDB/issues) for bugs and missing features.
+- [GitHub Discussions](https://github.com/hanzoai/docdb/discussions) for longer topics.
+- [GitHub Issues](https://github.com/hanzoai/docdb/issues) for bugs and missing features.
 
 If you want to contact FerretDB Inc., please use [this form](https://www.ferretdb.com/contact/).

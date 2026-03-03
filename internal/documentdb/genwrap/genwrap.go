@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 func main() {

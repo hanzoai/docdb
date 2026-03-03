@@ -222,4 +222,4 @@ This process includes deserializing BSON and mapping it to PJSON, and finally st
 
 For our community contributors and users, understanding how we convert BSON data in MongoDB to JSONB of PostgreSQL helps them gain more insight into how FerretDB works.
 
-To start contributing to FerretDB, read our [contribution guidelines](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md).
+To start contributing to FerretDB, read our [contribution guidelines](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md).

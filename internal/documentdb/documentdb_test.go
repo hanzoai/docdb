@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,19 +20,19 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wiretest"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wiretest"
 	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb/documentdb_api"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil/teststress"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/state"
+	"github.com/hanzoai/docdb/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/testutil/teststress"
 )
 
 // testPool tries to create a new pool of PostgreSQL connections and use it.
@@ -247,7 +247,7 @@ func TestWithConn(t *testing.T) {
 
 	defer pool.Close()
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/5446
+	// TODO https://github.com/hanzoai/docdb/issues/5446
 	teststress.Stress(t, func(ready chan<- struct{}, start <-chan struct{}) {
 		ready <- struct{}{}
 

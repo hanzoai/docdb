@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import "context"
 
 // The only schema we should be using is documentdb_api.
 // See also:
-// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/143
+// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/143
 //
 // We use documentdb_api_catalog schema for `explain` command.
 //

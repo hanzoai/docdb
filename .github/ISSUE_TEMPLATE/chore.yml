@@ -3,14 +3,14 @@
 
 name: Chore
 description: Code maintenance improvements.
-assignees: ["ferretdb-bot"]
+assignees: ["docdb-bot"]
 labels: ["code/chore", "not ready"]
 body:
   - type: markdown
     attributes:
       value: >
         Thanks for taking the time to fill out this form!
-        Please check if a similar issue is [already filed](https://github.com/FerretDB/FerretDB/issues).
+        Please check if a similar issue is [already filed](https://github.com/hanzoai/docdb/issues).
   - type: textarea
     id: what
     attributes:

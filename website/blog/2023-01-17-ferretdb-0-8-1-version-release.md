@@ -70,7 +70,7 @@ The biggest change is that addition of the FerretDB blog which was built on Docu
 We've added a section for CLI flags and environment variables.
 On top of that, we've reformatted our documentation setup to ensure that the deployment URL is visible in logs and can be previewed, and we also added comments and warnings about Git LFS.
 
-To learn about other changes on FerretDB 0.8.1, please read [our release notes](https://github.com/FerretDB/FerretDB/releases/tag/v0.8.1).
+To learn about other changes on FerretDB 0.8.1, please read [our release notes](https://github.com/hanzoai/docdb/releases/tag/v0.8.1).
 
 As always, we appreciate all our users, supporters, and the entire community that has been a part of the journey all to this moment.
 You've all played a role in the growth of FerretDB, and we're excited to continue growing FerretDB because of your unwavering support.

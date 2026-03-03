@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import (
 	"slices"
 	"time"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // addToZip adds a new file to the zip archive, adding encountered errors to errs.
@@ -85,7 +85,7 @@ func filterExpvar(ctx context.Context, r io.ReadCloser, l *slog.Logger) io.ReadC
 // archiveHandler returns a handler that creates a zip archive with various debug information.
 func archiveHandler(l *slog.Logger) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
-		name := fmt.Sprintf("ferretdb-%s.zip", time.Now().Format("2006-01-02-15-04-05"))
+		name := fmt.Sprintf("docdb-%s.zip", time.Now().Format("2006-01-02-15-04-05"))
 
 		rw.Header().Set("Content-Type", "application/zip")
 		rw.Header().Set("Content-Disposition", "attachment; filename="+name)

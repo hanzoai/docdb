@@ -1,8 +1,8 @@
 // Use separate (sub-)module due to requiring an earlier version of module github.com/getkin/kin-openapi.
 // https://github.com/cloudwego/eino#dependencies
-module github.com/FerretDB/FerretDB/v2/tools/mcphost
+module github.com/hanzoai/docdb/v2/tools/mcphost
 
-go 1.25
+go 1.26
 
 toolchain go1.25.7
 

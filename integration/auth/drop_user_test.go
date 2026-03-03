@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestDropUserCommand(t *testing.T) {
@@ -32,7 +32,7 @@ func TestDropUserCommand(t *testing.T) {
 	s := setup.SetupWithOpts(t, nil)
 	ctx, db := s.Ctx, s.Collection.Database()
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	_ = db.RunCommand(ctx, bson.D{{"dropUser", "a_user"}})
 
 	errcmd := db.RunCommand(ctx, bson.D{ // avoid data race with and shadowing of err in parallel subtests below
@@ -48,7 +48,7 @@ func TestDropUserCommand(t *testing.T) {
 		expected         bson.D
 		err              *mongo.CommandError
 		altMessage       string
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NotFound": {
 			username: "not_found_user",
@@ -57,22 +57,22 @@ func TestDropUserCommand(t *testing.T) {
 				Name:    "UserNotFound",
 				Message: fmt.Sprintf("User 'not_found_user@%s' not found", db.Name()),
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5323",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5323",
 		},
 		"Success": {
 			username: "a_user",
 			expected: bson.D{
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 	}
 
 	for name, tc := range testCases {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(t, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(t, tc.failsForDocDB)
 			}
 
 			tt.Parallel()

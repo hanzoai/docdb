@@ -40,7 +40,7 @@ jobs:
       contents: read
 
     steps:
-      # TODO https://github.com/FerretDB/github-actions/issues/211
+      # TODO https://github.com/hanzoai/github-actions/issues/211
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -48,7 +48,7 @@ jobs:
           lfs: false # LFS is used only by website
 
       - name: Setup Go
-        uses: FerretDB/github-actions/setup-go@main
+        uses: hanzoai/github-actions/setup-go@main
         with:
           cache-key: format
 

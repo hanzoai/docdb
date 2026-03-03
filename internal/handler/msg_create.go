@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,16 +21,16 @@ import (
 	"unicode/utf8"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb/documentdb_api"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
 )
 
 // collectionNameRe validates collection names.
-// TODO https://github.com/FerretDB/FerretDB/issues/4879
+// TODO https://github.com/hanzoai/docdb/issues/4879
 var collectionNameRe = regexp.MustCompile("^[^\\.$\x00][^$\x00]{0,234}$")
 
 // msgCreate implements `create` command.

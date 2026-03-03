@@ -63,7 +63,7 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb
+    image: ghcr.io/hanzoai/docdb
     restart: on-failure
     ports:
       - 27017:27017
@@ -160,6 +160,6 @@ When moving away from MongoDB to adopt FerretDB, knowing that you can use the sa
 MongoDB GUI applications like MajorM are very useful when managing large amounts of data.
 They offer users simple, and engaging UI, making it easy to run queries in FerretDB, and we can't wait for you to try them out.
 
-If you're interested in learning more about the FerretDB project, check [our GitHub repo here](https://github.com/FerretDB/FerretDB).
+If you're interested in learning more about the FerretDB project, check [our GitHub repo here](https://github.com/hanzoai/docdb).
 
 Feel free to message us on any of [our community channels](https://docs.ferretdb.io/#community) if you have any questions, suggestions, or interest in FerretDB – we look forward to hearing from you.

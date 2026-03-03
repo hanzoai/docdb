@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 )
 
 // bsonHexPrefix is the prefix for BSONHEX type.

@@ -10,7 +10,7 @@ tags: [release]
 
 ![FerretDB v0.9.3](/img/blog/ferretdb-v0.9.3.jpg)
 
-We are thrilled to announce the release of [FerretDB v0.9.3](https://github.com/FerretDB/FerretDB/releases/tag/v0.9.3), which includes exciting new features and improvements, and we can't wait for you to try it out.
+We are thrilled to announce the release of [FerretDB v0.9.3](https://github.com/hanzoai/docdb/releases/tag/v0.9.3), which includes exciting new features and improvements, and we can't wait for you to try it out.
 
 <!--truncate-->
 
@@ -98,13 +98,13 @@ One of our contributors [@yu-re-ka](https://github.com/yu-re-ka) helped fixed `s
 
 As part of the changes in this release, we've relaxed validation rules to enable the use of collection names that start with `_` and field names with `$` characters.
 We've also allowed pushdown for boolean, date values, and empty strings to the backend.
-Thanks to the efforts of [@lucboj](https://github.com/lucboj) in [this issue](https://github.com/FerretDB/FerretDB/pull/2071), we now have an initial setup for HANA handler, which should enable FerretDB to support [SAP HANA](https://www.sap.com/products/technology-platform/hana.html).
+Thanks to the efforts of [@lucboj](https://github.com/lucboj) in [this issue](https://github.com/hanzoai/docdb/pull/2071), we now have an initial setup for HANA handler, which should enable FerretDB to support [SAP HANA](https://www.sap.com/products/technology-platform/hana.html).
 
 We've improved our documentation to document how telemetry sharing works explicitly.
 We've also updated our supported commands page to reflect all the latest updates and features to FerretDB.
 See [here for more information](https://docs.ferretdb.io/reference/supported-commands/) about all the supported commands in FerretDB.
 
-Please read our release note for a [complete list of changes in this release](https://github.com/FerretDB/FerretDB/releases/tag/v0.9.3).
+Please read our release note for a [complete list of changes in this release](https://github.com/hanzoai/docdb/releases/tag/v0.9.3).
 
 ## Looking Ahead: Beyond FerretDB v.0.9.3
 

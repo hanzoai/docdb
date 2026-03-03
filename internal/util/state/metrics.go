@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
+	"github.com/hanzoai/docdb/build/version"
 )
 
 // metricsCollector exposes provider's state as Prometheus metric.
@@ -80,8 +80,8 @@ func (mc *metricsCollector) Collect(ch chan<- prometheus.Metric) {
 
 	ch <- prometheus.MustNewConstMetric(
 		prometheus.NewDesc(
-			"ferretdb_up",
-			"FerretDB instance state.",
+			"docdb_up",
+			"DocDB instance state.",
 			labels,
 			constLabels,
 		),

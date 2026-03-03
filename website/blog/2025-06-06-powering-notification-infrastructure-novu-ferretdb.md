@@ -49,7 +49,7 @@ Connecting Novu to your FerretDB instance is straightforward, as Novu expects a 
 Here's a step-by-step guide to get you started:
 
 1. **Ensure FerretDB is running:** Make sure your FerretDB instance is active and accessible.
-   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/ferretdb/).
+   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/docdb/).
 2. **Self-host Novu:** Novu offers self-hosting options, typically via Docker or by running individual services.
    You'll need to set up Novu – [refer to Novu's documentation](https://docs.novu.co/community/self-hosting-novu/overview) for detailed instructions.
 3. **Configure Novu's database connection:** When configuring Novu, instead of pointing to a MongoDB instance, update the `.env` file to point to your FerretDB instance.
@@ -198,6 +198,6 @@ By leveraging FerretDB's MongoDB compatibility, you can seamlessly integrate Nov
 
 This synergy exemplifies FerretDB's mission: to enable developers to run their MongoDB workloads in open source, without vendor lock-in or restrictive licenses.
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

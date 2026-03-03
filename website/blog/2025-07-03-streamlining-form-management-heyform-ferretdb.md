@@ -73,7 +73,7 @@ Here's a step-by-step guide to get you started:
          REDIS_PORT: 6379
 
      ferretdb:
-       image: ghcr.io/ferretdb/ferretdb-eval:2
+       image: ghcr.io/hanzoai/docdb-eval:2
        restart: on-failure
        ports:
          - 27017:27017
@@ -236,6 +236,6 @@ This output demonstrates that HeyForm successfully replaces MongoDB with FerretD
 The integration of HeyForm and FerretDB provides a robust, scalable, and fully open-source solution for building and managing online forms.
 By leveraging FerretDB, you can run your entire workloads in open source, without vendor lock-in or restrictive licenses.
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

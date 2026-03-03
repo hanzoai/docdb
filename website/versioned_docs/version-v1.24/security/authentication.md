@@ -65,7 +65,7 @@ services:
       - ./data:/var/lib/postgresql/data
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:1
+    image: ghcr.io/hanzoai/docdb:1
     restart: on-failure
     ports:
       - 27017:27017
@@ -89,14 +89,14 @@ attached to the same Docker network.
 
 ```sh
 docker run --rm -it --network=ferretdb --entrypoint=mongosh \
-  mongo 'mongodb://ferretdb/ferretdb'
+  mongo 'mongodb://hanzoai/docdb'
 ```
 
 A client that specify username and password in MongoDB URI as below is authenticated as `user2`.
 
 ```sh
 docker run --rm -it --network=ferretdb --entrypoint=mongosh \
-  mongo 'mongodb://user2:pass2@ferretdb/ferretdb?authMechanism=PLAIN'
+  mongo 'mongodb://user2:pass2@hanzoai/docdb?authMechanism=PLAIN'
 ```
 
 ## Authentication Handshake
@@ -108,7 +108,7 @@ Some drivers may still use the legacy `hello` command to complete a handshake.
 If you encounter any issues while authenticating with FerretDB, try setting the Stable API version to V1 on the client as this may prevent legacy commands from being used.
 Please refer to your specific driver documentation on how to set this field.
 
-If this does not resolve your issue please file a bug report [here](https://github.com/FerretDB/FerretDB/issues/new?assignees=ferretdb-bot&labels=code%2Fbug%2Cnot+ready&projects=&template=bug.yml).
+If this does not resolve your issue please file a bug report [here](https://github.com/hanzoai/docdb/issues/new?assignees=ferretdb-bot&labels=code%2Fbug%2Cnot+ready&projects=&template=bug.yml).
 
 ## Experimental authentication mode
 
@@ -158,7 +158,7 @@ services:
       - ./data:/var/lib/postgresql/data
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:1
+    image: ghcr.io/hanzoai/docdb:1
     restart: on-failure
     ports:
       - 27017:27017
@@ -178,7 +178,7 @@ You can then start the services with `docker compose up -d`.
 Once the services are up and running, you can connect to the FerretDB instance using the authencation credentials created during the setup.
 
 ```sh
-mongosh "mongodb://user:pass@ferretdb/ferretdb"
+mongosh "mongodb://user:pass@hanzoai/docdb"
 ```
 
 #### Initial authentication setup with SQLite backend
@@ -190,7 +190,7 @@ A typical setup would look like this:
 ```yaml
 services:
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:1
+    image: ghcr.io/hanzoai/docdb:1
     restart: on-failure
     ports:
       - 27017:27017

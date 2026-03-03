@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestFindCommandBatchSize(t *testing.T) {
@@ -44,8 +44,8 @@ func TestFindCommandBatchSize(t *testing.T) {
 
 		firstBatch       primitive.A         // optional, expected firstBatch
 		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"Int": {
 			batchSize:  1,
@@ -67,7 +67,7 @@ func TestFindCommandBatchSize(t *testing.T) {
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
 			altMessage:       "BSON field 'batchSize' value must be >= 0, actual value '-1'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"DoubleZero": {
 			batchSize:  float64(0),
@@ -80,7 +80,7 @@ func TestFindCommandBatchSize(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"DoubleFloor": {
 			batchSize:  1.9,
@@ -116,8 +116,8 @@ func TestFindCommandBatchSize(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			var rest bson.D
@@ -151,7 +151,7 @@ func TestFindCommandBatchSize(t *testing.T) {
 			cursor, ok := v.(bson.D)
 			require.True(t, ok)
 
-			// Do not check the value of cursor id, FerretDB has a different id.
+			// Do not check the value of cursor id, DocDB has a different id.
 			cursorID := cursor.Map()["id"]
 			assert.NotNil(t, cursorID)
 
@@ -176,7 +176,7 @@ func TestFindCommandSingleBatch(t *testing.T) {
 
 		cursorClosed bool                // optional, set true for expecting cursor to be closed
 		err          *mongo.CommandError // optional, expected error from MongoDB
-		altMessage   string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage   string              // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"True": {
 			singleBatch:  true,
@@ -256,7 +256,7 @@ func TestFindCommandExhausted(tt *testing.T) {
 	_, err := collection.InsertMany(ctx, arr)
 	require.NoError(tt, err)
 
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/5445")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/5445")
 
 	var res bson.D
 	err = collection.Database().RunCommand(ctx, bson.D{

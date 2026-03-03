@@ -3,18 +3,18 @@
 
 name: Bug
 description: Some feature works incorrectly.
-assignees: ["ferretdb-bot"]
+assignees: ["docdb-bot"]
 labels: ["code/bug", "not ready"]
 body:
   - type: markdown
     attributes:
       value: >
         Thanks for taking the time to fill out this bug report!
-        Please check if a similar issue is [already filed](https://github.com/FerretDB/FerretDB/issues).
+        Please check if a similar issue is [already filed](https://github.com/hanzoai/docdb/issues).
   - type: textarea
     id: version
     attributes:
-      label: FerretDB, PostgreSQL, and DocumentDB versions
+      label: DocDB, PostgreSQL, and DocumentDB versions
       description: >
         Please add the output of the `serverStatus` command.
       value: |
@@ -30,7 +30,7 @@ body:
       description: |
         For example:
           - **OS**: Ubuntu 24.04 x86_64
-          - **Deployment**: Docker using `ghcr.io/ferretdb/ferretdb:2` image
+          - **Deployment**: Docker using `ghcr.io/hanzoai/docdb:2` image
           - **Deployment details**: Docker version 27.3.1
       value: |
         - **OS**:
@@ -44,7 +44,7 @@ body:
       label: What did you do?
       description: >
         Include MongoDB queries or
-        [pull request with a test script](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md#reporting-a-bug)
+        [pull request with a test script](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md#reporting-a-bug)
         if you can.
     validations:
       required: true
@@ -61,6 +61,6 @@ body:
     attributes:
       label: What did you see instead?
       description: >
-        Please include FerretDB [logs](https://docs.ferretdb.io/configuration/observability/).
+        Please include DocDB [logs](https://docs.docdb.io/configuration/observability/).
     validations:
       required: true

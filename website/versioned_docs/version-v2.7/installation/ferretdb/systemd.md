@@ -31,11 +31,11 @@ This'll open a text editor that'll allow you to override the systemd options of 
 For example, if we want to listen on the Unix domain socket, we could write something like:
 
 ```systemd
-### Editing /etc/systemd/system/ferretdb.service.d/override.conf
+### Editing /etc/systemd/system/docdb.service.d/override.conf
 ### Anything between here and the comment below will become the new contents of the file
 
 [Service]
-Environment="FERRETDB_LISTEN_UNIX=/var/lib/ferretdb/ferretdb.sock"
+Environment="FERRETDB_LISTEN_UNIX=/var/lib/hanzoai/docdb.sock"
 
 ### Lines below this comment will be discarded
 ...

@@ -25,9 +25,9 @@ pull_request_rules:
       - "label = 'blog/engineering'"
     actions:
       request_reviews:
-        users_from_teams: ["@FerretDB/core", "@FerretDB/docs"]
+        users_from_teams: ["@DocDB/core", "@DocDB/docs"]
       comment:
-        message: "Engineering blog posts should be reviewed by @FerretDB/core and @FerretDB/docs."
+        message: "Engineering blog posts should be reviewed by @DocDB/core and @DocDB/docs."
 
   - name: "Request review for marketing blogs posts"
     conditions:

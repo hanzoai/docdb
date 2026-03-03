@@ -8,7 +8,7 @@
 #
 # * We require approval for PRs from first-time contributors. That's a built-in feature for all actions.
 # * For workflows that checkout source code,
-#   we require the `trust` label to be assigned to PRs by FerretDB maintainers after reviewing changes.
+#   we require the `trust` label to be assigned to PRs by DocDB maintainers after reviewing changes.
 #   Only a few trusted people have permission to do that.
 # * Thanks to the way `pull_request_target` trigger works,
 #   PR changes in the workflow itself are not run until they are merged.
@@ -75,9 +75,9 @@ jobs:
       # See the warning at the top of the file.
 
       - name: Setup Go
-        uses: FerretDB/github-actions/setup-go@main
+        uses: hanzoai/github-actions/setup-go@main
         with:
           cache-key: conform-pr
 
       - name: Conform PR
-        uses: FerretDB/github-actions/conform-pr@main
+        uses: hanzoai/github-actions/conform-pr@main

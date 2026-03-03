@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestQueryBadFindType(t *testing.T) {
@@ -153,7 +153,7 @@ func TestQueryBadFindType(t *testing.T) {
 		t.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/241")
 			require.NotNil(t, tc.err, "err must not be nil")
 
 			cmd := bson.D{
@@ -178,7 +178,7 @@ func TestQuerySortErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"SortTypeDouble": {
 			command: bson.D{
@@ -218,7 +218,7 @@ func TestQuerySortErrors(t *testing.T) {
 				Message: `Illegal key in $sort specification: asc: "123"`,
 			},
 			altMessage:       `Illegal key in $sort specification: asc: 123`,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"DoubleValue": {
 			command: bson.D{
@@ -231,7 +231,7 @@ func TestQuerySortErrors(t *testing.T) {
 				Name:    "Location15975",
 				Message: `$sort key ordering must be 1 (for ascending) or -1 (for descending)`,
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"IncorrectIntValue": {
 			command: bson.D{
@@ -244,7 +244,7 @@ func TestQuerySortErrors(t *testing.T) {
 				Name:    "Location15975",
 				Message: `$sort key ordering must be 1 (for ascending) or -1 (for descending)`,
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"ExceedIntValue": {
 			command: bson.D{
@@ -257,7 +257,7 @@ func TestQuerySortErrors(t *testing.T) {
 				Name:    "Location15975",
 				Message: `$sort key ordering must be 1 (for ascending) or -1 (for descending)`,
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -265,8 +265,8 @@ func TestQuerySortErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.command, "command must not be nil")
@@ -289,7 +289,7 @@ func TestQueryMaxTimeMSErrors(t *testing.T) {
 		command bson.D // required, command to run
 
 		err        *mongo.CommandError // required, expected error from MongoDB
-		altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string              // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"BadMaxTimeMSTypeDouble": {
 			command: bson.D{
@@ -399,7 +399,7 @@ func TestQueryMaxTimeMSErrors(t *testing.T) {
 		t.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/243")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/243")
 
 			require.NotNil(t, tc.command, "command must not be nil")
 			require.NotNil(t, tc.err, "err must not be nil")
@@ -652,12 +652,12 @@ func TestQueryShowRecordID(t *testing.T) {
 		showRecordID bool
 
 		nonZeroRecordID  bool // if true, asserts recordID is not zero
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"ShowRecordID": {
 			showRecordID:     true,
 			collection:       collection,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/242",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/242",
 		},
 		"ShowRecordIDFalse": {
 			showRecordID: false,
@@ -669,8 +669,8 @@ func TestQueryShowRecordID(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.collection, "collection must be set")
@@ -746,7 +746,7 @@ func TestQueryShowRecordIDErrors(t *testing.T) {
 		showRecordID any
 
 		err        *mongo.CommandError // optional, expected error from MongoDB
-		altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string              // optional, alternative error message for DocDB, ignored if empty
 		skip       string              // optional, skip test with a specified reason
 	}{
 		"Nil": {
@@ -780,7 +780,7 @@ func TestQueryShowRecordIDErrors(t *testing.T) {
 		t.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/242")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/242")
 
 			require.NotNil(t, tc.err, "err must not be nil")
 

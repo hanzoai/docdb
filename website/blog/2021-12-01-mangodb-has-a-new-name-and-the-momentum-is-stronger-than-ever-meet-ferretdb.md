@@ -17,7 +17,7 @@ The concept was discussed on many forums, such as [Hacker News](https://news.yco
 
 We were thrilled that many of you reached out to us and offered your suggestions and assistance, which we are really grateful for.
 Also, there are already numerous contributors on GitHub who are actively helping us with developing the code.
-[Feel free to join us there!](https://github.com/FerretDB/FerretDB)
+[Feel free to join us there!](https://github.com/hanzoai/docdb)
 
 However, a recurring concern was the name of the project itself.
 This was mentioned on Hacker News and several Reddit threads, and some of you also contacted us directly on the matter.

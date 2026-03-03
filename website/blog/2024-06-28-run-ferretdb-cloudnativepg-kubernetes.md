@@ -178,7 +178,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb:latest
+          image: ghcr.io/hanzoai/docdb:latest
           ports:
             - containerPort: 27017
           env:
@@ -275,7 +275,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2024-06-20T01:40:21.558Z: Powered by FerretDB v1.21.0 and PostgreSQL 16.2.
-   2024-06-20T01:40:21.558Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2024-06-20T01:40:21.558Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2024-06-20T01:40:21.558Z: The telemetry state is undecided.
    2024-06-20T01:40:21.558Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.com.
 ------

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,17 +18,17 @@ import (
 	"context"
 	"testing"
 
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wireclient"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wireclient"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestRefreshSessions(t *testing.T) {

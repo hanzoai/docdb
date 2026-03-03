@@ -37,7 +37,7 @@ Connecting Mongo Express to your FerretDB instance is straightforward.
 Here's what you need to do:
 
 1. **Ensure FerretDB is running**: Make sure your FerretDB instance is active and accessible.
-   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/ferretdb/).
+   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/docdb/).
 2. **Install/run Mongo Express**: Follow the [official documentation for Mongo Express](https://github.com/mongo-express/mongo-express) to install and run it.
    This often involves a simple `npm install` or running a Docker container.
 3. **Configure the connection**: When prompted for connection details in Mongo Express, specify the `ME_CONFIG_MONGODB_URL` environment variable or fill in the connection form with the following details:
@@ -78,6 +78,6 @@ This is just one example of how FerretDB allows you to continue using your prefe
 We're constantly working to expand our integrations and support for various tools.
 Stay tuned for more updates, and feel free to reach out to us if you have any questions or suggestions!
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

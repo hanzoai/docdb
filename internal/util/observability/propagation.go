@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ import (
 
 // commentData represents an operation comment formatted to contain tracing data.
 type commentData struct {
-	FerretDB struct {
+	DocDB struct {
 		TraceID string `json:"traceID"`
 		SpanID  string `json:"spanID"`
-	} `json:"ferretDB"`
+	} `json:"docdb"`
 }
 
 // SpanContextFromComment extracts OpenTelemetry tracing information from an operation comment.
@@ -47,12 +47,12 @@ func SpanContextFromComment(comment string) (oteltrace.SpanContext, error) {
 		return sc, lazyerrors.Error(err)
 	}
 
-	traceID, err := oteltrace.TraceIDFromHex(data.FerretDB.TraceID)
+	traceID, err := oteltrace.TraceIDFromHex(data.DocDB.TraceID)
 	if err != nil {
 		return sc, lazyerrors.Error(err)
 	}
 
-	spanID, err := oteltrace.SpanIDFromHex(data.FerretDB.SpanID)
+	spanID, err := oteltrace.SpanIDFromHex(data.DocDB.SpanID)
 	if err != nil {
 		return sc, lazyerrors.Error(err)
 	}
@@ -74,8 +74,8 @@ func CommentFromSpanContext(sc oteltrace.SpanContext) (string, error) {
 	}
 
 	var data commentData
-	data.FerretDB.TraceID = sc.TraceID().String()
-	data.FerretDB.SpanID = sc.SpanID().String()
+	data.DocDB.TraceID = sc.TraceID().String()
+	data.DocDB.SpanID = sc.SpanID().String()
 
 	comment, err := json.Marshal(data)
 	if err != nil {

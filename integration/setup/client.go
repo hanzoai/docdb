@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,14 +23,14 @@ import (
 	"testing"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wireclient"
+	"github.com/hanzoai/docdb-wire/wireclient"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.opentelemetry.io/contrib/instrumentation/go.mongodb.org/mongo-driver/mongo/otelmongo"
 	"go.opentelemetry.io/otel"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 )
 
 // setClientPaths replaces file names in query parameters with absolute paths.
@@ -78,7 +78,7 @@ func makeClient(ctx context.Context, uri string, disableOtel bool) (*mongo.Clien
 
 	// When too many connections are open, PostgreSQL returns an error,
 	// but this error is hanging (panic in setupClient doesn't immediately stop the test).
-	// TODO https://github.com/FerretDB/FerretDB/issues/3535
+	// TODO https://github.com/hanzoai/docdb/issues/3535
 	// if err = client.Ping(ctx, nil); err != nil {
 	// 	return nil, lazyerrors.Error(err)
 	// }
@@ -104,7 +104,7 @@ func setupClient(tb testing.TB, ctx context.Context, uri string, disableOtel boo
 	q := u.Query()
 
 	// assign non-default values to debug closed connection
-	// TODO https://github.com/FerretDB/FerretDB/issues/1551
+	// TODO https://github.com/hanzoai/docdb/issues/1551
 
 	require.False(tb, q.Has("connectTimeoutMS"))
 	q.Set("connectTimeoutMS", "40000")

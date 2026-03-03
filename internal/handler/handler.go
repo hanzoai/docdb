@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,16 +23,16 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire"
+	"github.com/hanzoai/docdb-wire"
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/FerretDB/FerretDB/v2/internal/clientconn/conninfo"
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/session"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
+	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
+	"github.com/hanzoai/docdb/internal/documentdb"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/handler/session"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/state"
 )
 
 const (
@@ -44,7 +44,7 @@ const (
 
 	// Maximal supported BSON document size (enforced in DocumentDB by BSON_MAX_ALLOWED_SIZE constant).
 	// TODO https://github.com/documentdb/documentdb/issues/67
-	// TODO https://github.com/FerretDB/FerretDB/issues/4930
+	// TODO https://github.com/hanzoai/docdb/issues/4930
 	maxBsonObjectSize = int32(16777216)
 
 	// Maximum size of a batch for inserting data.
@@ -94,7 +94,7 @@ func New(opts *NewOpts) (*Handler, error) {
 	sessionTimeout := time.Duration(session.LogicalSessionTimeoutMinutes) * time.Minute
 
 	// we rely on on it in the `getLog` implementation
-	// TODO https://github.com/FerretDB/FerretDB/issues/4750
+	// TODO https://github.com/hanzoai/docdb/issues/4750
 	_ = opts.L.Handler().(*logging.Handler)
 
 	p, err := documentdb.NewPool(opts.PostgreSQLURL, logging.WithName(opts.L, "pool"), opts.StateProvider)
@@ -215,7 +215,7 @@ func (h *Handler) Handle(ctx context.Context, req *middleware.Request) (*middlew
 
 		resp, err := cmd.handler(ctx, req)
 		if err != nil {
-			// TODO https://github.com/FerretDB/FerretDB/issues/4965
+			// TODO https://github.com/hanzoai/docdb/issues/4965
 			resp = middleware.ResponseErr(req, mongoerrors.Make(ctx, err, "", h.L))
 		}
 
@@ -224,7 +224,7 @@ func (h *Handler) Handle(ctx context.Context, req *middleware.Request) (*middlew
 	case *wire.OpQuery:
 		resp, err := h.CmdQuery(ctx, req)
 		if err != nil {
-			// TODO https://github.com/FerretDB/FerretDB/issues/4965
+			// TODO https://github.com/hanzoai/docdb/issues/4965
 			resp = middleware.ResponseErr(req, mongoerrors.Make(ctx, err, "", h.L))
 		}
 

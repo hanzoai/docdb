@@ -13,7 +13,7 @@ tags: [release]
 ![We are thrilled to announce the general availability (GA) of FerretDB v2.0, a groundbreaking release that delivers a high-performance, fully open-source alternative to MongoDB, ready for production workloads.](/img/blog/ferretdb-v2-ga.png)
 
 We are thrilled to announce the
-[general availability (GA) of FerretDB v2.0](https://github.com/FerretDB/FerretDB/releases/tag/v2.0.0),
+[general availability (GA) of FerretDB v2.0](https://github.com/hanzoai/docdb/releases/tag/v2.0.0),
 a groundbreaking release that delivers a high-performance,
 fully open-source alternative to MongoDB, ready for production workloads.
 
@@ -104,6 +104,6 @@ The best time to share it is _now_!
 ## Get Started Today
 
 FerretDB 2.0 GA is ready to serve your document database needs.
-Visit [our GitHub](https://github.com/FerretDB) and [our website](https://www.ferretdb.com) to download,
+Visit [our GitHub](https://github.com/hanzoai) and [our website](https://www.ferretdb.com) to download,
 contribute, or explore enterprise solutions.
 Embrace the power of open source.

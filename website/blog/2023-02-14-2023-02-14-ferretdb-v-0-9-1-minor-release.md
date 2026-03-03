@@ -22,7 +22,7 @@ We express our sincere gratitude to our community for their continuous support, 
 In recent weeks, we've seen a marked increase in interest and feedback on FerretDB, which is exciting and will further drive our growth.
 
 This blog post only covers a few changes in this release.
-To learn even more, please check here for a [complete list of the changes](https://github.com/FerretDB/FerretDB/releases/tag/v0.9.1) in FerretDB v0.9.1.
+To learn even more, please check here for a [complete list of the changes](https://github.com/hanzoai/docdb/releases/tag/v0.9.1) in FerretDB v0.9.1.
 
 ## New Features
 
@@ -40,7 +40,7 @@ Prior to this release, FerretDB sorted data during these operations, which wasn'
 Additionally, we fixed the `$pop` operator error handling for non-existent path.
 
 All the changes in this release are part of our effort in building the ultimate open-source alternative to MongoDB.
-Please see the [release notes on FerretDB v0.9.1](https://github.com/FerretDB/FerretDB/releases/tag/v0.9.1) for a detailed list of all the changes in this version.
+Please see the [release notes on FerretDB v0.9.1](https://github.com/hanzoai/docdb/releases/tag/v0.9.1) for a detailed list of all the changes in this version.
 
 We're always here to help you get the most out of FerretDB.
 As a result, we encourage our users to share feedback, ask questions, and leave comments.

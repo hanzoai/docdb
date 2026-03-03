@@ -4,7 +4,7 @@ version: 3
 
 vars:
   RACE_FLAG: -race={{and (ne OS "windows") (ne ARCH "arm") (ne ARCH "riscv64")}}
-  BUILD_TAGS: ferretdb_dev
+  BUILD_TAGS: docdb_dev
 
   BENCH_NAME: .
   BENCH_COUNT: 10
@@ -17,13 +17,13 @@ tasks:
     cmds:
       - >
         go test -count=1 -tags={{.BUILD_TAGS}} {{.RACE_FLAG}} -run=TestEnvData
-        -tags=ferretdb_testenvdata .
+        -tags=docdb_testenvdata .
         -target-backend=mongodb
         -target-url='mongodb://username:password@127.0.0.1:47017/'
       - >
         go test -count=1 -tags={{.BUILD_TAGS}} {{.RACE_FLAG}} -run=TestEnvData
-        -tags=ferretdb_testenvdata .
-        -target-backend=ferretdb
+        -tags=docdb_testenvdata .
+        -target-backend=docdb
         -target-url='mongodb://username:password@127.0.0.1:27017/'
 
   integration-gen:
@@ -46,14 +46,14 @@ tasks:
   bench-postgresql:
     desc: "Run benchmarks for `postgresql` backend"
     cmds:
-      # TODO https://github.com/FerretDB/FerretDB/issues/4934
+      # TODO https://github.com/hanzoai/docdb/issues/4934
       # Remove -otel-traces-url='' to reproduce the issue.
       - >
         go test -timeout=0 -run=XXX
         -log-level=error
         -count={{.BENCH_COUNT}} -bench={{.BENCH_NAME}} -benchtime={{.BENCH_TIME}} -bench-docs={{.BENCH_DOCS}} -benchmem
         {{if .BENCH_FLAGS}}{{.BENCH_FLAGS}}{{end}}
-        -target-backend=ferretdb
+        -target-backend=docdb
         -postgresql-url=postgres://username:password@127.0.0.1:5432/postgres
         -otel-traces-url=''
         | tee new-postgresql.txt
@@ -62,7 +62,7 @@ tasks:
   bench-mongodb:
     desc: "Run benchmarks for MongoDB"
     cmds:
-      # TODO https://github.com/FerretDB/FerretDB/issues/4934
+      # TODO https://github.com/hanzoai/docdb/issues/4934
       # Remove -otel-traces-url='' to reproduce the issue.
       - >
         go test -timeout=0 -run=XXX

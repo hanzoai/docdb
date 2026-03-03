@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestCommandsReplication(t *testing.T) {
@@ -32,7 +32,7 @@ func TestCommandsReplication(t *testing.T) {
 
 	for _, command := range []string{"ismaster", "isMaster", "hello"} {
 		t.Run(command, func(tt *testing.T) {
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/955")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/955")
 
 			tt.Parallel()
 

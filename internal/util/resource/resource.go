@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/devbuild"
+	"github.com/hanzoai/docdb/internal/util/devbuild"
 )
 
 // Token is a field of a tracked object, holding the cleanup handle and a cleanup function with message.
@@ -52,7 +52,7 @@ var profilesM sync.Mutex
 
 // profileName return pprof profile name for the given object.
 func profileName(obj any) string {
-	return "FerretDB/" + reflect.TypeOf(obj).Elem().String()
+	return "DocDB/" + reflect.TypeOf(obj).Elem().String()
 }
 
 // Track tracks the lifetime of an object until Untrack is called on it.

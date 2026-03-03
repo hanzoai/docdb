@@ -1,15 +1,15 @@
-module github.com/FerretDB/FerretDB/v2
+module github.com/hanzoai/docdb
 
-go 1.25
+go 1.26
 
 toolchain go1.25.7
 
-// replace github.com/FerretDB/wire => ../wire
+// replace github.com/hanzoai/docdb-wire => ../wire
 
 require (
 	github.com/AlekSi/lazyerrors v0.5.0
 	github.com/AlekSi/pointer v1.2.0
-	github.com/FerretDB/wire v0.1.7
+	github.com/hanzoai/docdb-wire v0.1.7
 	github.com/alecthomas/kong v1.13.0
 	github.com/arl/statsviz v0.8.0
 	github.com/google/uuid v1.6.0

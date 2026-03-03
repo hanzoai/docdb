@@ -31,11 +31,11 @@ That directory is also a Docker volume, so data will be preserved after the cont
 Please note that this change does not affect binaries and `.deb`/`.rpm` packages.
 
 In addition, the new version of FerretDB now offers `linux/arm/v7` binaries, Docker images, and `.deb`/`.rpm` packages.
-[See them here](https://github.com/FerretDB/FerretDB/releases/).
+[See them here](https://github.com/hanzoai/docdb/releases/).
 
 ## Other changes
 
-There were a lot of exciting changes in this release, and while we've not touched on everything in this blog post, you can [find the rest of the changes here](https://github.com/FerretDB/FerretDB/releases/tag/v1.13.0).
+There were a lot of exciting changes in this release, and while we've not touched on everything in this blog post, you can [find the rest of the changes here](https://github.com/hanzoai/docdb/releases/tag/v1.13.0).
 
 In our ongoing efforts to enhance FerretDB performance, this release introduces additional pushdowns for the PostgreSQL backend.
 We've also added a filter pushdown for `_id: <string>` for the SQLite backend.

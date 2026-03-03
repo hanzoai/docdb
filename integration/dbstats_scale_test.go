@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestDBStatsScale(tt *testing.T) {
@@ -33,7 +33,7 @@ func TestDBStatsScale(tt *testing.T) {
 	testCases := map[string]struct { //nolint:vet // for readability
 		scale      any
 		err        mongo.CommandError
-		altMessage string // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"Zero": {
 			scale: int32(0),
@@ -86,7 +86,7 @@ func TestDBStatsScale(tt *testing.T) {
 		tt.Run(name, func(tt *testing.T) {
 			tt.Parallel()
 
-			t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/3852")
+			t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/3852")
 
 			err := collection.Database().RunCommand(ctx, bson.D{{"dbStats", int32(1)}, {"scale", tc.scale}}).Err()
 			require.Error(t, err)

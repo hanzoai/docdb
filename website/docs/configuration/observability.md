@@ -11,7 +11,7 @@ The most recent entries are also available via `getLog` command.
 
 :::note
 
-<!-- https://github.com/FerretDB/FerretDB/issues/3421 -->
+<!-- https://github.com/hanzoai/docdb/issues/3421 -->
 
 Structured log format is not stable yet; field names and formatting of values might change in minor releases.
 :::
@@ -31,7 +31,7 @@ FerretDB provides the following log formats:
 
 There are four logging levels:
 
-<!-- https://github.com/FerretDB/FerretDB/issues/4439 -->
+<!-- https://github.com/hanzoai/docdb/issues/4439 -->
 
 - `error` is used for errors that can't be handled gracefully
   and typically result in client connection being closed;
@@ -40,7 +40,7 @@ There are four logging levels:
 - `info` is used for various information messages;
 - `debug` should only be used for debugging.
 
-The default level is `info`, except for [development builds](https://pkg.go.dev/github.com/FerretDB/FerretDB/v2/build/version#hdr-Development_builds) that default to `debug`.
+The default level is `info`, except for [development builds](https://pkg.go.dev/github.com/hanzoai/docdb/v2/build/version#hdr-Development_builds) that default to `debug`.
 
 :::caution
 `debug`-level messages include complete query and response bodies, full error messages, authentication credentials,
@@ -57,7 +57,7 @@ The format and level can be adjusted by [configuration flags](flags.md#miscellan
 
 ### Docker logs
 
-If Docker was launched with [our quick local setup with Docker Compose](../installation/ferretdb/docker.md#run-production-image),
+If Docker was launched with [our quick local setup with Docker Compose](../installation/docdb/docker.md#run-production-image),
 the following command can be used to fetch the logs.
 
 ```sh
@@ -74,7 +74,7 @@ It can be changed with [`--otel-traces-url` flag](flags.md#miscellaneous).
 
 :::note
 
-<!-- https://github.com/FerretDB/FerretDB/issues/3422 -->
+<!-- https://github.com/hanzoai/docdb/issues/3422 -->
 
 Trace format is not stable yet; attribute names and values might change in minor releases.
 :::
@@ -104,7 +104,7 @@ There is no need to use an external exporter.
 
 :::note
 
-<!-- https://github.com/FerretDB/FerretDB/issues/3420 -->
+<!-- https://github.com/hanzoai/docdb/issues/3420 -->
 
 The set of metrics is not stable yet;
 types, metric and label names, and value formatting might change in minor releases.

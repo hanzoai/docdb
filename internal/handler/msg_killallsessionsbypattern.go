@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ import (
 	"fmt"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/google/uuid"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/session"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/handler/session"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
 )
 
 // msgKillAllSessionsByPattern implements `killAllSessionsByPattern` command.
@@ -106,7 +106,7 @@ func (h *Handler) msgKillAllSessionsByPattern(connCtx context.Context, req *midd
 
 			default:
 				// delete sessions by roles pattern
-				// TODO https://github.com/FerretDB/FerretDB/issues/3974
+				// TODO https://github.com/hanzoai/docdb/issues/3974
 				msg := fmt.Sprintf("BSON field '%s.%s' is an unknown field.", field, k)
 				return nil, mongoerrors.NewWithArgument(mongoerrors.ErrUnknownBsonField, msg, command)
 			}

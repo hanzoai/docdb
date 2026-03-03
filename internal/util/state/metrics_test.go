@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
+	"github.com/hanzoai/docdb/build/version"
 )
 
 func TestMetrics(t *testing.T) {
@@ -53,9 +53,9 @@ func TestMetrics(t *testing.T) {
 		//nolint:lll // it is more readable this way
 		expected := fmt.Sprintf(
 			`
-				# HELP ferretdb_up FerretDB instance state.
-				# TYPE ferretdb_up gauge
-				ferretdb_up{branch=%q,commit=%q,dev="%t",dirty="%t",documentdb="documentdb",package=%q,postgresql="postgres",telemetry="undecided",update_available="false",uuid=%q,version=%q} 1
+				# HELP docdb_up DocDB instance state.
+				# TYPE docdb_up gauge
+				docdb_up{branch=%q,commit=%q,dev="%t",dirty="%t",documentdb="documentdb",package=%q,postgresql="postgres",telemetry="undecided",update_available="false",uuid=%q,version=%q} 1
 			`,
 			info.Branch, info.Commit, info.DevBuild, info.Dirty, info.Package, uuid, info.Version,
 		)
@@ -73,9 +73,9 @@ func TestMetrics(t *testing.T) {
 		//nolint:lll // it is more readable this way
 		expected := fmt.Sprintf(
 			`
-				# HELP ferretdb_up FerretDB instance state.
-				# TYPE ferretdb_up gauge
-				ferretdb_up{branch=%q,commit=%q,dev="%t",dirty="%t",documentdb="documentdb",package=%q,postgresql="postgres",telemetry="undecided",update_available="false",version=%q} 1
+				# HELP docdb_up DocDB instance state.
+				# TYPE docdb_up gauge
+				docdb_up{branch=%q,commit=%q,dev="%t",dirty="%t",documentdb="documentdb",package=%q,postgresql="postgres",telemetry="undecided",update_available="false",version=%q} 1
 			`,
 			info.Branch, info.Commit, info.DevBuild, info.Dirty, info.Package, info.Version,
 		)

@@ -78,7 +78,7 @@ Here's a sample view of a document in the `issues` collection:
 {
   _id: ObjectId('64b7e557921f991a8697d6fd'),
   number: 179,
-  url: 'https://github.com/FerretDB/FerretDB/issues/179',
+  url: 'https://github.com/hanzoai/docdb/issues/179',
   title: 'Support field types validation',
   state: 'OPEN',
   stateReason: '',

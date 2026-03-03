@@ -31,7 +31,7 @@ In this release, we've reorganized `upsert` handling in `update` and `findAndMod
 
 In addition to that, we improved the cleanup logic for capped collections in FerretDB to correctly handle document deletion when collections are configured with a size parameter without a `max` option.
 
-Check out our latest [release notes for the complete list](https://github.com/FerretDB/FerretDB/releases/tag/v1.21.0) of changes in this release.
+Check out our latest [release notes for the complete list](https://github.com/hanzoai/docdb/releases/tag/v1.21.0) of changes in this release.
 
 ## FerretDB v2.0: it's coming!
 

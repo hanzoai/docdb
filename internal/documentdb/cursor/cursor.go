@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/resource"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/resource"
 )
 
 // cursor stores DocumentDB's cursor state.

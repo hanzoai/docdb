@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/tools/go/analysis/analysistest"
 
-	"github.com/FerretDB/FerretDB/v2/tools/github"
+	"github.com/hanzoai/docdb/tools/github"
 )
 
 func TestCheckCommentIssue(t *testing.T) {
