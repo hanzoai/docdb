@@ -46,7 +46,7 @@ Run the FerretDB container using the following command to connect via the `FERRE
 Make sure to replace `<password>`, `<host>`, and `<port>` with your pgEdge connection details.
 
 ```sh
-docker run -e FERRETDB_POSTGRESQL_URL='postgresql://admin:<password>@<host>/ferretdb?sslmode=require' -p 27017:27017 ghcr.io/ferretdb/ferretdb
+docker run -e FERRETDB_POSTGRESQL_URL='postgresql://admin:<password>@<host>/ferretdb?sslmode=require' -p 27017:27017 ghcr.io/hanzoai/docdb
 ```
 
 Connect to FerretDB via `mongosh` using the following connection string:
@@ -67,7 +67,7 @@ For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2024-11-07T15:43:39.663Z: Powered by FerretDB v1.24.0 and PostgreSQL 16.4 on x86_64-pc-linux-gnu, compiled by gcc.
-   2024-11-07T15:43:39.664Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2024-11-07T15:43:39.664Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2024-11-07T15:43:39.664Z: The telemetry state is undecided.
    2024-11-07T15:43:39.664Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.com.
 ------

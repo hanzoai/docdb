@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,16 +23,16 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/FerretDB/gh"
+	"github.com/hanzoai/gh"
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/singlechecker"
 
-	"github.com/FerretDB/FerretDB/v2/tools/github"
+	"github.com/hanzoai/docdb/tools/github"
 )
 
 // todoRE represents correct "// TODO" comment format.
 // It returns url, owner, repo and issue number as submatches.
-var todoRE = regexp.MustCompile(`^// TODO (\Qhttps://github.com/\E(FerretDB|documentdb|yugabyte)/([-\w]+)/issues/(\d+))$`)
+var todoRE = regexp.MustCompile(`^// TODO (\Qhttps://github.com/\E(hanzoai|docdb|yugabyte)/([-\w]+)/issues/(\d+))$`)
 
 // analyzer represents the checkcomments analyzer.
 var analyzer = &analysis.Analyzer{
@@ -47,7 +47,7 @@ func init() {
 	analyzer.Flags.Bool("offline", false, "do not check issues open/closed status")
 	analyzer.Flags.Bool("cache-debug", false, "log cache hits/misses")
 	analyzer.Flags.Bool("client-debug", false, "log GitHub API requests/responses")
-	analyzer.Flags.Bool("skip-private", true, "do not check https://github.com/FerretDB/FerretDB-DocumentDB/issues/XXX URLs")
+	analyzer.Flags.Bool("skip-private", true, "do not check https://github.com/hanzoai/docdb-DocumentDB/issues/XXX URLs")
 }
 
 // main runs the analyzer.
@@ -115,7 +115,7 @@ func run(pass *analysis.Pass) (any, error) {
 					continue
 				}
 
-				if skipPrivate && repo == "FerretDB-DocumentDB" {
+				if skipPrivate && repo == "docdb-internal" {
 					continue
 				}
 

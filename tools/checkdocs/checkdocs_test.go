@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FerretDB/gh"
+	"github.com/hanzoai/gh"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/tools/github"
+	"github.com/hanzoai/docdb/tools/github"
 )
 
 func TestBlogs(t *testing.T) {
@@ -60,13 +60,13 @@ func TestDocs(t *testing.T) {
 }
 
 var fm = bytes.TrimSpace([]byte(`
-slug: using-ferretdb-with-studio-3t
+slug: using-docdb-with-studio-3t
 date: 2023-04-18
-title: Using FerretDB 1.0 with Studio 3T
+title: Using DocDB 1.0 with Studio 3T
 authors: [alex]
 description: >
-	Discover how to use FerretDB 1.0 with Studio 3T, and explore ways to leverage FerretDB for MongoDB GUI applications.
-image: /img/blog/ferretdb-studio3t.png
+	Discover how to use DocDB 1.0 with Studio 3T, and explore ways to leverage DocDB for MongoDB GUI applications.
+image: /img/blog/docdb-studio3t.png
 tags:
 	[
 		tutorial,
@@ -78,8 +78,8 @@ tags:
 	`))
 
 func TestVerifySlug(t *testing.T) {
-	err := verifySlug("2023-04-18-using-ferretdb-with-studio.md", fm)
-	assert.EqualError(t, err, `slug "using-ferretdb-with-studio-3t" doesn't match the file name`)
+	err := verifySlug("2023-04-18-using-docdb-with-studio.md", fm)
+	assert.EqualError(t, err, `slug "using-docdb-with-studio-3t" doesn't match the file name`)
 }
 
 func TestVerifyDateNotPresent(t *testing.T) {
@@ -116,26 +116,26 @@ func TestCheckSupportedCommands(t *testing.T) {
 		ExpectedOutput string
 	}{
 		"OpenIssueLink": {
-			Payload:        "<!-- TODO https://github.com/FerretDB/FerretDB/issues/178 -->",
+			Payload:        "<!-- TODO https://github.com/hanzoai/docdb/issues/178 -->",
 			ExpectedOutput: "",
 		},
 
 		"ClosedIssueLink": {
-			Payload:        "<!-- TODO https://github.com/FerretDB/FerretDB/issues/1 -->",
-			ExpectedOutput: "linked issue https://github.com/FerretDB/FerretDB/issues/1 is closed in example.md\n",
+			Payload:        "<!-- TODO https://github.com/hanzoai/docdb/issues/1 -->",
+			ExpectedOutput: "linked issue https://github.com/hanzoai/docdb/issues/1 is closed in example.md\n",
 		},
 
 		"AnyLabelClosedIssue": {
-			Payload:        "[IssueLabel](https://github.com/FerretDB/FerretDB/issues/1)",
-			ExpectedOutput: "linked issue https://github.com/FerretDB/FerretDB/issues/1 is closed in example.md\n",
+			Payload:        "[IssueLabel](https://github.com/hanzoai/docdb/issues/1)",
+			ExpectedOutput: "linked issue https://github.com/hanzoai/docdb/issues/1 is closed in example.md\n",
 		},
 		"ClosedIssue": {
-			Payload:        "https://github.com/FerretDB/FerretDB/issues/1",
-			ExpectedOutput: "linked issue https://github.com/FerretDB/FerretDB/issues/1 is closed in example.md\n",
+			Payload:        "https://github.com/hanzoai/docdb/issues/1",
+			ExpectedOutput: "linked issue https://github.com/hanzoai/docdb/issues/1 is closed in example.md\n",
 		},
 		"IncorrectIssueNumber": {
-			Payload:        "https://github.com/FerretDB/FerretDB/issues/0",
-			ExpectedOutput: "incorrect issue number: https://github.com/FerretDB/FerretDB/issues/0 in example.md\n",
+			Payload:        "https://github.com/hanzoai/docdb/issues/0",
+			ExpectedOutput: "incorrect issue number: https://github.com/hanzoai/docdb/issues/0 in example.md\n",
 		},
 		"DocumentDBIssue": {
 			Payload:        "An example issue is https://github.com/documentdb/documentdb/issues/1.",

@@ -47,7 +47,7 @@ Another significant advantage of FerretDB is that you get to use the same syntax
 Besides, you can also query it with SQL in PostgreSQL (in some cases, you may also need intricate knowledge of JSONB for more advanced queries).
 
 At present, FerretDB is compatible with the most common MongoDB use cases and plans on improving and adding more features as needs arise.
-Plus, we've just recently released [FerretDB version 1.5.0](https://github.com/FerretDB/FerretDB/releases/tag/v1.5.0), which includes beta support for SQLite backend.
+Plus, we've just recently released [FerretDB version 1.5.0](https://github.com/hanzoai/docdb/releases/tag/v1.5.0), which includes beta support for SQLite backend.
 
 ## Setting up FerretDB on top of StackGres
 
@@ -275,7 +275,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb
+          image: ghcr.io/hanzoai/docdb
           ports:
             - containerPort: 27017
           env:

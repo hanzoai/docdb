@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestAggregateAddFieldsErrors(t *testing.T) {
@@ -40,7 +40,7 @@ func TestAggregateAddFieldsErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NotDocument": {
 			pipeline: bson.A{
@@ -62,7 +62,7 @@ func TestAggregateAddFieldsErrors(t *testing.T) {
 				Name:    "Location16410",
 				Message: "Invalid $addFields :: caused by :: FieldPath field names may not start with '$'. Consider using $getField or $setField.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -70,8 +70,8 @@ func TestAggregateAddFieldsErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.pipeline, "pipeline must not be nil")
@@ -92,7 +92,7 @@ func TestAggregateAddFieldsErrors(t *testing.T) {
 func TestAggregateGroupSumDecimalDouble(tt *testing.T) {
 	tt.Parallel()
 
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/1056")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/1056")
 
 	ctx, collection := setup.Setup(t)
 
@@ -127,9 +127,9 @@ func TestAggregateGroupErrors(t *testing.T) {
 		pipeline bson.A // required, aggregation pipeline stages
 
 		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		skip             string              // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		skip             string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		failsForDocDB string
 	}{
 		"UnaryOperatorSum": {
 			pipeline: bson.A{
@@ -141,7 +141,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Message: "The $sum accumulator is a unary operator",
 			},
 			altMessage:       "The $sum accumulator is a unary operator",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/389",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"TypeEmpty": {
 			pipeline: bson.A{
@@ -152,7 +152,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "Location40234",
 				Message: "The field 'v' must be an accumulator object",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/389",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"TwoOperators": {
 			pipeline: bson.A{
@@ -164,7 +164,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Message: "An object representing an expression must have exactly one field: { $type: 42, $op: 42 }",
 			},
 			altMessage:       "An object representing an expression must have exactly one field",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"TypeInvalidLen": {
 			pipeline: bson.A{
@@ -185,7 +185,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "InvalidPipelineOperator",
 				Message: "Unrecognized expression '$non-existent'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"SumEmptyExpression": {
 			pipeline: bson.A{
@@ -198,7 +198,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "Location16872",
 				Message: "'$' by itself is not a valid FieldPath",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"SumEmptyVariable": {
 			pipeline: bson.A{
@@ -211,7 +211,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "FailedToParse",
 				Message: "empty variable names are not allowed",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"SumDollarVariable": {
 			pipeline: bson.A{
@@ -234,7 +234,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "InvalidPipelineOperator",
 				Message: "Unrecognized expression '$non-existent'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDExpressionDuplicateFields": {
 			pipeline: bson.A{
@@ -250,7 +250,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "Location16406",
 				Message: "duplicate field name specified in object literal: { v: \"$v\", v: \"$non-existent\" }",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDExpressionEmptyPath": {
 			pipeline: bson.A{
@@ -263,7 +263,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "Location16872",
 				Message: "'$' by itself is not a valid FieldPath",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDExpressionEmptyVariable": {
 			pipeline: bson.A{
@@ -276,7 +276,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "FailedToParse",
 				Message: "empty variable names are not allowed",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/390",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDExpressionInvalidVariable$": {
 			pipeline: bson.A{
@@ -314,7 +314,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "Location17276",
 				Message: "Use of undefined variable: s",
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2275",
+			skip: "https://github.com/hanzoai/docdb/issues/2275",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -326,8 +326,8 @@ func TestAggregateGroupErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.pipeline, "pipeline must not be nil")
@@ -351,8 +351,8 @@ func TestAggregateProjectErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		skip             string              // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/1086
-		failsForFerretDB string
+		skip             string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		failsForDocDB string
 	}{
 		"EmptyPipeline": {
 			pipeline: bson.A{
@@ -363,7 +363,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location51272",
 				Message: "Invalid $project :: caused by :: projection specification must have at least one field",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"EmptyProjectionField": {
 			pipeline: bson.A{
@@ -374,7 +374,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location51270",
 				Message: "Invalid $project :: caused by :: An empty sub-projection is not a valid value. Found empty object at path",
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/2633",
+			skip: "https://github.com/hanzoai/docdb/issues/2633",
 		},
 		"EmptyKey": {
 			pipeline: bson.A{
@@ -386,7 +386,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"FieldPath cannot be constructed with empty string",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"EmptyPath": {
 			pipeline: bson.A{
@@ -397,7 +397,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location15998",
 				Message: "Invalid $project :: caused by :: FieldPath field names may not be empty strings.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ExcludeInclude": {
 			pipeline: bson.A{
@@ -409,7 +409,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: Cannot do inclusion on field bar in exclusion projection",
 			},
 			altMessage:       "Cannot do inclusion on field bar in exclusion projection",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"IncludeExclude": {
 			pipeline: bson.A{
@@ -421,7 +421,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: Cannot do exclusion on field bar in inclusion projection",
 			},
 			altMessage:       "Cannot do exclusion on field bar in inclusion projection",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorMultiple": {
 			pipeline: bson.A{
@@ -433,7 +433,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"Cannot use positional projection in aggregation projection",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorMiddle": {
 			pipeline: bson.A{
@@ -454,7 +454,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				"for example: a.b.$. If the query previously used a form " +
 				"like a.b.$.d, remove the parts following the '$' and " +
 				"the results will be equivalent.",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorWrongLocations": {
 			pipeline: bson.A{
@@ -475,7 +475,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				"for example: a.b.$. If the query previously used a form " +
 				"like a.b.$.d, remove the parts following the '$' and " +
 				"the results will be equivalent.",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorEmptyPath": {
 			pipeline: bson.A{
@@ -487,7 +487,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"Cannot use positional projection in aggregation projection",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorDollarKey": {
 			pipeline: bson.A{
@@ -499,7 +499,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"FieldPath field names may not start with '$'. Consider using $getField or $setField.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorDollarInKey": {
 			pipeline: bson.A{
@@ -511,7 +511,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"FieldPath field names may not start with '$'. Consider using $getField or $setField.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorDollarPrefix": {
 			pipeline: bson.A{
@@ -523,7 +523,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"FieldPath field names may not start with '$'. Consider using $getField or $setField.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorDotDollarInKey": {
 			pipeline: bson.A{
@@ -535,7 +535,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"FieldPath field names may not start with '$'. Consider using $getField or $setField.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorPrefixSuffix": {
 			pipeline: bson.A{
@@ -547,7 +547,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"Cannot use positional projection in aggregation projection",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorExclusion": {
 			pipeline: bson.A{
@@ -559,7 +559,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Message: "Invalid $project :: caused by :: " +
 					"Cannot use positional projection in aggregation projection",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ProjectPositionalOperator": {
 			pipeline: bson.A{
@@ -570,7 +570,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location31324",
 				Message: "Invalid $project :: caused by :: Cannot use positional projection in aggregation projection",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ProjectTypeEmpty": {
 			pipeline: bson.A{
@@ -581,7 +581,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location51270",
 				Message: "Invalid $project :: caused by :: An empty sub-projection is not a valid value." + " Found empty object at path",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ProjectTwoOperators": {
 			pipeline: bson.A{
@@ -592,7 +592,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location16410",
 				Message: "Invalid $project :: caused by :: FieldPath field names may not start with '$'. Consider using $getField or $setField.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ProjectTypeInvalidLen": {
 			pipeline: bson.A{
@@ -603,7 +603,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location16020",
 				Message: "Invalid $project :: caused by :: Expression $type takes exactly 1 arguments. 2 were passed in.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ProjectNonExistentOperator": {
 			pipeline: bson.A{
@@ -615,7 +615,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location31325",
 				Message: "Invalid $project :: caused by :: Unknown expression $non-existent",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ProjectRecursiveNonExistentOperator": {
 			pipeline: bson.A{
@@ -626,7 +626,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "InvalidPipelineOperator",
 				Message: "Invalid $project :: caused by :: Unrecognized expression '$non-existent'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"SumEmptyExpression": {
 			pipeline: bson.A{
@@ -639,7 +639,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location16872",
 				Message: "Invalid $project :: caused by :: '$' by itself is not a valid FieldPath",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"SumEmptyVariable": {
 			pipeline: bson.A{
@@ -652,7 +652,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "FailedToParse",
 				Message: "Invalid $project :: caused by :: empty variable names are not allowed",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"SumDollarVariable": {
 			pipeline: bson.A{
@@ -665,7 +665,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "FailedToParse",
 				Message: "Invalid $project :: caused by :: '$' starts with an invalid character for a user variable name",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/369",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -677,8 +677,8 @@ func TestAggregateProjectErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.pipeline, "pipeline must not be nil")
@@ -743,7 +743,7 @@ func TestAggregateSetErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NotDocument": {
 			pipeline: bson.A{
@@ -765,7 +765,7 @@ func TestAggregateSetErrors(t *testing.T) {
 				Name:    "Location16410",
 				Message: "Invalid $set :: caused by :: FieldPath field names may not start with '$'. Consider using $getField or $setField.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -773,8 +773,8 @@ func TestAggregateSetErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.pipeline, "pipeline must not be nil")
@@ -796,7 +796,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"EmptyString": {
 			pipeline: bson.A{
@@ -828,7 +828,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location15998",
 				Message: "Invalid $unset :: caused by :: FieldPath field names may not be empty strings.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"PathEmptySuffixKey": {
 			pipeline: bson.A{
@@ -839,7 +839,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location40353",
 				Message: "Invalid $unset :: caused by :: FieldPath must not end with a '.'.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"PathEmptyPrefixKey": {
 			pipeline: bson.A{
@@ -850,7 +850,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location15998",
 				Message: "Invalid $unset :: caused by :: FieldPath field names may not be empty strings.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"PathDollarPrefix": {
 			pipeline: bson.A{
@@ -904,7 +904,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location31250",
 				Message: "Invalid $unset :: caused by :: Path collision at v",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"ArrayPathOverwrites": {
 			pipeline: bson.A{
@@ -915,7 +915,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location31249",
 				Message: "Invalid $unset :: caused by :: Path collision at v.foo remaining portion foo",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"ArrayPathOverwritesRemaining": {
 			pipeline: bson.A{
@@ -926,7 +926,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location31249",
 				Message: "Invalid $unset :: caused by :: Path collision at v.foo.bar remaining portion foo.bar",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"ArrayPathCollision": {
 			pipeline: bson.A{
@@ -937,7 +937,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location31250",
 				Message: "Invalid $unset :: caused by :: Path collision at v",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"ArrayPathEmptyKey": {
 			pipeline: bson.A{
@@ -948,7 +948,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location15998",
 				Message: "Invalid $unset :: caused by :: FieldPath field names may not be empty strings.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"ArrayPathEmptySuffixKey": {
 			pipeline: bson.A{
@@ -959,7 +959,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location40353",
 				Message: "Invalid $unset :: caused by :: FieldPath must not end with a '.'.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"ArrayPathEmptyPrefixKey": {
 			pipeline: bson.A{
@@ -970,7 +970,7 @@ func TestAggregateUnsetErrors(t *testing.T) {
 				Name:    "Location15998",
 				Message: "Invalid $unset :: caused by :: FieldPath field names may not be empty strings.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"ArrayPathDollarPrefix": {
 			pipeline: bson.A{
@@ -989,8 +989,8 @@ func TestAggregateUnsetErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.pipeline, "pipeline must not be nil")
@@ -1012,7 +1012,7 @@ func TestAggregateSortErrors(t *testing.T) {
 
 		err              *mongo.CommandError // required
 		altMessage       string              // optional, alternative error message
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"DotNotationMissingField": {
 			pipeline: bson.A{bson.D{{"$sort", bson.D{
@@ -1023,7 +1023,7 @@ func TestAggregateSortErrors(t *testing.T) {
 				Name:    "Location15998",
 				Message: "FieldPath field names may not be empty strings.",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -1031,8 +1031,8 @@ func TestAggregateSortErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.pipeline, "pipeline must not be nil")
@@ -1052,8 +1052,8 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 		command bson.D // required, command to run
 
 		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"NegativeLong": {
 			command: bson.D{
@@ -1067,7 +1067,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'maxTimeMS' value must be >= 0, actual value '-1'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"MaxLong": {
 			command: bson.D{
@@ -1082,7 +1082,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "9223372036854775807 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Double": {
 			command: bson.D{
@@ -1096,7 +1096,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "maxTimeMS has non-integral value",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"NegativeDouble": {
 			command: bson.D{
@@ -1111,7 +1111,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'maxTimeMS' value must be >= 0, actual value '-14245345234123246'",
 			},
 			altMessage:       "BSON field 'maxTimeMS' value must be >= 0, actual value '-1.424534523412325e+16'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"BigDouble": {
 			command: bson.D{
@@ -1126,7 +1126,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "1.797693134862316e+308 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"BigNegativeDouble": {
 			command: bson.D{
@@ -1141,7 +1141,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'maxTimeMS' value must be >= 0, actual value '-9223372036854775808'",
 			},
 			altMessage:       "BSON field 'maxTimeMS' value must be >= 0, actual value '-1.797693134862316e+308'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"NegativeInt32": {
 			command: bson.D{
@@ -1155,7 +1155,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'maxTimeMS' value must be >= 0, actual value '-1123123'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"MaxIntPlus": {
 			command: bson.D{
@@ -1170,7 +1170,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "2147483648 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			altMessage:       "2147483648 value for maxTimeMS is out of range",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Null": {
 			command: bson.D{
@@ -1184,7 +1184,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "maxTimeMS must be a number",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"String": {
 			command: bson.D{
@@ -1199,7 +1199,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'aggregate.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double']",
 			},
 			altMessage:       "BSON field 'aggregate.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double]'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Array": {
 			command: bson.D{
@@ -1214,7 +1214,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'aggregate.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double']",
 			},
 			altMessage:       "BSON field 'aggregate.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double]'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Document": {
 			command: bson.D{
@@ -1229,7 +1229,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'aggregate.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double']",
 			},
 			altMessage:       "BSON field 'aggregate.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double]'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/354",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {
@@ -1237,8 +1237,8 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.err, "err must not be nil")
@@ -1267,8 +1267,8 @@ func TestAggregateCommandCursor(t *testing.T) {
 
 		firstBatch       primitive.A         // optional, expected firstBatch
 		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"Int": {
 			cursor:     bson.D{{"batchSize", 1}},
@@ -1290,7 +1290,7 @@ func TestAggregateCommandCursor(t *testing.T) {
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
 			altMessage:       "BSON field 'batchSize' value must be >= 0, actual value '-1'",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"DoubleZero": {
 			cursor:     bson.D{{"batchSize", float64(0)}},
@@ -1303,7 +1303,7 @@ func TestAggregateCommandCursor(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/349",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"DoubleFloor": {
 			cursor:     bson.D{{"batchSize", 1.9}},
@@ -1360,8 +1360,8 @@ func TestAggregateCommandCursor(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			var pipeline any = bson.A{}
@@ -1399,7 +1399,7 @@ func TestAggregateCommandCursor(t *testing.T) {
 			cursor, ok := v.(bson.D)
 			require.True(t, ok)
 
-			// do not check the value of cursor id, FerretDB has a different id
+			// do not check the value of cursor id, DocDB has a different id
 			cursorID := cursor.Map()["id"]
 			assert.NotNil(t, cursorID)
 

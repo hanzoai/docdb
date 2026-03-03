@@ -171,7 +171,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb:latest
+          image: ghcr.io/hanzoai/docdb:latest
           ports:
             - containerPort: 27017
           env:

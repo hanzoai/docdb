@@ -33,7 +33,7 @@ By the way, we've just released beta support for SQLite backend, and you can rea
 
 You can run FerretDB on two cloud providers – [Scaleway](https://www.scaleway.com/en/betas/#managed-document-database) and [Civo Marketplace](https://www.civo.com/marketplace/FerretDB).
 
-To run your own instance of FerretDB or try it locally, follow the [FerretDB quickstart instruction](https://github.com/FerretDB/FerretDB/blob/main/README.md) or the [installation guide](https://docs.ferretdb.io/quickstart-guide/) here to set it up and running.
+To run your own instance of FerretDB or try it locally, follow the [FerretDB quickstart instruction](https://github.com/hanzoai/docdb/blob/main/README.md) or the [installation guide](https://docs.ferretdb.io/quickstart-guide/) here to set it up and running.
 
 In this tutorial, we'll be using the Docker setup, which requires having Docker installed if you don't have it.
 
@@ -50,7 +50,7 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb
+    image: ghcr.io/hanzoai/docdb
     restart: on-failure
     ports:
       - 27017:27017
@@ -223,4 +223,4 @@ In addition to this, you can also leverage NoSQLBooster's Visual Explain tool to
 Beyond the examples shown in this article, you can explore other features of FerretDB using NoSQLBooster and other MongoDB GUI applications.
 With every new release, FerretDB builds on its list of new features ([see them here](https://blog.ferretdb.io/ferretdb-v-1-5-0-beta-support-sqlite/)) and compatible applications.
 
-If you would like to contribute or are interested in learning more about FerretDB, please reach out to us [here](https://github.com/FerretDB/FerretDB/#community).
+If you would like to contribute or are interested in learning more about FerretDB, please reach out to us [here](https://github.com/hanzoai/docdb/#community).

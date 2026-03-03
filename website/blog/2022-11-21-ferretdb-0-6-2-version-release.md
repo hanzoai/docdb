@@ -41,7 +41,7 @@ In other changes, we've made it easier to configure FerretDB in container and cl
 For identified errors, we've improved the accuracy of telemetry data in some cases where arguments or operators are present but not implemented, or return errors.
 Furthermore, we have enabled the use of `-` in collection names in line with real-life app usages.
 
-Please find more details on the latest FerretDB version release [here on GitHub](https://github.com/FerretDB/FerretDB/releases).
+Please find more details on the latest FerretDB version release [here on GitHub](https://github.com/hanzoai/docdb/releases).
 And if you have any questions, feel free to [contact us](https://docs.ferretdb.io/#community).
 
 Raspberry Pi is a trademark of Raspberry Pi Ltd.

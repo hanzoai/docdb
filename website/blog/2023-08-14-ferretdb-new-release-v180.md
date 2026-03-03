@@ -49,7 +49,7 @@ This comes as part of our commitment to enabling and improving the new backend a
 In the coming weeks, we'll be adding more features to the SQLite backend, so stay tuned!
 
 Of course there are other important changes in this release that we haven't mentioned here.
-You can check out the full list of changes in the [release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.8.0)
+You can check out the full list of changes in the [release notes](https://github.com/hanzoai/docdb/releases/tag/v1.8.0)
 
 We're delighted with all the support and contributions from everyone in the open source community, and we hope you're enjoying your summer!
 If you can, do catch us at Postgres Ibiza 2023 and Civo Navigate – we'd love to meet you!

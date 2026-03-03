@@ -55,7 +55,7 @@ To improve user experience across our documentation and blog, we've enabled zoom
 
 We also made some updates to provide clearer guidance on managing and interpreting logs.
 
-For a complete list of changes, please see the [release note for FerretDB v1.24](https://github.com/FerretDB/FerretDB/releases/tag/v1.24.0).
+For a complete list of changes, please see the [release note for FerretDB v1.24](https://github.com/hanzoai/docdb/releases/tag/v1.24.0).
 
 As always, we appreciate all the contributions and support for FerretDB.
 We had 4 new contributors in this release – [@nalgeon](https://github.com/nalgeon), [@Evengard](https://github.com/Evengard), [@dasjoe](https://github.com/dasjoe), and [@kaiwalyakoparkar](https://github.com/kaiwalyakoparkar) made their first contribution.

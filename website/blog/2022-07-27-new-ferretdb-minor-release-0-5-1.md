@@ -28,7 +28,7 @@ Note that there is a known limitation where $elemMatch may use other operators r
 
 ## Diagnostic commands
 
-With 0.5.1, we added support for the getLog and explain commands, adding these to the long list of supported MongoDB diagnostic commands, [see the full list here](https://github.com/FerretDB/FerretDB/issues/228).
+With 0.5.1, we added support for the getLog and explain commands, adding these to the long list of supported MongoDB diagnostic commands, [see the full list here](https://github.com/hanzoai/docdb/issues/228).
 
 Please check out the Release notes for the full list of added features.
 

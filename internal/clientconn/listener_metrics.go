@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import (
 
 // Parts of Prometheus metric names.
 const (
-	// TODO https://github.com/FerretDB/FerretDB/issues/3420
-	namespace = "ferretdb"
+	// TODO https://github.com/hanzoai/docdb/issues/3420
+	namespace = "docdb"
 	subsystem = "client"
 )
 

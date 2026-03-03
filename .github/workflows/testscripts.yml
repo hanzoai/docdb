@@ -43,7 +43,7 @@ jobs:
       contents: read
 
     steps:
-      # TODO https://github.com/FerretDB/github-actions/issues/211
+      # TODO https://github.com/hanzoai/github-actions/issues/211
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -51,7 +51,7 @@ jobs:
           lfs: false # LFS is used only by website
 
       - name: Setup Go
-        uses: FerretDB/github-actions/setup-go@main
+        uses: hanzoai/github-actions/setup-go@main
         with:
           cache-key: testscripts
 
@@ -72,21 +72,21 @@ jobs:
       - name: Run init
         run: bin/task init
 
-      - name: Build bin/ferretdb
+      - name: Build bin/docdb
         run: bin/task build-host
 
       - name: Wait for and setup environment
         run: bin/task env-setup
 
-      - name: Start FerretDB (no auth) in the background
+      - name: Start DocDB (no auth) in the background
         run: >
-          bin/ferretdb
+          bin/docdb
           --listen-addr=:27017
           --proxy-addr=127.0.0.1:37017
           --no-auth
           --mode=diff-normal
           --postgresql-url='postgres://username:password@127.0.0.1:5432/postgres'
-          2> ferretdb.log &
+          2> docdb.log &
 
       - name: Run testsql for PostgreSQL
         if: always()
@@ -96,29 +96,29 @@ jobs:
         if: always()
         run: bin/task testjs TESTJS_PORT=37017
 
-      - name: Run testjs for FerretDB (no auth)
+      - name: Run testjs for DocDB (no auth)
         if: always()
         run: bin/task testjs
 
-      - name: Compress FerretDB log before upload
+      - name: Compress DocDB log before upload
         if: failure()
-        run: zip -q -9 ferretdb-log.zip ferretdb.log
+        run: zip -q -9 docdb-log.zip docdb.log
 
-      - name: Upload FerretDB log
+      - name: Upload DocDB log
         if: failure()
         uses: actions/upload-artifact@v6
         with:
-          name: ferretdb-log
-          path: ferretdb-log.zip
+          name: docdb-log
+          path: docdb-log.zip
           retention-days: 1
           if-no-files-found: error
 
-      - name: Show FerretDB log
+      - name: Show DocDB log
         if: always()
         run: |
           echo "::remove-matcher owner=go::"
-          cat ferretdb.log
-          rm ferretdb.log
+          cat docdb.log
+          rm docdb.log
 
       # we don't want them on CI
       - name: Clean test and fuzz caches

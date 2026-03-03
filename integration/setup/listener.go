@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,13 +25,13 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/setup"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/setup"
+	"github.com/hanzoai/docdb/internal/util/state"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 )
 
-// ListenerOpts represents setup options for in-process FerretDB listener.
+// ListenerOpts represents setup options for in-process DocDB listener.
 type ListenerOpts struct {
 	// SessionCleanupInterval is a duration between expired session deletion runs.
 	SessionCleanupInterval time.Duration
@@ -42,7 +42,7 @@ func unixSocketPath(tb testing.TB) string {
 	tb.Helper()
 
 	// do not use tb.TempDir() because generated path is too long on macOS
-	f, err := os.CreateTemp("", "ferretdb-*.sock")
+	f, err := os.CreateTemp("", "docdb-*.sock")
 	require.NoError(tb, err)
 
 	// remove file so listener could create it (and remove it itself on stop)
@@ -54,7 +54,7 @@ func unixSocketPath(tb testing.TB) string {
 	return f.Name()
 }
 
-// listenerMongoDBURI builds MongoDB URI for in-process FerretDB.
+// listenerMongoDBURI builds MongoDB URI for in-process DocDB.
 func listenerMongoDBURI(tb testing.TB, hostPort, unixSocketPath string) string {
 	tb.Helper()
 
@@ -67,7 +67,7 @@ func listenerMongoDBURI(tb testing.TB, hostPort, unixSocketPath string) string {
 		host = unixSocketPath
 	}
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/1507
+	// TODO https://github.com/hanzoai/docdb/issues/1507
 	u := &url.URL{
 		Scheme: "mongodb",
 		Host:   host,
@@ -78,7 +78,7 @@ func listenerMongoDBURI(tb testing.TB, hostPort, unixSocketPath string) string {
 	return u.String()
 }
 
-// setupListener starts in-process FerretDB server that runs until ctx is canceled.
+// setupListener starts in-process DocDB server that runs until ctx is canceled.
 // It returns basic MongoDB URI for that listener.
 func setupListener(tb testing.TB, ctx context.Context, opts *ListenerOpts, logger *slog.Logger) string {
 	tb.Helper()
@@ -86,10 +86,10 @@ func setupListener(tb testing.TB, ctx context.Context, opts *ListenerOpts, logge
 	ctx, span := otel.Tracer("").Start(ctx, "setup.setupListener")
 	defer span.End()
 
-	require.Empty(tb, *targetURLF, "-target-url must be empty for in-process FerretDB")
+	require.Empty(tb, *targetURLF, "-target-url must be empty for in-process DocDB")
 
 	switch *targetBackendF {
-	case "ferretdb", "ferretdb-yugabytedb":
+	case "docdb", "docdb-yugabytedb":
 		require.NotEmpty(tb, *postgreSQLURLF, "-postgresql-url must be set for %q", *targetBackendF)
 
 	case "mongodb":
@@ -115,7 +115,7 @@ func setupListener(tb testing.TB, ctx context.Context, opts *ListenerOpts, logge
 
 		PostgreSQLURL:          *postgreSQLURLF,
 		Auth:                   true,
-		ReplSetName:            "", // TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+		ReplSetName:            "", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 		SessionCleanupInterval: opts.SessionCleanupInterval,
 
 		ProxyAddr:        "",

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -201,7 +201,7 @@ var ArrayStrings = &Values[string]{
 		"array-string-desc":      bson.A{"c", "b", "a"},
 		"array-string-duplicate": bson.A{nil, "foo", "b", "b", nil},
 		"array-string-numbers":   bson.A{"42", "0", "42.13"},
-		// "array-string-nil":    nil, TODO: https://github.com/FerretDB/FerretDB/issues/1836
+		// "array-string-nil":    nil, TODO: https://github.com/hanzoai/docdb/issues/1836
 		"array-string-empty":    bson.A{},
 		"array-string-with-nil": bson.A{nil},
 	},
@@ -220,7 +220,7 @@ var ArrayDoubles = &Values[string]{
 		"array-double-prec-max":      bson.A{doubleMaxPrec},
 		"array-double-prec-max-plus": bson.A{doubleMaxPrec + 1},
 
-		// "array-double-nil":    nil,  TODO: https://github.com/FerretDB/FerretDB/issues/1836
+		// "array-double-nil":    nil,  TODO: https://github.com/hanzoai/docdb/issues/1836
 		"array-double-empty": bson.A{},
 	},
 }
@@ -232,7 +232,7 @@ var ArrayInt32s = &Values[string]{
 		"array-int32-one":   bson.A{int32(42)},
 		"array-int32-two":   bson.A{int32(42), int32(42)},
 		"array-int32-three": bson.A{int32(42), int32(43), int32(42)},
-		// "array-int32-nil": nil,  TODO: https://github.com/FerretDB/FerretDB/issues/1836
+		// "array-int32-nil": nil,  TODO: https://github.com/hanzoai/docdb/issues/1836
 		"array-int32-empty": bson.A{},
 		"array-int32-six": bson.A{
 			int32(42), int32(43), int32(44), int32(45), int32(42), int32(43),

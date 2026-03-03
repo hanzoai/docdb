@@ -7,7 +7,7 @@ image: /img/blog/4ferrets.webp
 tags: [release]
 ---
 
-We are happy to announce that [FerretDB's newest 0.4.0 release is now available on GitHub,](https://github.com/FerretDB/FerretDB/releases/tag/v0.4.0) with some exciting new features and fixes in it.
+We are happy to announce that [FerretDB's newest 0.4.0 release is now available on GitHub,](https://github.com/hanzoai/docdb/releases/tag/v0.4.0) with some exciting new features and fixes in it.
 
 ![New FerretDB release 0.4.0](/img/blog/4ferrets.webp)
 
@@ -48,4 +48,4 @@ We think this is huge, especially knowing that the people behind Tigris are amon
 
 While we added functionality which supports Tigris, this is very much preliminary, and instructions on how to take it for a test drive will be provided later.
 
-Please see the [full changelog on GitHub](https://github.com/FerretDB/FerretDB/releases/tag/v0.4.0)!
+Please see the [full changelog on GitHub](https://github.com/hanzoai/docdb/releases/tag/v0.4.0)!

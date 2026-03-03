@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import (
 	"strconv"
 	"text/template"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // line represents a single mapping.
@@ -42,7 +42,7 @@ type line struct {
 	MongoError int
 }
 
-// extraMongoErrors contains MongoDB error codes FerretDB uses and error_mappings.csv does not include
+// extraMongoErrors contains MongoDB error codes DocDB uses and error_mappings.csv does not include
 var extraMongoErrors = map[string]int{
 	"Unset":                         0,
 	"UserNotFound":                  11,

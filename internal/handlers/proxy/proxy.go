@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,15 +26,15 @@ import (
 	otelcodes "go.opentelemetry.io/otel/codes"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/clientconn/conninfo"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // Parts of Prometheus metric names.
-// TODO https://github.com/FerretDB/FerretDB/issues/4965
+// TODO https://github.com/hanzoai/docdb/issues/4965
 const (
-	namespace = "ferretdb"
+	namespace = "docdb"
 	subsystem = "proxy"
 )
 
@@ -252,7 +252,7 @@ func (h *Handler) Collect(ch chan<- prometheus.Metric) {
 	defer h.connsRW.RUnlock()
 
 	// We should have counters for connects/disconnects, not gauge for the current number.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1997
+	// TODO https://github.com/hanzoai/docdb/issues/1997
 
 	ch <- prometheus.MustNewConstMetric(
 		prometheus.NewDesc(

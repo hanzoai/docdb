@@ -16,7 +16,7 @@ After a great deal of work from the [FerretDB](https://www.ferretdb.io/) team an
 
 Important note to [Tigris](https://www.tigrisdata.com/) users: FerretDB 1.5.0 is the last release of FerretDB which includes support for the Tigris backend.
 If you wish to use Tigris, please do not update FerretDB beyond v1.5.0.
-Earlier versions of FerretDB with Tigris support will still be available on [GitHub](https://github.com/FerretDB/FerretDB/releases).
+Earlier versions of FerretDB with Tigris support will still be available on [GitHub](https://github.com/hanzoai/docdb/releases).
 
 In the past couple of weeks, we've been working on providing support for the SQLite backend.
 This is very much a work in progress and we'll be adding more functionalities in our next releases, but we are excited for FerretDB enthusiasts to try it out – we can't wait to see what you achieve with it!
@@ -31,7 +31,7 @@ With improved support for cursors for SQLite (and PostgreSQL) backend in the lat
 
 We've also implemented the `count` command for the SQLite backend.
 
-For other important updates in this release, please see the [release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.5.0)
+For other important updates in this release, please see the [release notes](https://github.com/hanzoai/docdb/releases/tag/v1.5.0)
 
 ## We Thank You
 
@@ -46,4 +46,4 @@ We can't wait for you to try out FerretDB with the SQLite backend.
 And when you do, please share with us all your discoveries, feedback, questions, bugs, anything.
 Every little bit counts!
 
-You can reach out to us on any of [our community channels](https://docs.ferretdb.io/#community), or [find us on GitHub](https://github.com/FerretDB/FerretDB/).
+You can reach out to us on any of [our community channels](https://docs.ferretdb.io/#community), or [find us on GitHub](https://github.com/hanzoai/docdb/).

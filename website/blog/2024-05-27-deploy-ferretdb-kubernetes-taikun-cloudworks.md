@@ -232,7 +232,7 @@ spec:
     spec:
       containers:
         - name: ferretdb
-          image: ghcr.io/ferretdb/ferretdb
+          image: ghcr.io/hanzoai/docdb
           ports:
             - containerPort: 27017
           env:
@@ -381,6 +381,6 @@ By following the steps outlined in this guide, you can ensure your databases are
 
 To learn read more about FerretDB and other solutions in this guide, explore:
 
-- [FerretDB GitHub repository](https://github.com/FerretDB/FerretDB)
+- [FerretDB GitHub repository](https://github.com/hanzoai/docdb)
 - [Taikun CloudWorks documentation](https://www.taikun.cloud/documentation)
 - [Percona Distribution for PostgreSQL documentation](https://www.percona.com/software/postgresql-distribution)

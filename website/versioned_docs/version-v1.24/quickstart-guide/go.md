@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Go
 
-See https://pkg.go.dev/github.com/FerretDB/FerretDB/ferretdb.
+See https://pkg.go.dev/github.com/hanzoai/docdb/ferretdb.
 
 _This section is not currently available.
 You can help FerretDB by contributing to this section.

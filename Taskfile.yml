@@ -14,7 +14,7 @@ vars:
   BENCH_TIME: 5s
   TESTJS_PORT: 27017
   RACE_FLAG: -race={{and (ne OS "windows") (ne ARCH "arm") (ne ARCH "riscv64")}}
-  BUILD_TAGS: ferretdb_dev
+  BUILD_TAGS: docdb_dev
   MODE: diff-normal
   SERVICES: jaeger mongodb mongodb-secure postgres yugabytedb
   LLM: qwen3:0.6b # sync with code
@@ -159,30 +159,30 @@ tasks:
       - go build -v -o bin/ {{.RACE_FLAG}} -tags={{.BUILD_TAGS}} ./cmd/envtool/
 
   build-host:
-    desc: "Build bin/ferretdb{{exeExt}} on the host for development"
+    desc: "Build bin/docdb{{exeExt}} on the host for development"
     run: once
     deps: [gen-version]
     cmds:
       - echo 'build-host' > build/version/package.txt
-      - go build -v -o=bin/ferretdb{{exeExt}} {{.RACE_FLAG}} -tags={{.BUILD_TAGS}} -coverpkg=./... ./cmd/ferretdb
+      - go build -v -o=bin/docdb{{exeExt}} {{.RACE_FLAG}} -tags={{.BUILD_TAGS}} -coverpkg=./... ./cmd/docdb
       - bin/envtool{{exeExt}} shell mkdir tmp/cover
 
   gen:
     desc: "Generate (and format) Go code"
     cmds:
       - go generate -x ./...
-      #- bin/deadcode{{exeExt}} -generated -test -filter=documentdb_api ./cmd/ferretdb
+      #- bin/deadcode{{exeExt}} -generated -test -filter=documentdb_api ./cmd/docdb
       - bin/task{{exeExt}} -d integration integration-gen
       - task: fmt-go
 
   fmt:
     deps: [fmt-go]
 
-  # invoked by FerretDB/github-actions/linters action
+  # invoked by DocDB/github-actions/linters action
   fmt-go:
     desc: "Format Go code"
     cmds:
-      - bin/goimports{{exeExt}} -local=github.com/FerretDB/FerretDB/v2 -w .
+      - bin/goimports{{exeExt}} -local=github.com/hanzoai/docdb/v2 -w .
       - bin/gofumpt{{exeExt}} -w .
 
   test:
@@ -234,7 +234,7 @@ tasks:
         -coverpkg=../...
         -coverprofile=integration-postgresql.txt
         ./...
-        -target-backend=ferretdb
+        -target-backend=docdb
         -postgresql-url='postgres://username:password@127.0.0.1:5432/postgres'
         -compat-url='mongodb://username:password@127.0.0.1:47017/?replicaSet=rs0'
         -no-xfail={{.NO_XFAIL}}
@@ -265,11 +265,11 @@ tasks:
         -no-xfail={{.NO_XFAIL}}
 
   test-integration-yugabytedb:
-    desc: "Run integration tests for FerretDB with YugabyteDB sequentially"
+    desc: "Run integration tests for DocDB with YugabyteDB sequentially"
     vars:
       # DPanic on InternalError stops execution of remaining tests,
       # ensure to complete all tests by not setting development build tag and without race detector.
-      # TODO https://github.com/FerretDB/FerretDB/issues/5397
+      # TODO https://github.com/hanzoai/docdb/issues/5397
       BUILD_TAGS: ""
       RACE_FLAG: -race=false
     deps:
@@ -300,7 +300,7 @@ tasks:
         -coverpkg=../...
         -coverprofile=integration-yugabytedb.txt
         ./...
-        -target-backend=ferretdb-yugabytedb
+        -target-backend=docdb-yugabytedb
         -postgresql-url='postgres://pg-user:pg-pass@127.0.0.1:5433/yugabyte'
         -compat-url='mongodb://username:password@127.0.0.1:47017/?replicaSet=rs0'
         -no-xfail={{.NO_XFAIL}}
@@ -313,11 +313,11 @@ tasks:
       - bin/benchstat{{exeExt}} old.txt new.txt
 
   run:
-    desc: "Run FerretDB without auth"
+    desc: "Run DocDB without auth"
     deps: [build-host]
     cmds:
       - >
-        bin/ferretdb{{exeExt}}
+        bin/docdb{{exeExt}}
         --mode={{.MODE}}
         --no-auth
         --listen-addr=:27017
@@ -329,11 +329,11 @@ tasks:
         --dev-records-dir=tmp/records
 
   run-secure:
-    desc: "Run FerretDB with auth"
+    desc: "Run DocDB with auth"
     deps: [build-host]
     cmds:
       - >
-        bin/ferretdb{{exeExt}}
+        bin/docdb{{exeExt}}
         --mode={{.MODE}}
         --listen-addr=:27017
         --listen-data-api-addr=127.0.0.1:8899
@@ -345,11 +345,11 @@ tasks:
         --dev-records-dir=tmp/records
 
   run-yugabytedb:
-    desc: "Run FerretDB with YugabyteDB without auth"
+    desc: "Run DocDB with YugabyteDB without auth"
     deps: [build-host]
     cmds:
       - >
-        bin/ferretdb{{exeExt}}
+        bin/docdb{{exeExt}}
         --mode={{.MODE}}
         --no-auth
         --listen-addr=:27017
@@ -361,11 +361,11 @@ tasks:
         --dev-records-dir=tmp/records
 
   run-yugabytedb-secure:
-    desc: "Run FerretDB with YugabyteDB with auth"
+    desc: "Run DocDB with YugabyteDB with auth"
     deps: [build-host]
     cmds:
       - >
-        bin/ferretdb{{exeExt}}
+        bin/docdb{{exeExt}}
         --mode={{.MODE}}
         --listen-addr=:27017
         --listen-data-api-addr=127.0.0.1:8899
@@ -376,7 +376,7 @@ tasks:
         --dev-repl-set-name=rs0
         --dev-records-dir=tmp/records
 
-  # invoked by FerretDB/github-actions/linters action
+  # invoked by DocDB/github-actions/linters action
   lint:
     desc: "Run linters"
     cmds:
@@ -384,7 +384,7 @@ tasks:
       - bin/envtool{{exeExt}} shell mkdir tmp/githubcache
       - bin/golangci-lint{{exeExt}} run --config=.golangci.yml
       - bin/golangci-lint{{exeExt}} run --config=.golangci-new.yml
-      - bin/go-consistent{{exeExt}} -pedantic ./cmd/... ./ferretdb/... ./internal/...
+      - bin/go-consistent{{exeExt}} -pedantic ./cmd/... ./docdb/... ./internal/...
       - go vet -vettool=bin/checkswitch{{exeExt}} ./...
       - go vet -vettool=bin/checkcomments{{exeExt}} ./...
 
@@ -486,7 +486,7 @@ tasks:
       - cmd: >
           docker buildx create
           --driver=docker-container
-          --name=ferretdb
+          --name=docdb
           --bootstrap=true
           --use=false
           --config=./build/buildkitd.toml
@@ -500,9 +500,9 @@ tasks:
   docker-cleanup:
     cmds:
       - docker system df
-      - cmd: docker buildx --builder=ferretdb du
+      - cmd: docker buildx --builder=docdb du
         ignore_error: true
-      - cmd: docker buildx --builder=ferretdb rm --force
+      - cmd: docker buildx --builder=docdb rm --force
         ignore_error: true
       - docker system prune --force
       - docker system df
@@ -511,7 +511,7 @@ tasks:
     deps: [gen-version, docker-init]
     cmds:
       - >
-        docker buildx build --builder=ferretdb
+        docker buildx build --builder=docdb
         --file=build/{{.FILE}}.Dockerfile
         --build-arg=LABEL_VERSION={{.VERSION}}
         --build-arg=LABEL_COMMIT={{.COMMIT}}
@@ -530,7 +530,7 @@ tasks:
 
   build-move-check:
     cmds:
-      - mv tmp/build/linux_{{.DIR_ARCH}}/ferretdb tmp/{{.BIN_DIR}}/{{.BIN_FILE}}
+      - mv tmp/build/linux_{{.DIR_ARCH}}/docdb tmp/{{.BIN_DIR}}/{{.BIN_FILE}}
       - >
         docker run --rm --platform=linux/{{.DOCKER_ARCH}} -v ./tmp/{{.BIN_DIR}}:/bins ubuntu
         /bins/{{.BIN_FILE}} --version
@@ -545,17 +545,17 @@ tasks:
       - bin/envtool{{exeExt}} shell mkdir tmp/bin-dev
       - task: docker-build
         vars:
-          FILE: ferretdb/development
+          FILE: docdb/development
           TARGET: development-binary
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=local,dest=tmp/build
       - for: [amd64, arm64]
         task: build-move-check
         vars:
-          # TODO https://github.com/FerretDB/FerretDB/issues/5019
+          # TODO https://github.com/hanzoai/docdb/issues/5019
           DOCKER_ARCH: "{{.ITEM}}" # arm/v7
           DIR_ARCH: '{{replace "/" "_" .ITEM}}' # arm/v7 -> arm_v7
-          BIN_FILE: 'ferretdb-dev-{{replace "/" "" .ITEM}}-linux' # arm/v7 -> armv7
+          BIN_FILE: 'docdb-dev-{{replace "/" "" .ITEM}}-linux' # arm/v7 -> armv7
           BIN_DIR: bin-dev
 
   build-production:
@@ -566,78 +566,78 @@ tasks:
       - bin/envtool{{exeExt}} shell mkdir tmp/bin
       - task: docker-build
         vars:
-          FILE: ferretdb/production
+          FILE: docdb/production
           TARGET: production-binary
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=local,dest=tmp/build
       - for: [amd64, arm64]
         task: build-move-check
         vars:
-          # TODO https://github.com/FerretDB/FerretDB/issues/5019
+          # TODO https://github.com/hanzoai/docdb/issues/5019
           DOCKER_ARCH: "{{.ITEM}}" # arm/v7
           DIR_ARCH: '{{replace "/" "_" .ITEM}}' # arm/v7 -> arm_v7
-          BIN_FILE: 'ferretdb-{{replace "/" "" .ITEM}}-linux' # arm/v7 -> armv7
+          BIN_FILE: 'docdb-{{replace "/" "" .ITEM}}-linux' # arm/v7 -> armv7
           BIN_DIR: bin
 
   docker-local:
-    desc: "Build `ferretdb-local` Docker image for the host platform"
+    desc: "Build `docdb-local` Docker image for the host platform"
     cmds:
       - echo 'docker-local-{{.FILE}}' > build/version/package.txt
       - task: docker-build
         vars:
-          FILE: ferretdb/{{.FILE}}
+          FILE: docdb/{{.FILE}}
           TARGET: "{{.FILE}}"
-          DOCKER_IMAGES: ferretdb-local
+          DOCKER_IMAGES: docdb-local
           OUTPUT: type=docker
     requires:
       vars: [FILE]
 
-  # TODO https://github.com/FerretDB/FerretDB/issues/2212
+  # TODO https://github.com/hanzoai/docdb/issues/2212
   docker-eval-dev-push:
     cmds:
       - echo 'docker-eval-dev' > build/version/package.txt
       - task: docker-build
         vars:
-          FILE: ferretdb/eval-dev
+          FILE: docdb/eval-dev
           TARGET: eval-dev
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=image,push=true
     requires:
       vars: [DOCKER_IMAGES]
 
-  # TODO https://github.com/FerretDB/FerretDB/issues/2212
+  # TODO https://github.com/hanzoai/docdb/issues/2212
   docker-eval-push:
     cmds:
       - echo 'docker-eval' > build/version/package.txt
       - task: docker-build
         vars:
-          FILE: ferretdb/eval
+          FILE: docdb/eval
           TARGET: eval
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=image,push=true
     requires:
       vars: [DOCKER_IMAGES]
 
-  # TODO https://github.com/FerretDB/FerretDB/issues/2212
+  # TODO https://github.com/hanzoai/docdb/issues/2212
   docker-development-push:
     cmds:
       - echo 'docker-development' > build/version/package.txt
       - task: docker-build
         vars:
-          FILE: ferretdb/development
+          FILE: docdb/development
           TARGET: development
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=image,push=true
     requires:
       vars: [DOCKER_IMAGES]
 
-  # TODO https://github.com/FerretDB/FerretDB/issues/2212
+  # TODO https://github.com/hanzoai/docdb/issues/2212
   docker-production-push:
     cmds:
       - echo 'docker' > build/version/package.txt
       - task: docker-build
         vars:
-          FILE: ferretdb/production
+          FILE: docdb/production
           TARGET: production
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=image,push=true
@@ -651,7 +651,7 @@ tasks:
       - task: packages-deb-production
       - task: packages-rpm-development
       - task: packages-rpm-production
-      # TODO https://github.com/FerretDB/FerretDB/issues/2172
+      # TODO https://github.com/hanzoai/docdb/issues/2172
 
   packages-build:
     cmds:
@@ -659,9 +659,9 @@ tasks:
         bin/nfpm{{exeExt}} package
         --config=build/nfpm.yml
         --packager={{.PACKAGER}}
-        --target=tmp/{{.PACKAGER}}s/ferretdb-{{.FILE_SUFFIX}}.{{.PACKAGER}}
+        --target=tmp/{{.PACKAGER}}s/docdb-{{.FILE_SUFFIX}}.{{.PACKAGER}}
     env:
-      # TODO https://github.com/FerretDB/FerretDB/issues/5019
+      # TODO https://github.com/hanzoai/docdb/issues/5019
       PACKAGE_VERSION: "{{.PACKAGE_VERSION}}"
       PACKAGE_ARCH: "{{.PACKAGE_ARCH}}"
       DIR_ARCH: "{{.DIR_ARCH}}"
@@ -673,9 +673,9 @@ tasks:
       - >
         docker run --rm --platform=linux/{{.DOCKER_ARCH}} -v ./tmp/debs:/debs ubuntu
         /bin/sh -c '
-        dpkg-deb --info /debs/ferretdb-{{.FILE_SUFFIX}}.deb &&
-        dpkg --install /debs/ferretdb-{{.FILE_SUFFIX}}.deb &&
-        ferretdb --version
+        dpkg-deb --info /debs/docdb-{{.FILE_SUFFIX}}.deb &&
+        dpkg --install /debs/docdb-{{.FILE_SUFFIX}}.deb &&
+        docdb --version
         '
     requires:
       vars: [DOCKER_ARCH, FILE_SUFFIX]
@@ -687,14 +687,14 @@ tasks:
       - bin/envtool{{exeExt}} shell mkdir tmp/debs
       - task: docker-build
         vars:
-          FILE: ferretdb/development
+          FILE: docdb/development
           TARGET: development-binary
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=local,dest=tmp/build
       - for: [amd64, arm64]
         task: packages-build
         vars:
-          # TODO https://github.com/FerretDB/FerretDB/issues/5019
+          # TODO https://github.com/hanzoai/docdb/issues/5019
           PACKAGER: deb
           PACKAGE_VERSION: "{{.PACKAGE_VERSION}}"
           PACKAGE_ARCH: '{{replace "/" "" .ITEM | replace "v" ""}}' # arm/v7 -> arm7
@@ -716,14 +716,14 @@ tasks:
       - bin/envtool{{exeExt}} shell mkdir tmp/debs
       - task: docker-build
         vars:
-          FILE: ferretdb/production
+          FILE: docdb/production
           TARGET: production-binary
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=local,dest=tmp/build
       - for: [amd64, arm64]
         task: packages-build
         vars:
-          # TODO https://github.com/FerretDB/FerretDB/issues/5019
+          # TODO https://github.com/hanzoai/docdb/issues/5019
           PACKAGER: deb
           PACKAGE_VERSION: "{{.PACKAGE_VERSION}}"
           PACKAGE_ARCH: '{{replace "/" "" .ITEM | replace "v" ""}}' # arm/v7 -> arm7
@@ -743,9 +743,9 @@ tasks:
       - >
         docker run --rm --platform=linux/{{.DOCKER_ARCH}} -v ./tmp/rpms:/rpms opensuse/tumbleweed
         /bin/sh -c '
-        rpm --query --info --package /rpms/ferretdb-{{.FILE_SUFFIX}}.rpm &&
-        rpm --install /rpms/ferretdb-{{.FILE_SUFFIX}}.rpm &&
-        ferretdb --version
+        rpm --query --info --package /rpms/docdb-{{.FILE_SUFFIX}}.rpm &&
+        rpm --install /rpms/docdb-{{.FILE_SUFFIX}}.rpm &&
+        docdb --version
         '
     requires:
       vars: [DOCKER_ARCH, FILE_SUFFIX]
@@ -757,14 +757,14 @@ tasks:
       - bin/envtool{{exeExt}} shell mkdir tmp/rpms
       - task: docker-build
         vars:
-          FILE: ferretdb/development
+          FILE: docdb/development
           TARGET: development-binary
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=local,dest=tmp/build
       - for: [amd64, arm64]
         task: packages-build
         vars:
-          # TODO https://github.com/FerretDB/FerretDB/issues/5019
+          # TODO https://github.com/hanzoai/docdb/issues/5019
           PACKAGER: rpm
           PACKAGE_VERSION: "{{.PACKAGE_VERSION}}"
           PACKAGE_ARCH: '{{replace "/" "" .ITEM | replace "v" ""}}' # arm/v7 -> arm7
@@ -786,14 +786,14 @@ tasks:
       - bin/envtool{{exeExt}} shell mkdir tmp/rpms
       - task: docker-build
         vars:
-          FILE: ferretdb/production
+          FILE: docdb/production
           TARGET: production-binary
           PLATFORM: linux/amd64,linux/arm64
           OUTPUT: type=local,dest=tmp/build
       - for: [amd64, arm64]
         task: packages-build
         vars:
-          # TODO https://github.com/FerretDB/FerretDB/issues/5019
+          # TODO https://github.com/hanzoai/docdb/issues/5019
           PACKAGER: rpm
           PACKAGE_VERSION: "{{.PACKAGE_VERSION}}"
           PACKAGE_ARCH: '{{replace "/" "" .ITEM | replace "v" ""}}' # arm/v7 -> arm7
@@ -847,7 +847,7 @@ tasks:
       # Ensure that the code is valid and can be parsed by changing formatting manually
       # and running this task again, checking that formatting changes.
       #
-      # TODO --print-width 120 (https://github.com/FerretDB/FerretDB/issues/4636)
+      # TODO --print-width 120 (https://github.com/hanzoai/docdb/issues/4636)
       - >
         docker compose run --rm prettier --write --single-quote --trailing-comma none --no-semi
         "**/*.md" "**/*.mdx"
@@ -870,7 +870,7 @@ tasks:
       - task: fmt-docs
 
   cts:
-    desc: "Run CTS tests against FerretDB"
+    desc: "Run CTS tests against DocDB"
     cmds:
       - bin/opendocdb-cts run --dir=website/docs/guides --uri=mongodb://127.0.0.1:27017/cts
 

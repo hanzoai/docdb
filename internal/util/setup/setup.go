@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package setup provides proper setup of FerretDB components.
+// Package setup provides proper setup of DocDB components.
 package setup
 
 import (
@@ -23,18 +23,20 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/FerretDB/FerretDB/v2/internal/clientconn"
-	"github.com/FerretDB/FerretDB/v2/internal/dataapi"
-	"github.com/FerretDB/FerretDB/v2/internal/handler"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/handlers/proxy"
-	"github.com/FerretDB/FerretDB/v2/internal/mcp"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/state"
+	"github.com/hanzoai/docdb/internal/clientconn"
+	"github.com/hanzoai/docdb/internal/dataapi"
+	"github.com/hanzoai/docdb/internal/documentdb"
+	"github.com/hanzoai/docdb/internal/handler"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/handlers/proxy"
+	"github.com/hanzoai/docdb/internal/mcp"
+	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/state"
+	internalzap "github.com/hanzoai/docdb/internal/zap"
 )
 
-// SetupOpts represents options for creating and setting up FerretDB components.
+// SetupOpts represents options for creating and setting up DocDB components.
 //
 //nolint:vet // for readability
 type SetupOpts struct {
@@ -42,7 +44,7 @@ type SetupOpts struct {
 	StateProvider *state.Provider
 	Metrics       *middleware.Metrics
 
-	// DocumentDB handler
+	// DocDB handler
 	PostgreSQLURL          string
 	Auth                   bool
 	ReplSetName            string
@@ -69,6 +71,9 @@ type SetupOpts struct {
 
 	// MCPAddr listener
 	MCPAddr string // empty value disables MCP listener
+
+	// ZAP listener
+	ZAPAddr string // empty value disables ZAP binary protocol listener
 }
 
 // SetupResult represents [Setup] result.
@@ -79,10 +84,12 @@ type SetupResult struct {
 	WireListener    *clientconn.Listener
 	DataAPIListener *dataapi.Listener
 	MCPListener     *mcp.Listener
+	ZAPListener     *internalzap.Listener
+	zapPool         *documentdb.Pool // separate pool for ZAP connections
 }
 
 // Setup creates and sets up:
-//   - DocumentDB handler ([*handler.Handler]);
+//   - DocDB handler ([*handler.Handler]);
 //   - proxy handler ([*proxy.Handler]);
 //   - middleware ([*middleware.Middleware]);
 //   - wire protocol listener ([*clientconn.Listener]);
@@ -117,7 +124,7 @@ func Setup(ctx context.Context, opts *SetupOpts) *SetupResult {
 		Auth:          opts.Auth,
 
 		// That might require a started listener.
-		// TODO https://github.com/FerretDB/FerretDB/issues/4965
+		// TODO https://github.com/hanzoai/docdb/issues/4965
 		TCPHost: opts.TCPAddr,
 
 		ReplSetName: opts.ReplSetName,
@@ -129,7 +136,7 @@ func Setup(ctx context.Context, opts *SetupOpts) *SetupResult {
 		SessionCleanupInterval: opts.SessionCleanupInterval,
 	})
 	if err != nil {
-		opts.Logger.LogAttrs(ctx, logging.LevelDPanic, "Failed to construct DocumentDB handler", logging.Error(err))
+		opts.Logger.LogAttrs(ctx, logging.LevelDPanic, "Failed to construct DocDB handler", logging.Error(err))
 		res.Run(exitCtx)
 
 		return nil
@@ -220,6 +227,26 @@ func Setup(ctx context.Context, opts *SetupOpts) *SetupResult {
 		}
 	}
 
+	if opts.ZAPAddr != "" {
+		zapLogger := logging.WithName(opts.Logger, "zap")
+
+		res.zapPool, err = documentdb.NewPool(opts.PostgreSQLURL, logging.WithName(zapLogger, "pool"), opts.StateProvider)
+		if err != nil {
+			opts.Logger.LogAttrs(ctx, logging.LevelDPanic, "Failed to construct ZAP pool", logging.Error(err))
+			res.Run(exitCtx)
+
+			return nil
+		}
+
+		res.ZAPListener = internalzap.NewListener(res.zapPool, zapLogger)
+		if err = res.ZAPListener.Start(); err != nil {
+			opts.Logger.LogAttrs(ctx, logging.LevelDPanic, "Failed to start ZAP listener", logging.Error(err))
+			res.Run(exitCtx)
+
+			return nil
+		}
+	}
+
 	return &res
 }
 
@@ -287,6 +314,19 @@ func (sr *SetupResult) runListeners(ctx context.Context) {
 		go func() {
 			defer wg.Done()
 			sr.MCPListener.Run(ctx)
+		}()
+	}
+
+	if sr.ZAPListener != nil {
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+			<-ctx.Done()
+			sr.ZAPListener.Stop()
+			if sr.zapPool != nil {
+				sr.zapPool.Close()
+			}
 		}()
 	}
 

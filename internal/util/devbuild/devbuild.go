@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 // It is a separate package to avoid dependency cycles.
 package devbuild
 
-import "github.com/FerretDB/wire"
+import "github.com/hanzoai/docdb-wire"
 
 func init() {
 	wire.Debug = Enabled

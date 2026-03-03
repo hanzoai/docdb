@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import (
 	"strconv"
 	"text/template"
 
-	"github.com/FerretDB/gh"
+	"github.com/hanzoai/gh"
 	"github.com/google/go-github/v70/github"
 )
 
@@ -56,7 +56,7 @@ type Data struct {
 	OtherChanges  []PRData
 }
 
-// getMilestone returns milestone by title (which matches FerretDB version and Git tag).
+// getMilestone returns milestone by title (which matches DocDB version and Git tag).
 func getMilestone(ctx context.Context, client *github.Client, title string) (*github.Milestone, error) {
 	opts := &github.MilestoneListOptions{
 		State:     "all",
@@ -69,7 +69,7 @@ func getMilestone(ctx context.Context, client *github.Client, title string) (*gi
 	}
 
 	for {
-		milestones, resp, err := client.Issues.ListMilestones(ctx, "FerretDB", "FerretDB", opts)
+		milestones, resp, err := client.Issues.ListMilestones(ctx, "DocDB", "DocDB", opts)
 		if err != nil {
 			return nil, err
 		}
@@ -104,7 +104,7 @@ func getPRs(ctx context.Context, client *github.Client, milestone *github.Milest
 	var prs []*github.Issue
 
 	for {
-		issues, resp, err := client.Issues.ListByRepo(ctx, "FerretDB", "FerretDB", opts)
+		issues, resp, err := client.Issues.ListByRepo(ctx, "DocDB", "DocDB", opts)
 		if err != nil {
 			return nil, err
 		}

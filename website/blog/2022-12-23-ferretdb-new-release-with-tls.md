@@ -41,5 +41,5 @@ Users can now view the list of available commands for diagnostics, authenticatio
 Among other improvements, starting from v.0.7.0, we now allow the use of dash `(-)` in database names for both PostgreSQL and Tigris.
 We've also simplified and improved the approach to fetch documents for `delete`, `count`, `find`, `findAndModify`, and `update`.
 
-You can find more details on all these improvements and more in the [FerretDB](https://github.com/FerretDB/FerretDB/blob/main/CHANGELOG.md) changelog.
+You can find more details on all these improvements and more in the [FerretDB](https://github.com/hanzoai/docdb/blob/main/CHANGELOG.md) changelog.
 If you have any questions, feel free to [contact us](https://docs.ferretdb.io/#community).

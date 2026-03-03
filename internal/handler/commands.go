@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package handler
 import (
 	"context"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
 )
 
 // commandHandler represents a function/method that processes a single request.
@@ -25,7 +25,7 @@ import (
 // The passed context is canceled when the client disconnects.
 //
 // Response is a normal response or an error.
-// TODO https://github.com/FerretDB/FerretDB/issues/4965
+// TODO https://github.com/hanzoai/docdb/issues/4965
 type commandHandler func(context.Context, *middleware.Request) (*middleware.Response, error)
 
 // command represents a handler for single command.
@@ -52,7 +52,7 @@ func (h *Handler) initCommands() {
 			Help:    "Returns aggregated data.",
 		},
 		"authenticate": {
-			// TODO https://github.com/FerretDB/FerretDB/issues/1731
+			// TODO https://github.com/hanzoai/docdb/issues/1731
 			anonymous: true,
 			Help:      "", // hidden while not implemented
 		},
@@ -68,7 +68,7 @@ func (h *Handler) initCommands() {
 		},
 		"bulkWrite": {
 			// TODO https://github.com/documentdb/documentdb/issues/108
-			// TODO https://github.com/FerretDB/FerretDB/issues/4910
+			// TODO https://github.com/hanzoai/docdb/issues/4910
 			Help: "", // hidden while not implemented
 		},
 		"collMod": {
@@ -84,7 +84,7 @@ func (h *Handler) initCommands() {
 			Help:    "Reduces the disk space collection takes and refreshes its statistics.",
 		},
 		"connPoolStats": {
-			// TODO https://github.com/FerretDB/FerretDB/issues/4909
+			// TODO https://github.com/hanzoai/docdb/issues/4909
 			anonymous: true,
 			Help:      "", // hidden while not implemented
 		},
@@ -162,8 +162,8 @@ func (h *Handler) initCommands() {
 			handler: h.msgExplain,
 			Help:    "Returns the execution plan.",
 		},
-		"ferretDebugError": {
-			handler: h.msgFerretDebugError,
+		"docdbDebugError": {
+			handler: h.msgDocDBDebugError,
 			Help:    "Returns error for debugging.",
 		},
 		"find": {
@@ -201,7 +201,7 @@ func (h *Handler) initCommands() {
 		"hello": {
 			handler:   h.msgHello,
 			anonymous: true,
-			Help:      "Returns the role of the FerretDB instance.",
+			Help:      "Returns the role of the DocDB instance.",
 		},
 		"hostInfo": {
 			handler: h.msgHostInfo,
@@ -214,7 +214,7 @@ func (h *Handler) initCommands() {
 		"isMaster": {
 			handler:   h.msgIsMaster,
 			anonymous: true,
-			Help:      "Returns the role of the FerretDB instance.",
+			Help:      "Returns the role of the DocDB instance.",
 		},
 		"ismaster": { // old lowercase variant
 			handler:   h.msgIsMaster,

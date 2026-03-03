@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,19 +23,19 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // countCompatTestCase describes count compatibility test case.
 type countCompatTestCase struct {
 	filter bson.D // required, filter for the query
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/2255
+	// TODO https://github.com/hanzoai/docdb/issues/2255
 	// those two probably should be of the same type
 	optSkip          any   // optional, skip option for the query, defaults to nil
 	limit            int64 // optional, limit option for the query, defaults to 0
-	failsForFerretDB string
+	failsForDocDB string
 
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 }
@@ -47,7 +47,7 @@ func testCountCompat(t *testing.T, testCases map[string]countCompatTestCase) {
 	// Use shared setup because find queries can't modify data.
 	//
 	// Use read-only user.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1025
+	// TODO https://github.com/hanzoai/docdb/issues/1025
 	s := setup.SetupCompatWithOpts(t, &setup.SetupCompatOpts{
 		Providers:                shareddata.AllProviders(),
 		AddNonExistentCollection: true,
@@ -73,8 +73,8 @@ func testCountCompat(t *testing.T, testCases map[string]countCompatTestCase) {
 
 					var t testing.TB = tt
 
-					if tc.failsForFerretDB != "" {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					// RunCommand must be used to test the count command.
@@ -117,7 +117,7 @@ func testCountCompat(t *testing.T, testCases map[string]countCompatTestCase) {
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 
@@ -200,7 +200,7 @@ func TestCountCompat(t *testing.T) {
 		"SkipDouble": {
 			filter:           bson.D{},
 			optSkip:          1.111,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/405",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/405",
 		},
 		"SkipNegative": {
 			filter:     bson.D{},

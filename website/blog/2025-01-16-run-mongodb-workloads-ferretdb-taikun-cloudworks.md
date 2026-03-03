@@ -93,7 +93,7 @@ helm repo add ferretdb https://chnyda.github.io/ferretdb-helm
 Then install the FerretDB Helm chart in the `newferret` namespace:
 
 ```sh
-helm install mydb --namespace newferret ferretdb/ferretdb
+helm install mydb --namespace newferret hanzoai/docdb
 ```
 
 It may take a few minutes to install the FerretDB instance.
@@ -189,7 +189,7 @@ You can opt-out by running the disableTelemetry() command.
 ------
    The server generated these startup warnings when booting
    2024-12-06T01:16:00.872Z: Powered by FerretDB v1.24.0 and PostgreSQL 16.3 - Percona Distribution on x86_64-pc-linux-gnu, compiled by gcc.
-   2024-12-06T01:16:00.872Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2024-12-06T01:16:00.872Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2024-12-06T01:16:00.872Z: The telemetry state is undecided.
    2024-12-06T01:16:00.873Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.com.
 ------

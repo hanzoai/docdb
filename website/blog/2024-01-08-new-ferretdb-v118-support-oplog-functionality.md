@@ -70,7 +70,7 @@ To query OpLog for all the operations in a particular namespace (`test.foo`), ru
 db.oplog.rs.find({ ns: 'test.foo' })
 ```
 
-If something does not work correctly or you have any question on the OpLog functionality, [please inform us here](https://github.com/FerretDB/FerretDB/issues/new?assignees=ferretdb-bot&labels=code%2Fbug%2Cnot+ready&projects=&template=bug.yml).
+If something does not work correctly or you have any question on the OpLog functionality, [please inform us here](https://github.com/hanzoai/docdb/issues/new?assignees=ferretdb-bot&labels=code%2Fbug%2Cnot+ready&projects=&template=bug.yml).
 
 ## Thanks for all the support!
 

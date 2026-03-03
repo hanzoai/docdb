@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wireclient"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wireclient"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	xdgscram "github.com/xdg-go/scram"
@@ -30,10 +30,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestAuth(t *testing.T) {
@@ -97,13 +97,13 @@ func TestAuth(t *testing.T) {
 			t.Parallel()
 
 			if !tc.userNotFound {
-				// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+				// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 				_ = db.RunCommand(ctx, bson.D{{"dropUser", tc.username}})
 
 				// root role is only available in admin database, a role with sufficient privilege is used
 				roles := bson.A{"readWrite"}
 				if !setup.IsMongoDB(t) {
-					// TODO https://github.com/FerretDB/FerretDB/issues/3974
+					// TODO https://github.com/hanzoai/docdb/issues/3974
 					roles = bson.A{}
 				}
 
@@ -179,7 +179,7 @@ func TestAuth(t *testing.T) {
 }
 
 func TestAuthAlreadyAuthenticated(tt *testing.T) {
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/953")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/953")
 
 	tt.Parallel()
 
@@ -187,7 +187,7 @@ func TestAuthAlreadyAuthenticated(tt *testing.T) {
 	ctx, db := s.Ctx, s.Collection.Database()
 	username, password, mechanism := "testuser", "testpass", "SCRAM-SHA-256"
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 	_ = db.RunCommand(ctx, bson.D{{"dropUser", username}})
 
 	err := db.RunCommand(ctx, bson.D{
@@ -781,7 +781,7 @@ func TestHelloSpeculative(t *testing.T) {
 		saslSupportedMechs := res.Get("saslSupportedMechs")
 		require.NotNil(t, saslSupportedMechs)
 
-		// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+		// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 		res.Remove("hosts")
 		res.Remove("setName")
 		res.Remove("topologyVersion")
@@ -987,7 +987,7 @@ func TestHelloOpQuerySASLSupportedMechs(t *testing.T) {
 
 	assert.True(t, found, "expected SCRAM-SHA-256")
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/566
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/566
 	res.Remove("hosts")
 	res.Remove("setName")
 	res.Remove("topologyVersion")
@@ -1045,7 +1045,7 @@ func TestSASLStartOpQueryErrors(t *testing.T) {
 		fullCollectionName string
 
 		reply            *wirebson.Document
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"WrongAuthDB": {
 			query: wirebson.MustDocument(
@@ -1060,7 +1060,7 @@ func TestSASLStartOpQueryErrors(t *testing.T) {
 				"code", int32(18),
 				"codeName", "AuthenticationFailed",
 			),
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/932",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/932",
 		},
 		"NotAllowed$db": {
 			query: wirebson.MustDocument(
@@ -1108,8 +1108,8 @@ func TestSASLStartOpQueryErrors(t *testing.T) {
 	} {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(t, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(t, tc.failsForDocDB)
 			}
 
 			q := must.NotFail(wire.NewOpQuery(tc.query))

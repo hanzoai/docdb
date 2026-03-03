@@ -59,7 +59,7 @@ The latter acts as if it is `enabled` with two differences:
 Explicit user action is required (see below) to change an `undecided` state to `enabled` or `disabled`.
 :::
 
-Telemetry reporting is always disabled for [embedded FerretDB](https://pkg.go.dev/github.com/FerretDB/FerretDB/ferretdb)
+Telemetry reporting is always disabled for [embedded FerretDB](https://pkg.go.dev/github.com/hanzoai/docdb/ferretdb)
 and can't be configured.
 
 ### Disable telemetry

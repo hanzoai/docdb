@@ -30,7 +30,7 @@ Chances are, the companies will come together to standardize and implement usefu
 So do not get scared by [MongoDB's Amazon DocumentDB bashing web site](https://www.isdocumentdbreallymongodb.com/) and self-serving compatibility ["evaluation"](https://www.mongodb.com/atlas-vs-amazon-documentdb/compatibility).
 Look into the functionality your application uses and plans to use and see whenever any of the MongoDB Alternatives support it.
 If they do not - let them know what is important to you .
-With FerretDB as an Open Source Project, you can both [file an issue](https://github.com/FerretDB/FerretDB/issues) or scratch your own itch by contributing the feature you need.
+With FerretDB as an Open Source Project, you can both [file an issue](https://github.com/hanzoai/docdb/issues) or scratch your own itch by contributing the feature you need.
 
 Even if you stick to using MongoDB Atlas at this point, do make sure that there are possible Alternative Backends for your application to ensure you are not a hostage and have choices.
 

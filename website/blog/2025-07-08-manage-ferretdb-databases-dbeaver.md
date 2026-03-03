@@ -49,7 +49,7 @@ Connecting DBeaver to your FerretDB instance is a straightforward process, lever
 Here's a step-by-step guide:
 
 1. **Ensure FerretDB is running:** Make sure your FerretDB instance is active and accessible.
-   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/ferretdb/).
+   If you haven't set it up yet, refer to our [FerretDB Installation Guide](https://docs.ferretdb.io/installation/docdb/).
 2. **Launch DBeaver:** Ensure that you have DBeaver installed on your system.
    If you don't have it yet, download it from the [DBeaver website](https://dbeaver.io/download/).
    Open the DBeaver application on your system.
@@ -93,6 +93,6 @@ The integration of DBeaver and FerretDB provides a powerful, versatile, and full
 By leveraging FerretDB, you can seamlessly integrate it into your existing database management workflows with DBeaver.
 This enables developers to run their MongoDB workloads in the open-source ecosystem, without vendor lock-in or restrictive licenses.
 
-- [Ready to get started? Try FerretDB today](https://github.com/FerretDB/FerretDB)
+- [Ready to get started? Try FerretDB today](https://github.com/hanzoai/docdb)
 - [Have questions, suggestions, or requests? Join our community](https://docs.ferretdb.io/#community)
 - [Discover more ways to integrate other compatible applications with FerretDB](https://docs.ferretdb.io/compatible-applications)

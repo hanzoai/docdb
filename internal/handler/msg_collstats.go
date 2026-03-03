@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ import (
 	"fmt"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb/documentdb_api"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
 )
 
 // msgCollStats implements `collStats` command.
@@ -61,7 +61,7 @@ func (h *Handler) msgCollStats(connCtx context.Context, req *middleware.Request)
 		case int64:
 			scale = float64(scaleV)
 		default:
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/559
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/559
 			msg := fmt.Sprintf(
 				`BSON field 'collStats.scale' is the wrong type '%T', expected types '[long, int, decimal, double]'`,
 				scaleV,

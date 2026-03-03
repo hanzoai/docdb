@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration"
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestUpdateUserCommand(t *testing.T) {
@@ -43,7 +43,7 @@ func TestUpdateUserCommand(t *testing.T) {
 		expected         bson.D
 		err              *mongo.CommandError
 		altMessage       string
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"MissingFields": {
 			username: "missing_fields",
@@ -70,7 +70,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				Name:    "UserNotFound",
 				Message: fmt.Sprintf("User not_found@%s not found", db.Name()),
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/945",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/945",
 		},
 		"EmptyUsername": {
 			username: "not_empty_username",
@@ -84,7 +84,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				Name:    "UserNotFound",
 				Message: fmt.Sprintf("User @%s not found", db.Name()),
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/945",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/945",
 		},
 		"EmptyPassword": {
 			username: "a_user_bad_password",
@@ -99,7 +99,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				Message: "Error preflighting UTF-8 conversion: U_STRING_NOT_TERMINATED_WARNING",
 			},
 			altMessage:       "Password cannot be empty",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/945",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/945",
 		},
 		"BadPasswordValue": {
 			username: "b_user_bad_password_value",
@@ -146,7 +146,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				}}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"PasswordChange": {
 			username: "a_user",
@@ -165,7 +165,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				}}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"PasswordChangeWithSCRAMMechanism": {
 			username:   "a_user_with_scram_mechanism",
@@ -186,7 +186,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				}}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/946",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/946",
 		},
 		"PasswordChangeWithBadAuthMechanism": {
 			username: "a_user_with_mechanism_bad",
@@ -201,7 +201,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				Name:    "BadValue",
 				Message: "Unknown auth mechanism 'BAD'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/946",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/946",
 		},
 		"PasswordChangeWithRoles": {
 			username: "a_user_with_no_roles",
@@ -221,7 +221,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				}}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/944",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/944",
 		},
 		"WithComment": {
 			username: "another_user",
@@ -241,7 +241,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				}}},
 				{"ok", float64(1)},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5313",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5313",
 		},
 		"InvalidRoles": {
 			username: "invalid_roles",
@@ -256,20 +256,20 @@ func TestUpdateUserCommand(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'updateUser.roles' is the wrong type 'string', expected type 'array'",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/944",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/944",
 		},
 	}
 
 	for name, tc := range testCases {
 		t.Run(name, func(tt *testing.T) {
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(t, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(t, tc.failsForDocDB)
 			}
 
 			tt.Parallel()
 
-			// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/864
+			// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/864
 			_ = db.RunCommand(ctx, bson.D{{"dropUser", tc.username}})
 
 			createPayload := bson.D{

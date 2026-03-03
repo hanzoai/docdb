@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import (
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // contextKey is a named unexported type for the safe use of [context.WithValue].
@@ -47,7 +47,7 @@ var queryKey = contextKey{}
 //   - https://pkg.go.dev/github.com/jackc/pgx/v5#hdr-Tracing_and_Logging
 //   - https://pkg.go.dev/github.com/jackc/pgx/v5/multitracer
 //
-// TODO https://github.com/FerretDB/FerretDB/issues/3554
+// TODO https://github.com/hanzoai/docdb/issues/3554
 type tracer struct {
 	tl       *tracelog.TraceLog
 	requests *prometheus.CounterVec

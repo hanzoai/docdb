@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ package testutil
 import (
 	"testing"
 
-	"github.com/FerretDB/wire/wirebson"
-	"github.com/FerretDB/wire/wiretest"
+	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wiretest"
 )
 
 // AssertEqual asserts that two BSON values are equal.

@@ -53,7 +53,7 @@ We can follow the [FerretDB Docker installation guide](https://docs.ferretdb.io/
        volumes:
          - ./data:/var/lib/postgresql/data
      ferretdb:
-       image: ghcr.io/ferretdb/ferretdb
+       image: ghcr.io/hanzoai/docdb
        restart: on-failure
        ports:
          - 27017:27017
@@ -84,7 +84,7 @@ We can follow the [FerretDB Docker installation guide](https://docs.ferretdb.io/
 
    ```sh
    docker run --rm -it --network=ferretdb --entrypoint=mongosh mongo \
-   "mongodb://username:password@ferretdb/ferretdb?authMechanism=PLAIN"
+   "mongodb://username:password@hanzoai/docdb?authMechanism=PLAIN"
    ```
 
 And that's all we need to set up FerretDB on Docker.
@@ -299,4 +299,4 @@ Let's assume we want to index the `order_total` field, which should help improve
 In this article, we've covered a few common operations to show how you can use FerretDB and Studio 3T.
 However, please note that FerretDB is constantly improving and adding new features, and we'd be happy to learn all about your experience running FerretDB.
 
-We encourage you to try out FerretDB, and if you have any questions or feedback, please or run into any issues, please [reach out to us here](https://github.com/FerretDB/FerretDB/); we'd be happy to help!
+We encourage you to try out FerretDB, and if you have any questions or feedback, please or run into any issues, please [reach out to us here](https://github.com/hanzoai/docdb/); we'd be happy to help!

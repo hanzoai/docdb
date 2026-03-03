@@ -53,7 +53,7 @@ const config = {
 
           if (to.startsWith("/installation/ferretdb")) {
             // old blog posts
-            // for example: /quickstart-guide/docker/ -> /installation/ferretdb/docker/
+            // for example: /quickstart-guide/docker/ -> /installation/docdb/docker/
             res.push(to.replace("/installation/ferretdb", "/quickstart-guide"));
             res.push(to.replace("/installation/ferretdb", "/quickstart_guide"));
           }
@@ -83,7 +83,7 @@ const config = {
         docs: {
           routeBasePath: "/",
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/FerretDB/FerretDB/tree/main/website",
+          editUrl: "https://github.com/hanzoai/docdb/tree/main/website",
 
           // https://docusaurus.io/docs/versioning#configuring-versioning-behavior
           // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#configuration
@@ -130,7 +130,7 @@ const config = {
             position: "right",
           },
           {
-            href: "https://github.com/FerretDB/",
+            href: "https://github.com/hanzoai/",
             label: "GitHub",
             position: "right",
           },
@@ -158,7 +158,7 @@ const config = {
             items: [
               {
                 label: "GitHub Discussions",
-                href: "https://github.com/FerretDB/FerretDB/discussions/",
+                href: "https://github.com/hanzoai/docdb/discussions/",
               },
               {
                 label: "Slack",
@@ -188,7 +188,7 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/FerretDB/",
+                href: "https://github.com/hanzoai/",
               },
             ],
           },

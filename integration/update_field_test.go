@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestUpdateFieldSet(t *testing.T) {
@@ -198,7 +198,7 @@ func TestUpdateCommandUpsert(tt *testing.T) {
 		err       *mongo.WriteError // optional, expected error from MongoDB
 
 		skip             string // optional, skip test with a specified reason
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"NoUpdateOperator": {
 			updates: bson.A{
@@ -321,8 +321,8 @@ func TestUpdateCommandUpsert(tt *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			var res bson.D
@@ -423,8 +423,8 @@ func TestUpdateFieldErrors(t *testing.T) {
 		provider shareddata.Provider // optional, default uses shareddata.ArrayDocuments
 
 		err              *mongo.WriteError // required, expected error from MongoDB
-		altMessage       string            // optional, alternative error message for FerretDB, ignored if empty
-		failsForFerretDB string
+		altMessage       string            // optional, alternative error message for DocDB, ignored if empty
+		failsForDocDB string
 	}{
 		"SetUnsuitableValue": {
 			id:     "array-documents-nested",
@@ -435,7 +435,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 					"({v: [ { foo: [ { bar: \"hello\" }, { bar: \"world\" } ] } ]})",
 			},
 			altMessage:       "cannot use path 'v.foo' to traverse the document",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"SetImmutableID": {
 			id:     "array-documents-nested",
@@ -472,7 +472,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 					"({v: [ { foo: [ { bar: \"hello\" }, { bar: \"world\" } ] } ]})",
 			},
 			altMessage:       "cannot use path 'v.-1' to traverse the document",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"RenameUnsuitableValue": {
 			id:     "array-documents-nested",
@@ -490,7 +490,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 				Code:    14,
 				Message: "Cannot increment with non-numeric argument: {v: \"string\"}",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/431",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/431",
 		},
 		"IncUnsuitableValue": {
 			id:     "array-documents-nested",
@@ -500,7 +500,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 				Message: "Cannot create field 'foo' in element " +
 					"{v: [ { foo: [ { bar: \"hello\" }, { bar: \"world\" } ] } ]}",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"IncNonNumeric": {
 			id:     "array-documents-nested",
@@ -541,7 +541,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 				Message: "Cannot create field 'foo' in element " +
 					"{v: [ { foo: [ { bar: \"hello\" }, { bar: \"world\" } ] } ]}",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"MinUnsuitableValue": {
 			id:     "array-documents-nested",
@@ -551,7 +551,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 				Message: "Cannot create field 'foo' in element " +
 					"{v: [ { foo: [ { bar: \"hello\" }, { bar: \"world\" } ] } ]}",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"MulTypeMismatch": {
 			id:     "array-documents-nested",
@@ -579,7 +579,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 				Message: "Cannot create field 'foo' in element " +
 					"{v: [ { foo: [ { bar: \"hello\" }, { bar: \"world\" } ] } ]}",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"MulNonNumeric": {
 			id:     "array-documents-nested",
@@ -662,7 +662,7 @@ func TestUpdateFieldErrors(t *testing.T) {
 				Message: "Cannot create field 'foo' in element " +
 					"{v: [ { foo: [ { bar: \"hello\" }, { bar: \"world\" } ] } ]}",
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/429",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"BitNonIntegralDocValue": {
 			id:     "array-documents-nested",
@@ -711,8 +711,8 @@ func TestUpdateFieldErrors(t *testing.T) {
 			tt.Parallel()
 
 			var t testing.TB = tt
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			require.NotNil(t, tc.update, "update should be set")

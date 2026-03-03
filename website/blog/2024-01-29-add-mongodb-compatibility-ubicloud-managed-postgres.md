@@ -94,7 +94,7 @@ postgres://ferretuser:<password>@<postgres-server-hostname>/ferretdb
 Run this command in your terminal to pull and run the FerretDB image.
 
 ```sh
-docker run -e FERRETDB_POSTGRESQL_URL=<ferretuser-connection-string> ghcr.io/ferretdb/ferretdb
+docker run -e FERRETDB_POSTGRESQL_URL=<ferretuser-connection-string> ghcr.io/hanzoai/docdb
 ```
 
 Once that's successful, proceed to connect with your FerretDB instance via `mongosh`.
@@ -116,7 +116,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 ------
    The server generated these startup warnings when booting
    2024-01-23T11:38:17.837Z: Powered by FerretDB v1.18.0 and PostgreSQL 16.1.
-   2024-01-23T11:38:17.837Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2024-01-23T11:38:17.837Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2024-01-23T11:38:17.837Z: The telemetry state is undecided.
    2024-01-23T11:38:17.837Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.io.
 ------

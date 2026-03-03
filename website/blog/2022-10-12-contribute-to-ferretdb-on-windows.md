@@ -51,7 +51,7 @@ Apart from the Git settings, you also need to configure Docker.
 
 We should have installed git, Golang, and Docker for Windows by now.
 
-To start contributing, we will need the FerretDB source code located [here](https://github.com/FerretDB/FerretDB.git).
+To start contributing, we will need the FerretDB source code located [here](https://github.com/hanzoai/docdb.git).
 So we must fork the repository to make it possible to send PR.
 
 ![fork the FerretDB repository](/img/blog/image6.png)
@@ -90,7 +90,7 @@ If you don't see your remote repository called origin, you can easily add it wit
 After that, we need to add the upstream project repository by running this in your terminal:
 
 ```js
-git remote add upstream https://github.com/FerretDB/FerretDB.git
+git remote add upstream https://github.com/hanzoai/docdb.git
 ```
 
 Now that we are all set with git, we can start FerretDB locally.
@@ -143,7 +143,7 @@ We can open another terminal window and run tests (_bin\task test_) or "mongosh"
 For Windows users, starting your contribution journey to FerretDB might feel a bit challenging if it's not correctly set up.
 We've covered all the known Windows-specific issues you might encounter in this article when contributing to FerretDB on Windows.
 
-An excellent place to start contributing is to select any issue labeled as the [good first issue](https://github.com/FerretDB/FerretDB/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
+An excellent place to start contributing is to select any issue labeled as the [good first issue](https://github.com/hanzoai/docdb/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 Not to mention, we have an awesome community [Slack group where you can connect!](https://slack.ferretdb.io/) And if you experience any other issues that aren't covered in this article or have any questions, please feel free to reach out to us on Slack or GitHub Discussions.
 
 With your Windows environment configured and set up, read our contributing guide to start contributing to FerretDB on Windows.

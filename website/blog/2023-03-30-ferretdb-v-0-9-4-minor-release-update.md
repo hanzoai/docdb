@@ -82,7 +82,7 @@ We also added sections explaining supported usages for field and array update op
 
 We've also updated our security policy page, which should help significantly when reporting a vulnerability.
 
-Please see [our release notes](https://github.com/FerretDB/FerretDB/releases/tag/v0.9.4) for other changes and enhancements in this release.
+Please see [our release notes](https://github.com/hanzoai/docdb/releases/tag/v0.9.4) for other changes and enhancements in this release.
 
 ## Up Next
 

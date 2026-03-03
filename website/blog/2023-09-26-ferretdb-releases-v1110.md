@@ -42,7 +42,7 @@ We've created a pre-migration guide that should help you prepare and test your a
 
 ## Other changes
 
-For other changes in this release, please [check out our release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.11.0).
+For other changes in this release, please [check out our release notes](https://github.com/hanzoai/docdb/releases/tag/v1.11.0).
 
 The community has been a key component in our growth, and we appreciate every single support we've received either via bug reports, code contributions, feature requests, suggestions, and more.
 

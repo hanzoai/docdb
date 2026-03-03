@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,27 +25,27 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FerretDB/wire/wireclient"
+	"github.com/hanzoai/docdb-wire/wireclient"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.opentelemetry.io/otel"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/xiter"
+	"github.com/hanzoai/docdb/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/xiter"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // Flags.
 var (
-	targetURLF     = flag.String("target-url", "", "target system's URL; if empty, in-process FerretDB is used")
+	targetURLF     = flag.String("target-url", "", "target system's URL; if empty, in-process DocDB is used")
 	targetBackendF = flag.String("target-backend", "", "target system's backend: "+strings.Join(allBackends, ", "))
 
-	postgreSQLURLF    = flag.String("postgresql-url", "", "in-process FerretDB: PostgreSQL URL")
-	targetUnixSocketF = flag.Bool("target-unix-socket", false, "in-process FerretDB: use Unix domain socket")
-	targetProxyAddrF  = flag.String("target-proxy-addr", "", "in-process FerretDB: use given proxy")
+	postgreSQLURLF    = flag.String("postgresql-url", "", "in-process DocDB: PostgreSQL URL")
+	targetUnixSocketF = flag.Bool("target-unix-socket", false, "in-process DocDB: use Unix domain socket")
+	targetProxyAddrF  = flag.String("target-proxy-addr", "", "in-process DocDB: use given proxy")
 
 	compatURLF = flag.String("compat-url", "", "compat system's (MongoDB) URL for compatibility tests; if empty, they are skipped")
 
@@ -62,7 +62,7 @@ var (
 
 // Other globals.
 var (
-	allBackends = []string{"ferretdb", "ferretdb-yugabytedb", "mongodb"}
+	allBackends = []string{"docdb", "docdb-yugabytedb", "mongodb"}
 )
 
 // WireConn defines if and how wire client connection is established.
@@ -82,7 +82,7 @@ const (
 // SetupOpts represents setup options.
 //
 // Add option to use read-only user.
-// TODO https://github.com/FerretDB/FerretDB/issues/1025
+// TODO https://github.com/hanzoai/docdb/issues/1025
 type SetupOpts struct {
 	ListenerOpts *ListenerOpts
 
@@ -343,13 +343,13 @@ func insertBenchmarkProvider(tb testing.TB, ctx context.Context, collection *mon
 	return
 }
 
-// cleanupCollection deletes all documents in the collection for ferretdb-yugabytedb backend
+// cleanupCollection deletes all documents in the collection for docdb-yugabytedb backend
 // or drops the collection for other backends.
 func cleanupCollection(tb testing.TB, ctx context.Context, collection *mongo.Collection) {
 	tb.Helper()
 
 	if IsYugabyteDB(tb) {
-		// dropping collection or database fails for ferretdb-yugabytedb
+		// dropping collection or database fails for docdb-yugabytedb
 		// TODO https://github.com/yugabyte/yugabyte-db/issues/27698
 		_, err := collection.DeleteMany(ctx, bson.D{})
 		require.NoError(tb, err)
@@ -362,7 +362,7 @@ func cleanupCollection(tb testing.TB, ctx context.Context, collection *mongo.Col
 }
 
 // cleanupDatabase drops all users, then deletes all collections in the database
-// for ferretdb-yugabytedb backend or drops the database for other backends.
+// for docdb-yugabytedb backend or drops the database for other backends.
 func cleanupDatabase(tb testing.TB, ctx context.Context, database *mongo.Database) {
 	tb.Helper()
 
@@ -370,7 +370,7 @@ func cleanupDatabase(tb testing.TB, ctx context.Context, database *mongo.Databas
 	require.NoError(tb, err)
 
 	if IsYugabyteDB(tb) {
-		// dropping collection or database fails for ferretdb-yugabytedb
+		// dropping collection or database fails for docdb-yugabytedb
 		// TODO https://github.com/yugabyte/yugabyte-db/issues/27698
 		var collections []string
 		collections, err = database.ListCollectionNames(ctx, bson.D{})

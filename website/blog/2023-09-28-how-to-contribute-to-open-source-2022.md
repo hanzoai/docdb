@@ -75,7 +75,7 @@ Usually, issues that are marked with such a label don't require special knowledg
 There is one more tradition here, in October, some open source projects mark their issues with the [`hacktoberfest`](https://github.com/search?q=label%3Ahacktoberfest&type=issues) label, and such issues are often suitable for first-time contributors.
 
 At FerretDB, we are preparing for Hacktoberfest too!
-So, if you are looking for something to contribute to, take a look at the good first issues in our [FerretDB](https://github.com/FerretDB/FerretDB/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) repository.
+So, if you are looking for something to contribute to, take a look at the good first issues in our [FerretDB](https://github.com/hanzoai/docdb/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) repository.
 
 ### 3. Select a good first issue and read the contribution guidelines
 
@@ -90,18 +90,18 @@ Also, many projects offer chats where contributors can ask any questions.
 
 At FerretDB, we use Slack for our contributors and community, and we also offer weekly Open Office Hours calls.
 Don't hesitate to join us!
-You can find details in our [README](https://github.com/ferretdb/ferretdb#community).
+You can find details in our [README](https://github.com/hanzoai/docdb#community).
 
 By the way, the contributing guidelines or documentation might be the most suitable for first-time contributors!
 
 We have several good first issues that you can start with.
-For example, you could implement the [`$first` accumulator](https://github.com/FerretDB/FerretDB/issues/2128) or [improve embedded package documentation](https://github.com/FerretDB/FerretDB/issues/2326).
-You could also try your hands at [updating glossary list with more details](https://github.com/FerretDB/FerretDB/issues/3445).
+For example, you could implement the [`$first` accumulator](https://github.com/hanzoai/docdb/issues/2128) or [improve embedded package documentation](https://github.com/hanzoai/docdb/issues/2326).
+You could also try your hands at [updating glossary list with more details](https://github.com/hanzoai/docdb/issues/3445).
 Since new issues are always popping up, there are no limits to what you can contribute to.
 
 _Do you see a typo, a mistake, or something that doesn't look clear?_
 
-Such contributions could be as tiny as [a one-line change](https://github.com/FerretDB/FerretDB/pull/1141).
+Such contributions could be as tiny as [a one-line change](https://github.com/hanzoai/docdb/pull/1141).
 So, if you find something you're interested in working on, even if it's not labeled as a good first issue, you can still go ahead to contribute.
 Help the project owners with such improvements, and they will be grateful!
 
@@ -110,7 +110,7 @@ Help the project owners with such improvements, and they will be grateful!
 Most of the time, in order to make a contribution, you need to [fork a repository](https://docs.github.com/en/get-started/quickstart/fork-a-repo).
 Then you can clone your fork on your local environment, implement the changes, and test all the necessary things locally.
 
-We recommend that FerretDB contributors get familiar with the "[Setting up the environment](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md#setting-up-the-environment)" documentation.
+We recommend that FerretDB contributors get familiar with the "[Setting up the environment](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md#setting-up-the-environment)" documentation.
 
 ### 5. Ask questions or create an issue
 
@@ -119,9 +119,9 @@ We have already mentioned chats and calls, but GitHub itself also offers some co
 First of all, there is a possibility to leave comments on issues.
 Quite often, contributors discuss potential implementations or unclear aspects there.
 
-Also, on GitHub, there is a relatively new feature called [Discussions](https://github.com/FerretDB/FerretDB/discussions) where anyone can ask questions about the project.
+Also, on GitHub, there is a relatively new feature called [Discussions](https://github.com/hanzoai/docdb/discussions) where anyone can ask questions about the project.
 
-If you notice a bug or have a feature suggestion, the best course of action is to [create a new issue](https://github.com/FerretDB/FerretDB/issues/new/choose).
+If you notice a bug or have a feature suggestion, the best course of action is to [create a new issue](https://github.com/hanzoai/docdb/issues/new/choose).
 By the way, reporting issues is also a valuable contribution to open-source projects!
 
 ### 6. Push your changes to a remote repository
@@ -143,7 +143,7 @@ As usual, GitHub has a [detailed guide](https://docs.github.com/en/pull-requests
 Various projects might follow some practices to help contributors have their changes accepted as quickly as possible.
 
 At FerretDB, we use various GitHub actions to check if the code satisfies the standards and if tests pass.
-We described the full process in [our contributing guide](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md#contributing-code).
+We described the full process in [our contributing guide](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md#contributing-code).
 The reviewers of your code might have some additional questions or suggestions.
 This is totally normal for most of the pull requests.
 
@@ -155,8 +155,8 @@ Congratulations!
 At FerretDB, we welcome all the open source contributors!
 From feature implementations to fixing typos in our documentation - we value _everything_!
 
-Whether it's for Hacktoberfest or otherwise, you are welcome to take a look at [FerretDB projects](https://github.com/FerretDB/) and find something that interests you.
-To simplify the process, we prepared the [contributing guidelines](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md) to help you find something to work on, set up the development environment, prepare a pull request and pass code review.
+Whether it's for Hacktoberfest or otherwise, you are welcome to take a look at [FerretDB projects](https://github.com/hanzoai/) and find something that interests you.
+To simplify the process, we prepared the [contributing guidelines](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md) to help you find something to work on, set up the development environment, prepare a pull request and pass code review.
 
 Are you looking forward to submitting your first pull request to FerretDB?
-[Start contributing to FerretDB today](https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md).
+[Start contributing to FerretDB today](https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md).

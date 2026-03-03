@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 // Package observability provides abstractions for tracing, metrics, etc.
 //
-// TODO https://github.com/FerretDB/FerretDB/issues/3244
+// TODO https://github.com/hanzoai/docdb/issues/3244
 package observability
 
 import (
@@ -30,9 +30,9 @@ import (
 	otelsdktrace "go.opentelemetry.io/otel/sdk/trace"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
 
-	"github.com/FerretDB/FerretDB/v2/build/version"
-	"github.com/FerretDB/FerretDB/v2/internal/util/ctxutil"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/build/version"
+	"github.com/hanzoai/docdb/internal/util/ctxutil"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // setup ensures that global tracer provider is set up only once.
@@ -86,7 +86,7 @@ func NewOTelTraceExporter(opts *OTelTraceExporterOpts) (*OTelTraceExporter, erro
 		otelsdktrace.WithResource(otelsdkresource.NewSchemaless(
 			otelsemconv.ServiceName(opts.Service),
 			otelsemconv.ServiceVersion(version.Get().Version),
-			otelsemconv.DBSystemNameKey.String("ferretdb"),
+			otelsemconv.DBSystemNameKey.String("docdb"),
 		)),
 		otelsdktrace.WithSampler(otelsdktrace.AlwaysSample()),
 		otelsdktrace.WithRawSpanLimits(otelsdktrace.SpanLimits{

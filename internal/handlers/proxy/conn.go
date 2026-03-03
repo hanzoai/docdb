@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,14 +26,14 @@ import (
 	"sync"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire"
+	"github.com/hanzoai/docdb-wire"
 	"go.opentelemetry.io/otel"
 	otelcodes "go.opentelemetry.io/otel/codes"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
 	oteltrace "go.opentelemetry.io/otel/trace"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // conn represents a single connection to a wire protocol compatible service.
@@ -189,7 +189,7 @@ func (c *conn) handle(ctx context.Context, req *middleware.Request) (resp *middl
 
 	// It is not clear if clients actually send multiple requests in parallel over the same connection.
 	// If they do, we better support that, too.
-	// TODO https://github.com/FerretDB/FerretDB/issues/5049
+	// TODO https://github.com/hanzoai/docdb/issues/5049
 	if !c.m.TryLock() {
 		c.l.Log(ctx, logging.LevelDPanic, "Connection is busy, waiting for lock")
 		c.m.Lock()

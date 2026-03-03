@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/FerretDB/gh"
+	"github.com/hanzoai/gh"
 	"github.com/google/go-github/v70/github"
 	"github.com/rogpeppe/go-internal/lockedfile"
 )
@@ -185,7 +185,7 @@ func (c *Client) IssueStatus(ctx context.Context, owner, repo string, num int) (
 				msg := "Rate limit reached: " + err.Error()
 				if c.token == "" {
 					msg += "\nPlease set a GITHUB_TOKEN as described at " +
-						"https://github.com/FerretDB/FerretDB/blob/main/CONTRIBUTING.md#setting-a-github_token"
+						"https://github.com/hanzoai/docdb/blob/main/CONTRIBUTING.md#setting-a-github_token"
 				}
 				c.logf("%s", msg)
 			}

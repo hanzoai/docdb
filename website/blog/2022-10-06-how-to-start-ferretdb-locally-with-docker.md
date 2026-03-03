@@ -80,7 +80,7 @@ It will connect to the PostgreSQL database and act as a proxy.
 
 ```js
 ferretdb:
-  image: ghcr.io/ferretdb/ferretdb:latest
+  image: ghcr.io/hanzoai/docdb:latest
   container_name: ferretdb
   restart: on-failure
   ports:
@@ -160,7 +160,7 @@ If you have mongosh on your machine you can just use it.
 If not, you can create a simple MongoDB container and run the mongosh from there:
 
 ```js
-> docker run --rm -it --network=ferretdb --entrypoint=mongosh mongo:5 mongodb://ferretdb/
+> docker run --rm -it --network=ferretdb --entrypoint=mongosh mongo:5 mongodb://docdb/
 
 For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 
@@ -172,7 +172,7 @@ You can opt-out by running the disableTelemetry() command.
 ------
    The server generated these startup warnings when booting
    2022-10-05T23:58:59.045Z: Powered by 🥭 FerretDB v0.5.4 and PostgreSQL 14.5.
-   2022-10-05T23:58:59.045Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB
+   2022-10-05T23:58:59.045Z: Please star us on GitHub: https://github.com/hanzoai/docdb
 ------
 
 test>
@@ -260,4 +260,4 @@ We've also tested it out by inserting and retrieving a document in a collection,
 Even though FerretDB is still under development and not suitable for production environments, running it locally using Docker gives you a taste of what's to come.
 But there's still more to do.
 You can start contributing to FerretDB by taking a look at [this article](https://blog.ferretdb.io/how-to-contribute-to-open-source-2022/).
-To learn more about FerretDB, contribute to the project, or for any questions you might have, do reach out to us on [Slack](https://github.com/FerretDB/FerretDB#community) or [GitHub](https://github.com/FerretDB/FerretDB/discussions).
+To learn more about FerretDB, contribute to the project, or for any questions you might have, do reach out to us on [Slack](https://github.com/hanzoai/docdb#community) or [GitHub](https://github.com/hanzoai/docdb/discussions).

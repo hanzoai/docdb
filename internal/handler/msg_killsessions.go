@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@ package handler
 import (
 	"context"
 
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/session"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/handler/session"
 )
 
 // msgKillSessions implements `killSessions` command.
@@ -41,7 +41,7 @@ func (h *Handler) msgKillSessions(connCtx context.Context, req *middleware.Reque
 
 	if len(ids) == 0 {
 		// with access control enabled, all other users sessions are killed
-		// TODO https://github.com/FerretDB/FerretDB/issues/3974
+		// TODO https://github.com/hanzoai/docdb/issues/3974
 		cursorIDs := h.s.DeleteSessionsByUserIDs([]session.UserID{userID})
 
 		for _, cursorID := range cursorIDs {

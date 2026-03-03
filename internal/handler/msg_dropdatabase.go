@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ import (
 	"context"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/FerretDB/FerretDB/v2/internal/documentdb/documentdb_api"
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
 )
 
 // msgDropDatabase implements `dropDatabase` command.
@@ -41,7 +41,7 @@ func (h *Handler) msgDropDatabase(connCtx context.Context, req *middleware.Reque
 	}
 
 	// Should we manually close all cursors for the database?
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/17
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/17
 
 	err = h.p.WithConn(func(conn *pgx.Conn) error {
 		return documentdb_api.DropDatabase(connCtx, conn, h.L, dbName, nil)

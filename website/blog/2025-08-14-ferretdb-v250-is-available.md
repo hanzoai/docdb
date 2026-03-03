@@ -16,7 +16,7 @@ We are pleased to announce the release of FerretDB v2.5.0!
 
 This release introduces RPM packages for DocumentDB, changes to metrics, and some new additions to our compatible apps documentation.
 
-This version works best with [DocumentDB v0.106.0-ferretdb-2.5.0](https://github.com/FerretDB/documentdb/releases/tag/v0.106.0-ferretdb-2.5.0).
+This version works best with [DocumentDB v0.106.0-ferretdb-2.5.0](https://github.com/hanzoai/docdb/releases/tag/v0.106.0-ferretdb-2.5.0).
 
 ## Breaking changes
 
@@ -47,7 +47,7 @@ In addition, images in our documentation can now be zoomed in with full resoluti
 ## Looking ahead
 
 This release also includes various test improvements, dependency updates, and internal refactoring.
-You can find the complete list in the [release notes](https://github.com/FerretDB/FerretDB/releases/tag/v2.5.0).
+You can find the complete list in the [release notes](https://github.com/hanzoai/docdb/releases/tag/v2.5.0).
 
 In the coming weeks, we are preparing several updates, including FerretDB Cloud and improvements to observability and metrics.
 Stay tuned for more details.

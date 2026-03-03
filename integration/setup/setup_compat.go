@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,15 +24,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opentelemetry.io/otel"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/testutil"
+	"github.com/hanzoai/docdb/internal/util/testutil"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // SetupCompatOpts represents setup options for compatibility test.
 //
 // Add option to use read-only user.
-// TODO https://github.com/FerretDB/FerretDB/issues/1025
+// TODO https://github.com/hanzoai/docdb/issues/1025
 type SetupCompatOpts struct {
 	// Data providers.
 	Providers []shareddata.Provider
@@ -41,7 +41,7 @@ type SetupCompatOpts struct {
 	// This is useful to test the behavior when a collection is not found.
 	//
 	// This flag is not needed, always add a non-existent collection.
-	// TODO https://github.com/FerretDB/FerretDB/issues/1545
+	// TODO https://github.com/hanzoai/docdb/issues/1545
 	AddNonExistentCollection bool
 
 	databaseName       string
@@ -148,7 +148,7 @@ func setupCompatCollections(tb testing.TB, ctx context.Context, client *mongo.Cl
 
 	providers := slices.Clone(opts.Providers)
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/825
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/825
 	// rand.Shuffle(len(providers), func(i, j int) { providers[i], providers[j] = providers[j], providers[i] })
 
 	collections := make([]*mongo.Collection, 0, len(providers))
@@ -170,7 +170,7 @@ func setupCompatCollections(tb testing.TB, ctx context.Context, client *mongo.Cl
 	}
 
 	// opts.AddNonExistentCollection is not needed, always add a non-existent collection
-	// TODO https://github.com/FerretDB/FerretDB/issues/1545
+	// TODO https://github.com/hanzoai/docdb/issues/1545
 	if opts.AddNonExistentCollection {
 		nonExistedCollectionName := opts.baseCollectionName + "-non-existent"
 		collection := database.Collection(nonExistedCollectionName)
@@ -179,7 +179,7 @@ func setupCompatCollections(tb testing.TB, ctx context.Context, client *mongo.Cl
 
 	require.NotEmpty(tb, collections)
 
-	// TODO https://github.com/FerretDB/FerretDB-DocumentDB/issues/825
+	// TODO https://github.com/hanzoai/docdb-DocumentDB/issues/825
 	// rand.Shuffle(len(collections), func(i, j int) { collections[i], collections[j] = collections[j], collections[i] })
 
 	return collections

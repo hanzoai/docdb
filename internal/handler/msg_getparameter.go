@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ import (
 	"context"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire/wirebson"
 
-	"github.com/FerretDB/FerretDB/v2/internal/handler/middleware"
-	"github.com/FerretDB/FerretDB/v2/internal/mongoerrors"
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/handler/middleware"
+	"github.com/hanzoai/docdb/internal/mongoerrors"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // msgGetParameter implements `getParameter` command.
@@ -54,7 +54,7 @@ func (h *Handler) msgGetParameter(connCtx context.Context, req *middleware.Reque
 			"settableAtStartup", true,
 		),
 		"featureCompatibilityVersion", wirebson.MustDocument(
-			// TODO https://github.com/FerretDB/FerretDB/issues/5073
+			// TODO https://github.com/hanzoai/docdb/issues/5073
 			"value", wirebson.MustDocument("version", "7.0"),
 			"settableAtRuntime", false,
 			"settableAtStartup", false,

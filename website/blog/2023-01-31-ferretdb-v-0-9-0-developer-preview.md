@@ -14,7 +14,7 @@ FerretDB 0.9.0 brings exciting new features, such as support for aggregation pip
 <!--truncate-->
 
 We just rolled out our first Developer Preview - FerretDB v0.9.0, and we are so excited to show you all the new updates now available for you.
-The changes mentioned in this article are not exhaustive - see [our release notes on GitHUb](https://github.com/FerretDB/FerretDB/releases/tag/v0.9.0) for the full list.
+The changes mentioned in this article are not exhaustive - see [our release notes on GitHUb](https://github.com/hanzoai/docdb/releases/tag/v0.9.0) for the full list.
 
 This version of [FerretDB](https://www.ferretdb.io) brings us closer to our mission of providing you with a true open-source alternative to MongoDB that supports more real-world use cases.
 
@@ -94,9 +94,9 @@ More of this will be implemented in future releases.
 ## Bug Fixes
 
 In this release, we've fixed a few pesky bugs causing issues for our users.
-[One of these bugs](https://github.com/FerretDB/FerretDB/pull/1814) caused wrong error types to be returned when using dot notation with the `$set` operator, and the `$inc` operator to panic for non-existing array indices; that's now fixed.
+[One of these bugs](https://github.com/hanzoai/docdb/pull/1814) caused wrong error types to be returned when using dot notation with the `$set` operator, and the `$inc` operator to panic for non-existing array indices; that's now fixed.
 
-Also, we have [fixed](https://github.com/FerretDB/FerretDB/pull/1814) the `$set` operator to correctly apply comparisons.
+Also, we have [fixed](https://github.com/hanzoai/docdb/pull/1814) the `$set` operator to correctly apply comparisons.
 Previously, the modified count was not correctly updated when changing to the same value.
 
 ## Documentation
@@ -106,7 +106,7 @@ Besides that, we've also updated our [docker deployment guide](https://docs.ferr
 
 For users interested in contributing to our documentation, this new release introduces a [documentation writing guide](https://docs.ferretdb.io/contributing/writing-guide/) which should make it easier to get started.
 
-For other changes in this new release, please see the [release log](https://github.com/FerretDB/FerretDB/releases/tag/v0.9.0).
+For other changes in this new release, please see the [release log](https://github.com/hanzoai/docdb/releases/tag/v0.9.0).
 
 Our sincere thanks go to all our users, partners, and the entire community for their unwavering support and contributions to FerretDB.
 

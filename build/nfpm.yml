@@ -1,14 +1,14 @@
 ---
 # https://nfpm.goreleaser.com/configuration/
 
-name: ferretdb
+name: docdb
 arch: ${PACKAGE_ARCH}
 platform: linux
 version: ${PACKAGE_VERSION}
 section: database
-maintainer: packages@ferretdb.io
+maintainer: packages@docdb.io
 description: A truly Open Source MongoDB alternative
-homepage: https://www.ferretdb.com/
+homepage: https://www.docdb.hanzo.ai/
 license: Apache License 2.0
 
 # https://www.debian.org/doc/debian-policy/ch-relationships.html#binary-dependencies-depends-recommends-suggests-enhances-pre-depends
@@ -17,8 +17,8 @@ suggests:
   - postgresql
 
 contents:
-  - src: tmp/build/linux_${DIR_ARCH}/ferretdb
-    dst: /usr/bin/ferretdb
+  - src: tmp/build/linux_${DIR_ARCH}/docdb
+    dst: /usr/bin/docdb
     expand: true
-  - src: build/ferretdb.service
-    dst: /etc/systemd/system/ferretdb.service
+  - src: build/docdb.service
+    dst: /etc/systemd/system/docdb.service

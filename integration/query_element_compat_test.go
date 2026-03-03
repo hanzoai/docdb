@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -126,12 +126,12 @@ func TestQueryElementCompatElementType(t *testing.T) {
 		"TypeArrayBadValuePlusInf": {
 			filter:           bson.D{{"v", bson.D{{"$type", []any{"binData", math.Inf(+1)}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/245",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/245",
 		},
 		"TypeArrayBadValueMinusInf": {
 			filter:           bson.D{{"v", bson.D{{"$type", []any{"binData", math.Inf(-1)}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/245",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/245",
 		},
 		"TypeArrayBadValueNegativeFloat": {
 			filter:     bson.D{{"v", bson.D{{"$type", []any{"binData", -1.123}}}}},

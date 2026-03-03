@@ -57,7 +57,7 @@ services:
       - 5432:5432
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb
+    image: ghcr.io/hanzoai/docdb
     restart: on-failure
     ports:
       - 27017:27017
@@ -86,7 +86,7 @@ But if you don't have `mongosh`, you can run it through a temporary MongoDB cont
 
 ```sh
 docker run --rm -it --network=ferretdb --entrypoint=mongosh mongo \
-  "mongodb://username:password@ferretdb/ferretdb?authMechanism=PLAIN"
+  "mongodb://username:password@hanzoai/docdb?authMechanism=PLAIN"
 ```
 
 We'll also go ahead and add a sample data to showcase on PgManage.
@@ -94,9 +94,9 @@ A terminal view of this would look like this:
 
 ```text
 $ docker run --rm -it --network=ferretdb --entrypoint=mongosh mongo \
-  "mongodb://username:password@ferretdb/ferretdb?authMechanism=PLAIN"
+  "mongodb://username:password@hanzoai/docdb?authMechanism=PLAIN"
 Current Mongosh Log ID: 64e7657774614fd82dd9853c
-Connecting to:          mongodb://<credentials>@ferretdb/ferretdb?authMechanism=PLAIN&directConnection=true&appName=mongosh+1.10.1
+Connecting to:          mongodb://<credentials>@hanzoai/docdb?authMechanism=PLAIN&directConnection=true&appName=mongosh+1.10.1
 Using MongoDB:          6.0.42
 Using Mongosh:          1.10.1
 
@@ -109,7 +109,7 @@ You can opt-out by running the disableTelemetry() command.
 ------
    The server generated these startup warnings when booting
    2023-08-24T14:13:12.343Z: Powered by FerretDB v1.8.0 and PostgreSQL 15.4.
-   2023-08-24T14:13:12.343Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB.
+   2023-08-24T14:13:12.343Z: Please star us on GitHub: https://github.com/hanzoai/docdb.
    2023-08-24T14:13:12.343Z: The telemetry state is undecided.
    2023-08-24T14:13:12.344Z: Read more about FerretDB telemetry and how to opt out at https://beacon.ferretdb.io.
 ------
@@ -168,6 +168,6 @@ FerretDB gives users the chance to use MongoDB's user-friendly queries and synta
 And for PostgreSQL administrators, PgManage can be an incredible tool to administer a FerretDB database, providing a intuitive to manage, scale, and configure your servers – [check it out here to get started](https://pgmanage.readthedocs.io/).
 
 The possibilities are endless, and we can't wait to find out what you do with FerretDB and PgManage.
-For more information on FerretDB, [see our documentation](https://github.com/FerretDB/FerretDB) and [GitHub page](https://github.com/FerretDB/FerretDB).
+For more information on FerretDB, [see our documentation](https://github.com/hanzoai/docdb) and [GitHub page](https://github.com/hanzoai/docdb).
 
 If you do have any questions or feedback on using FerretDB, please reach out to us – we'd be happy to chat with you.

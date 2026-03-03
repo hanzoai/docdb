@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestQueryArrayDotNotation(t *testing.T) {
@@ -37,11 +37,11 @@ func TestQueryArrayDotNotation(t *testing.T) {
 		expectedIDs []any  // optional
 
 		err        *mongo.CommandError // optional, expected error from MongoDB
-		altMessage string              // optional, alternative error message for FerretDB, ignored if empty
+		altMessage string              // optional, alternative error message for DocDB, ignored if empty
 	}{
 		"FieldPositionQueryRegex": {
 			// Move to compat.
-			// TODO https://github.com/FerretDB/FerretDB/issues/1540
+			// TODO https://github.com/hanzoai/docdb/issues/1540
 			filter: bson.D{{"v.array.0", bson.D{{"$lt", primitive.Regex{Pattern: "^$"}}}}},
 			err: &mongo.CommandError{
 				Code:    2,

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestCreateStress(t *testing.T) {
@@ -175,7 +175,7 @@ func TestCreateOnInsertStressDiffCollection(t *testing.T) {
 }
 
 func TestCreateStressSameCollection(tt *testing.T) {
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB/issues/3853")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb/issues/3853")
 
 	// It should be rewritten to use teststress.Stress.
 

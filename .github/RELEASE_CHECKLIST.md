@@ -2,12 +2,12 @@
 
 ## Preparation
 
-1. [Release DocumentDB](https://github.com/FerretDB/documentdb/blob/ferretdb/.github/RELEASE_CHECKLIST.md).
+1. [Release DocumentDB](https://github.com/hanzoai/docdb/blob/docdb/.github/RELEASE_CHECKLIST.md).
 2. Update DocumentDB image tags to point to release in:
-   - [eval image](../build/ferretdb/eval.Dockerfile);
-   - [eval-dev image](../build/ferretdb/eval-dev.Dockerfile);
+   - [eval image](../build/docdb/eval.Dockerfile);
+   - [eval-dev image](../build/docdb/eval-dev.Dockerfile);
    - [local image](../build/deps/postgres-documentdb.Dockerfile);
-   - [bw image](../build/ferretdb-bw/Dockerfile).
+   - [bw image](../build/docdb-bw/Dockerfile).
 3. Update constants in [`documentdb.go`](../build/version/documentdb.go).
 4. Check DocumentDB images/tags in documentation (where we specify full tags).
 5. Re-run tests, linters.
@@ -33,28 +33,28 @@
 2. Check `task gen-version; git status` output.
 3. Push it!
 4. Refresh
-   - `env GOPROXY=https://proxy.golang.org go mod download -x github.com/FerretDB/FerretDB/v2@<vX.Y.Z>`
-   - `https://pkg.go.dev/github.com/FerretDB/FerretDB/v2@<vX.Y.Z>` from https://pkg.go.dev/github.com/FerretDB/FerretDB/v2?tab=versions.
+   - `env GOPROXY=https://proxy.golang.org go mod download -x github.com/hanzoai/docdb/v2@<vX.Y.Z>`
+   - `https://pkg.go.dev/github.com/hanzoai/docdb/v2@<vX.Y.Z>` from https://pkg.go.dev/github.com/hanzoai/docdb/v2?tab=versions.
 
 ## Release
 
 1. Copy release notes from `CHANGELOG.md` and trim them.
-2. Wait for the [packages CI build](https://github.com/FerretDB/FerretDB/actions/workflows/packages.yml?query=event%3Apush)
+2. Wait for the [packages CI build](https://github.com/hanzoai/docdb/actions/workflows/packages.yml?query=event%3Apush)
    to finish.
 3. Upload binaries and packages to the draft release.
 4. Check:
-   - https://hub.docker.com/r/ferretdb/ferretdb/tags
-   - https://hub.docker.com/r/ferretdb/ferretdb-dev/tags
-   - https://hub.docker.com/r/ferretdb/ferretdb-eval/tags
-   - https://hub.docker.com/r/ferretdb/ferretdb-eval-dev/tags
-   - https://github.com/FerretDB/FerretDB/pkgs/container/ferretdb
-   - https://github.com/FerretDB/FerretDB/pkgs/container/ferretdb-dev
-   - https://github.com/FerretDB/FerretDB/pkgs/container/ferretdb-eval
-   - https://github.com/FerretDB/FerretDB/pkgs/container/ferretdb-eval-dev
-   - https://quay.io/repository/ferretdb/ferretdb?tab=tags
-   - https://quay.io/repository/ferretdb/ferretdb-dev?tab=tags
-   - https://quay.io/repository/ferretdb/ferretdb-eval?tab=tags
-   - https://quay.io/repository/ferretdb/ferretdb-eval-dev?tab=tags
+   - https://hub.docker.com/r/hanzoai/docdb/tags
+   - https://hub.docker.com/r/hanzoai/docdb-dev/tags
+   - https://hub.docker.com/r/hanzoai/docdb-eval/tags
+   - https://hub.docker.com/r/hanzoai/docdb-eval-dev/tags
+   - https://github.com/hanzoai/docdb/pkgs/container/docdb
+   - https://github.com/hanzoai/docdb/pkgs/container/docdb-dev
+   - https://github.com/hanzoai/docdb/pkgs/container/docdb-eval
+   - https://github.com/hanzoai/docdb/pkgs/container/docdb-eval-dev
+   - https://quay.io/repository/hanzoai/docdb?tab=tags
+   - https://quay.io/repository/hanzoai/docdb-dev?tab=tags
+   - https://quay.io/repository/hanzoai/docdb-eval?tab=tags
+   - https://quay.io/repository/hanzoai/docdb-eval-dev?tab=tags
 5. Close milestone in issues.
 6. Publish release on GitHub.
 7. Announce it on Slack.
@@ -63,7 +63,7 @@
 
 1. Publish and announce blog post.
 2. Add link to blog post to `CHANGELOG.md` and release page.
-3. Bump the latest version on https://beacon.ferretdb.com and https://beacon.ferretdb.io.
+3. Bump the latest version on https://beacon.docdb.com and https://beacon.docdb.io.
 4. Update DocumentDB images/tags in Dockerfiles to point back to development version.
 5. Update DocumentDB images/tags in the current documentation (where we specify full tags)
    to point to the next (non-existing) version.

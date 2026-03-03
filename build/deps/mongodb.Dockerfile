@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-# TODO https://github.com/FerretDB/FerretDB/issues/5073
+# TODO https://github.com/hanzoai/docdb/issues/5073
 FROM mongo:7.0.8
 
 # If you encounter an "unknown instruction" error there,

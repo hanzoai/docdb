@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestQueryEvaluationCompatRegexErrors(t *testing.T) {
@@ -179,7 +179,7 @@ func TestQueryEvaluationCompatMod(t *testing.T) {
 		},
 		"MinInt64_Divisor": {
 			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{math.MinInt64, 0}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/331",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/331",
 			failsProviders:   []shareddata.Provider{shareddata.Doubles, shareddata.Scalars},
 		},
 		"MinInt64_Remainder": {
@@ -188,20 +188,20 @@ func TestQueryEvaluationCompatMod(t *testing.T) {
 		},
 		"MinInt64_floatDivisor": {
 			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{float64(math.MinInt64), 0}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/330",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_floatRemainder": {
 			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{1, float64(math.MinInt64)}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/330",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_minus": {
 			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854775809e+18, 0}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/330",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_1": {
 			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{-922337203685477580, -8}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/331",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/331",
 			failsProviders:   []shareddata.Provider{shareddata.Doubles, shareddata.Scalars},
 		},
 		"MinInt64_2": {
@@ -218,7 +218,7 @@ func TestQueryEvaluationCompatMod(t *testing.T) {
 		},
 		"MinInt64_overflowVerge": {
 			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854776832e+18, 0}}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/330",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_overflowDivisor": {
 			filter:     bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854776833e+18, 0}}}}},
@@ -316,7 +316,7 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 	testCases := map[string]queryCompatTestCase{
 		"Expression": {
 			filter:           bson.D{{"$expr", "$v"}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/332",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/332",
 			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"ExpressionDotNotation": {
@@ -334,12 +334,12 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 		"DocumentNestedExpr": {
 			filter:           bson.D{{"$expr", bson.D{{"v", bson.D{{"$expr", int32(1)}}}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"DocumentInvalid": {
 			filter:           bson.D{{"$expr", bson.D{{"v", "$"}}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/268",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/268",
 		},
 		"Array": {
 			filter: bson.D{{"$expr", bson.A{"$v"}}},
@@ -350,7 +350,7 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 		"ArrayInvalid": {
 			filter:           bson.D{{"$expr", bson.A{"$"}}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/268",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/268",
 		},
 		"String": {
 			filter: bson.D{{"$expr", "v"}},
@@ -392,7 +392,7 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 		},
 		"Sum": {
 			filter:           bson.D{{"$expr", bson.D{{"$sum", "$v"}}}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/332",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/332",
 			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"SumType": {
@@ -400,7 +400,7 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 		},
 		"Gt": {
 			filter: bson.D{{"$expr", bson.D{{"$gt", bson.A{"$v", 2}}}}},
-			skip:   "https://github.com/FerretDB/FerretDB/issues/1456",
+			skip:   "https://github.com/hanzoai/docdb/issues/1456",
 		},
 	}
 

@@ -7,7 +7,7 @@ image: /img/blog/group-of-ferrets-on-white.jpg
 tags: [release]
 ---
 
-[FerretDB v0.5.0, released today](https://github.com/FerretDB/FerretDB/releases/tag/v0.5.0), includes a new exciting feature – the ability to use it as a regular Go library package.
+[FerretDB v0.5.0, released today](https://github.com/hanzoai/docdb/releases/tag/v0.5.0), includes a new exciting feature – the ability to use it as a regular Go library package.
 
 ![Image credit: allthingsnature.org](/img/blog/group-of-ferrets-on-white.jpg)
 
@@ -17,11 +17,11 @@ It can be embedded into a program and deployed as a single artifact without a ne
 Then any MongoDB client application could connect to it and use it normally, while data will be stored in PostgreSQL.
 Even the program that embeds FerretDB could connect to it if there is a need to do that.
 
-Let's see how the [ferretdb package](https://pkg.go.dev/github.com/FerretDB/FerretDB/ferretdb) could be used.
+Let's see how the [ferretdb package](https://pkg.go.dev/github.com/hanzoai/docdb/ferretdb) could be used.
 First, we need to add a Go module to dependencies as usual:
 
 ```sh
-go get github.com/FerretDB/FerretDB/ferretdb@latest
+go get github.com/hanzoai/docdb/ferretdb@latest
 ```
 
 Then we create a new instance of embedded FerretDB that would use the specified PostgreSQL database for storage:
@@ -61,7 +61,7 @@ $ mongosh mongodb://127.0.0.1:27017/
     ------
     The server generated these startup warnings when booting
     2022-07-10T19:50:02.183Z: Powered by 🥭 FerretDB unknown and PostgreSQL 14.4.
-    2022-07-10T19:50:02.183Z: Please star us on GitHub: https://github.com/FerretDB/FerretDB
+    2022-07-10T19:50:02.183Z: Please star us on GitHub: https://github.com/hanzoai/docdb
     ------
 
 test>
@@ -71,7 +71,7 @@ And that's it!
 With just a few lines of code, you can avoid the need to run a separate FerretDB or MongoDB process, all while using an open-source library.
 Of course, that's only the first step for that functionality.
 Some configuration options are missing, and some additional APIs might be needed.
-Please [join our community](https://github.com/FerretDB/FerretDB#community) and tell us what you think, what works great and what doesn't, and what additional functionality is needed.
+Please [join our community](https://github.com/hanzoai/docdb#community) and tell us what you think, what works great and what doesn't, and what additional functionality is needed.
 We will be happy to hear from you!
 
-_A slightly bigger example can be seen in this repo: [https://github.com/FerretDB/embedded-example](https://github.com/FerretDB/embedded-example)_
+_A slightly bigger example can be seen in this repo: [https://github.com/hanzoai/embedded-example](https://github.com/hanzoai/embedded-example)_

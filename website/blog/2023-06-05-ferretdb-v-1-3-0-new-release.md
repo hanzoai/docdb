@@ -56,7 +56,7 @@ In addition to that, we've added a Markdown formatter which should help format t
 
 ## Other changes
 
-Please see [our release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.3.0) for the complete list of changes and keep up to date with us as we work on enabling more MongoDB workloads to take advantage of FerretDB.
+Please see [our release notes](https://github.com/hanzoai/docdb/releases/tag/v1.3.0) for the complete list of changes and keep up to date with us as we work on enabling more MongoDB workloads to take advantage of FerretDB.
 
 Ensure to upgrade to this version of FerretDB to take advantage of the new features and bug fixes.
 We thank all our contributors, partners, users, and the entire open-source community; your contributions have been invaluable!

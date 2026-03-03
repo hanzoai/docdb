@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 func TestQueryProjectionCompat(t *testing.T) {
@@ -74,7 +74,7 @@ func TestQueryProjectionCompat(t *testing.T) {
 			filter:           bson.D{},
 			projection:       bson.D{{"foo", int32(0)}, {"bar", true}},
 			resultType:       EmptyResult,
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/241",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"Exclude1FieldInclude1Field": {
 			filter:     bson.D{},
@@ -225,7 +225,7 @@ func TestQueryProjectionCompat(t *testing.T) {
 func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 	t.Parallel()
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/3053
+	// TODO https://github.com/hanzoai/docdb/issues/3053
 	providers := shareddata.AllProviders().Remove(shareddata.ArrayAndDocuments)
 
 	testCases := map[string]queryCompatTestCase{
@@ -268,7 +268,7 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 		"ImplicitDotNotation": {
 			filter:           bson.D{{"v", float64(42)}},
 			projection:       bson.D{{"v.foo.$", true}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/785",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayInt32s,
 				shareddata.Composites,
@@ -282,7 +282,7 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 		"GtDotNotation": {
 			filter:           bson.D{{"v", bson.D{{"$gt", 42}}}},
 			projection:       bson.D{{"v.foo.$", true}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/785",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDoubles,
 				shareddata.ArrayInt32s,
@@ -292,7 +292,7 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 		"GtDotNoMatch": {
 			filter:           bson.D{{"v", bson.D{{"$gt", 42}}}},
 			projection:       bson.D{{"v.foo.$", true}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/785",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDoubles,
 				shareddata.ArrayInt32s,
@@ -323,7 +323,7 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 				{"v", bson.D{{"$gt", 42}}},
 			},
 			projection: bson.D{{"v.$", true}},
-			skip:       "https://github.com/FerretDB/FerretDB/issues/2522",
+			skip:       "https://github.com/hanzoai/docdb/issues/2522",
 		},
 		"TwoConflictingGtLt": {
 			filter: bson.D{
@@ -331,7 +331,7 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 				{"v", bson.D{{"$lt", 42}}},
 			},
 			projection: bson.D{{"v.$", true}},
-			skip:       "https://github.com/FerretDB/FerretDB/issues/2522",
+			skip:       "https://github.com/hanzoai/docdb/issues/2522",
 		},
 		"PartialProjection": {
 			filter: bson.D{
@@ -345,7 +345,7 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 				{"v", bson.D{{"$gt", 42}}},
 			},
 			projection:       bson.D{{"v.foo.$", true}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/785",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDoubles,
 				shareddata.ArrayInt32s,
@@ -355,14 +355,14 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 		"TypeOperator": {
 			filter:     bson.D{},
 			projection: bson.D{{"type", bson.D{{"$type", "$v"}}}},
-			skip:       "https://github.com/FerretDB/FerretDB/issues/2679",
+			skip:       "https://github.com/hanzoai/docdb/issues/2679",
 		},
 		"SumOperatorValue": {
 			filter: bson.D{},
 			projection: bson.D{
 				{"sum", bson.D{{"$sum", "$v"}}},
 			},
-			skip: "https://github.com/FerretDB/FerretDB/issues/835",
+			skip: "https://github.com/hanzoai/docdb/issues/835",
 		},
 	}
 

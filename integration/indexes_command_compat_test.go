@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
-	"github.com/FerretDB/FerretDB/v2/integration/shareddata"
+	"github.com/hanzoai/docdb/integration/setup"
+	"github.com/hanzoai/docdb/integration/shareddata"
 )
 
 // TestCreateIndexesCommandCompat tests specific behavior for index creation that can be only provided through RunCommand.
@@ -41,7 +41,7 @@ func TestCreateIndexesCommandCompat(t *testing.T) {
 		unique         any
 		resultType     CompatTestCaseResultType // defaults to NonEmptyResult
 
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"InvalidCollectionName": {
 			collectionName: 42,
@@ -83,7 +83,7 @@ func TestCreateIndexesCommandCompat(t *testing.T) {
 			collectionName:   "test",
 			key:              bson.D{{"_id", 1}, {"v", 1}},
 			indexName:        "_id_", // the same name as the default index
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB-DocumentDB/issues/290",
+			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/290",
 		},
 		"InvalidKey": {
 			collectionName: "test",
@@ -119,8 +119,8 @@ func TestCreateIndexesCommandCompat(t *testing.T) {
 
 			var t testing.TB = tt
 
-			if tc.failsForFerretDB != "" {
-				t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+			if tc.failsForDocDB != "" {
+				t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 			}
 
 			indexesDoc := bson.D{}
@@ -248,7 +248,7 @@ func TestCreateIndexesCommandCompatCheckFields(tt *testing.T) {
 	// Call index creation for the index that already exists, expect note to be set.
 	indexesDoc = bson.D{{"key", bson.D{{"foo", 1}}}, {"name", "foo_1"}}
 
-	t := setup.FailsForFerretDB(tt, "https://github.com/FerretDB/FerretDB-DocumentDB/issues/499")
+	t := setup.FailsForDocDB(tt, "https://github.com/hanzoai/docdb-DocumentDB/issues/499")
 
 	targetErr = targetCollection.Database().RunCommand(ctx, bson.D{
 		{"createIndexes", collectionName},
@@ -275,7 +275,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 
 		resultType CompatTestCaseResultType // optional, defaults to NonEmptyResult
 
-		failsForFerretDB string
+		failsForDocDB string
 	}{
 		"MultipleIndexesByName": {
 			toCreate: []mongo.IndexModel{
@@ -284,7 +284,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{Keys: bson.D{{"v.foo", -1}}},
 			},
 			toDrop:           bson.A{"v_-1", "v_1_foo_1"},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5119",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"MultipleIndexesByKey": {
 			toCreate: []mongo.IndexModel{
@@ -314,7 +314,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{Keys: bson.D{{"v", -1}}},
 			},
 			toDrop:           bson.D{{"v", -1}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5119",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"SimilarIndexes": {
 			toCreate: []mongo.IndexModel{
@@ -322,7 +322,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{Keys: bson.D{{"v", 1}, {"bar", 1}}},
 			},
 			toDrop:           bson.D{{"v", 1}, {"bar", 1}},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5119",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"DropAllExpression": {
 			toCreate: []mongo.IndexModel{
@@ -331,7 +331,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{Keys: bson.D{{"foo", 1}, {"bar", 1}}},
 			},
 			toDrop:           "*",
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5119",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"WrongExpression": {
 			toCreate: []mongo.IndexModel{
@@ -354,7 +354,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{"_id", -1},
 				{"v", 1},
 			},
-			failsForFerretDB: "https://github.com/FerretDB/FerretDB/issues/5119",
+			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -377,8 +377,8 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				t.Run(targetCollection.Name(), func(tt *testing.T) {
 					var t testing.TB = tt
 
-					if tc.failsForFerretDB != "" {
-						t = setup.FailsForFerretDB(tt, tc.failsForFerretDB)
+					if tc.failsForDocDB != "" {
+						t = setup.FailsForDocDB(tt, tc.failsForDocDB)
 					}
 
 					if tc.toCreate != nil {
@@ -468,7 +468,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 
 			switch tc.resultType {
 			case NonEmptyResult:
-				if tc.failsForFerretDB != "" {
+				if tc.failsForDocDB != "" {
 					return
 				}
 

@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 DocDB Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/FerretDB/wire"
-	"github.com/FerretDB/wire/wirebson"
+	"github.com/hanzoai/docdb-wire"
+	"github.com/hanzoai/docdb-wire/wirebson"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/FerretDB/FerretDB/v2/integration/setup"
+	"github.com/hanzoai/docdb/integration/setup"
 )
 
 func TestInsertZeroTimestamp(tt *testing.T) {
@@ -67,8 +67,8 @@ func TestInsertZeroTimestamp(tt *testing.T) {
 	d := batch.Get(0).(*wirebson.Document).Get("d").(*wirebson.Document)
 	assert.Equal(t, wirebson.Timestamp(0), d.Get("dv"))
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/1608
-	t = setup.FailsForFerretDB(t, "https://github.com/FerretDB/FerretDB/issues/1608")
+	// TODO https://github.com/hanzoai/docdb/issues/1608
+	t = setup.FailsForDocDB(t, "https://github.com/hanzoai/docdb/issues/1608")
 
 	v := batch.Get(0).(*wirebson.Document).Get("v").(wirebson.Timestamp)
 	assert.NotEqual(t, wirebson.Timestamp(0), v)
@@ -83,8 +83,8 @@ func TestInsertZeroTimestampBypass(tt *testing.T) {
 
 	s := setup.SetupWithOpts(t, &setup.SetupOpts{WireConn: setup.WireConnAuth})
 
-	// TODO https://github.com/FerretDB/FerretDB/issues/5073
-	t = setup.FailsForMongoDB(t, "https://github.com/FerretDB/FerretDB/issues/5073")
+	// TODO https://github.com/hanzoai/docdb/issues/5073
+	t = setup.FailsForMongoDB(t, "https://github.com/hanzoai/docdb/issues/5073")
 
 	_, resp, err := s.WireConn.Request(s.Ctx, wire.MustOpMsg(
 		"insert", s.Collection.Name(),

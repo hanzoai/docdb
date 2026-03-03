@@ -17,13 +17,13 @@ With it, the SQLite backend support is officially out of beta, on par with our P
 
 In the past two weeks, we added support for many missing commands and features,
 including aggregation pipelines, indexes, query explains, and collection renaming.
-Please refer to the [full release notes](https://github.com/FerretDB/FerretDB/releases/tag/v1.10.1) for details.
+Please refer to the [full release notes](https://github.com/hanzoai/docdb/releases/tag/v1.10.1) for details.
 
 There are still opportunities for improvement, such as support for more [query pushdowns](https://docs.ferretdb.io/pushdown/),
 but they will not break the compatibility.
 You can start using the SQLite backend in production now!
 It is ideal if you need a MongoDB-compatible database that could work in environments
-[where MongoDB can't](https://github.com/FerretDB/FerretDB/discussions/1266).
+[where MongoDB can't](https://github.com/hanzoai/docdb/discussions/1266).
 
 You may wonder how we made such huge progress after a few relatively quiet releases.
 That's because we worked on the new FerretDB architecture in the background, and the new SQLite backend is the first part of it.
@@ -94,7 +94,7 @@ Our aim is to deliver all of these improvements without needing to migrate your 
 ![New FerretDB architecture](/img/blog/2023-09-15/image5.png)
 
 Additionally, adding support for MySQL has been
-[one of the most popular feature requests](https://github.com/FerretDB/FerretDB/discussions/50) to date.
+[one of the most popular feature requests](https://github.com/hanzoai/docdb/discussions/50) to date.
 While our focus will remain on SQLite and PostgreSQL for now, with the new architecture in place,
 we are counting on the open-source [community](https://docs.ferretdb.io/#community) to help us
 create support for MySQL and other backends.

@@ -27,7 +27,7 @@ We are enabling [PostgreSQL](https://www.postgresql.org/) and other database bac
 
 We offer Docker images for production use and development, as well as RPM and DEB packages.
 If you would like to test FerretDB, we provide an All-in-one Docker image, containing everything you need to evaluate FerretDB with PostgreSQL.
-[Get started with the All-in-one package here.](https://github.com/FerretDB/FerretDB#quickstart)
+[Get started with the All-in-one package here.](https://github.com/hanzoai/docdb#quickstart)
 
 Additionally, thanks to our partners, FerretDB is available on two cloud providers for testing:
 
@@ -95,7 +95,7 @@ We are also proud to announce that FerretDB now has:
 With the release of FerretDB 1.0, these numbers will only continue to grow.
 
 We are executing on our [roadmap](https://github.com/orgs/FerretDB/projects/2), and are planning to add more significant features in the coming months.
-Get started with FerretDB 1.0 GA [here](https://github.com/FerretDB/FerretDB#quickstart).
+Get started with FerretDB 1.0 GA [here](https://github.com/hanzoai/docdb#quickstart).
 
 ## Where are we headed?
 
@@ -154,7 +154,7 @@ We are working with software publishers, infrastructure providers and the mainta
 If you think that your software would benefit from having an alternative to MongoDB - [please let us know](https://www.ferretdb.io/contact/).
 We are happy to work with you.
 
-We are available on our Community Slack, on [GitHub](https://github.com/FerretDB/FerretDB), and we are also ready to jump on a call with you if you have ideas to discuss.
+We are available on our Community Slack, on [GitHub](https://github.com/hanzoai/docdb), and we are also ready to jump on a call with you if you have ideas to discuss.
 [Contact us today.](https://docs.ferretdb.io/#community)
 
 ## Thank you
@@ -167,4 +167,4 @@ Special thanks go to: [seeforschauer](https://github.com/seeforschauer), [ribara
 
 There are others, of course, who have helped in many ways by identifying bugs, providing feedback, and testing FerretDB, we thank you all!
 
-We are happy to welcome new members to our growing community and encourage everyone to join us on [GitHub](https://github.com/FerretDB/FerretDB/), and explore the many possibilities FerretDB has to offer.
+We are happy to welcome new members to our growing community and encourage everyone to join us on [GitHub](https://github.com/hanzoai/docdb/), and explore the many possibilities FerretDB has to offer.

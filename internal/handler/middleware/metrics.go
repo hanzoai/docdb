@@ -1,4 +1,4 @@
-// Copyright 2021 FerretDB Inc.
+// Copyright 2021 Hanzo AI Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	dto "github.com/prometheus/client_model/go"
 
-	"github.com/FerretDB/FerretDB/v2/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/must"
 )
 
 // Parts of Prometheus metric names.
-// TODO https://github.com/FerretDB/FerretDB/issues/4965
+// TODO https://github.com/hanzoai/docdb/issues/4965
 const (
-	namespace = "ferretdb"
+	namespace = "docdb"
 	subsystem = "client"
 )
 
@@ -47,7 +47,7 @@ func NewMetrics() *Metrics {
 	// Do we want to use "opcode" as a label?
 	// Should we use to track the listener that created the request?
 	// Or metric for that should be in the listener itself?
-	// TODO https://github.com/FerretDB/FerretDB/issues/4965
+	// TODO https://github.com/hanzoai/docdb/issues/4965
 	m := &Metrics{
 		requests: prometheus.NewCounterVec(
 			prometheus.CounterOpts{
@@ -60,7 +60,7 @@ func NewMetrics() *Metrics {
 		),
 
 		// That probably should be a histogram or summary by duration.
-		// TODO https://github.com/FerretDB/FerretDB/issues/4965
+		// TODO https://github.com/hanzoai/docdb/issues/4965
 		responses: prometheus.NewCounterVec(
 			prometheus.CounterOpts{
 				Namespace: namespace,

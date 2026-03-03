@@ -20,7 +20,7 @@ that behaves like a [readiness probe](../../configuration/observability.md#probe
 ## Installation
 
 Our production image
-[`ghcr.io/ferretdb/ferretdb:2.5.0`](https://ghcr.io/ferretdb/ferretdb:2.5.0)
+[`ghcr.io/hanzoai/docdb:2.5.0`](https://ghcr.io/hanzoai/docdb:2.5.0)
 is recommended for most deployments.
 It does not include a PostgreSQL image with DocumentDB extension, so you must run this [pre-packaged PostgreSQL image with DocumentDB extension](../documentdb/docker.md) separately.
 
@@ -31,7 +31,7 @@ We strongly recommend specifying the full image tag (e.g., `2.5.0`)
 to ensure consistency across deployments.
 Ensure to [enable telemetry](../../telemetry.md) to receive notifications on the latest versions.
 
-For more information on the best DocumentDB version to use, see the [corresponding release notes for the FerretDB version](https://github.com/FerretDB/FerretDB/releases/).
+For more information on the best DocumentDB version to use, see the [corresponding release notes for the FerretDB version](https://github.com/hanzoai/docdb/releases/).
 :::
 
 ### Run production image
@@ -43,7 +43,7 @@ The following steps describe a quick local setup:
    ```yaml
    services:
      postgres:
-       image: ghcr.io/ferretdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0
+       image: ghcr.io/docdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0
        restart: on-failure
        environment:
          - POSTGRES_USER=username
@@ -53,7 +53,7 @@ The following steps describe a quick local setup:
          - ./data:/var/lib/postgresql/data
 
      ferretdb:
-       image: ghcr.io/ferretdb/ferretdb:2.5.0
+       image: ghcr.io/hanzoai/docdb:2.5.0
        restart: on-failure
        ports:
          - 27017:27017
@@ -100,9 +100,9 @@ Find out more about:
 ### Run development image
 
 The development image
-[`ghcr.io/ferretdb/ferretdb-dev:2`](https://ghcr.io/ferretdb/ferretdb-dev:2)
+[`ghcr.io/hanzoai/docdb-dev:2`](https://ghcr.io/hanzoai/docdb-dev:2)
 contains the
-[development build](https://pkg.go.dev/github.com/FerretDB/FerretDB/v2/build/version#hdr-Development_builds)
+[development build](https://pkg.go.dev/github.com/hanzoai/docdb/v2/build/version#hdr-Development_builds)
 of FerretDB, and is recommended for debugging problems.
 It includes additional debugging features that make it significantly slower.
 For this reason, it is not recommended for production use.

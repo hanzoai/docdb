@@ -125,7 +125,7 @@ For example, the following Docker compose file initializes the PostgreSQL server
 ```yaml
 services:
   postgres:
-    image: ghcr.io/ferretdb/postgres-documentdb:17
+    image: ghcr.io/docdb/postgres-documentdb:17
     environment:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
@@ -134,7 +134,7 @@ services:
       - ./data:/var/lib/postgresql/data
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:2
+    image: ghcr.io/hanzoai/docdb:2
     restart: on-failure
     ports:
       - 27017:27017
