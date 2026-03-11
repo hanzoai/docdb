@@ -81,11 +81,32 @@ jobs:
           git status
           git diff --exit-code
 
+      - name: Fetch CF credentials from KMS
+        id: kms
+        env:
+          HANZO_API_KEY: ${{ secrets.HANZO_API_KEY }}
+          KMS_ENDPOINT: ${{ vars.KMS_ENDPOINT || 'https://kms.hanzo.ai' }}
+        run: |
+          response=$(curl -sf "${KMS_ENDPOINT}/api/v1/secrets/raw?secretPath=/deploy&environment=production" \
+            -H "Authorization: Bearer ${HANZO_API_KEY}" 2>/dev/null || echo "")
+          if [ -n "$response" ]; then
+            cf_token=$(echo "$response" | jq -r '.secrets[] | select(.secretKey=="CLOUDFLARE_API_TOKEN") | .secretValue // empty')
+            cf_account=$(echo "$response" | jq -r '.secrets[] | select(.secretKey=="CLOUDFLARE_ACCOUNT_ID") | .secretValue // empty')
+          fi
+          if [ -z "${cf_token:-}" ]; then
+            echo "::error::CF credentials not found in KMS."
+            exit 1
+          fi
+          echo "::add-mask::${cf_token}"
+          echo "::add-mask::${cf_account}"
+          echo "cf_token=${cf_token}" >> "$GITHUB_OUTPUT"
+          echo "cf_account=${cf_account}" >> "$GITHUB_OUTPUT"
+
       - name: Deploy to Cloudflare Pages
         run: bin/task blog-cloudflare-preview | tee deploy.txt
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ steps.kms.outputs.cf_token }}
 
       - name: Set GitHub deployment URL
         id: extract
@@ -159,7 +180,7 @@ jobs:
         run: bin/task docs-cloudflare-preview | tee deploy.txt
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ steps.kms.outputs.cf_token }}
 
       - name: Set GitHub deployment URL
         id: extract
