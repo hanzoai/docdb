@@ -22,3 +22,4 @@ vendor/
 website/build/
 
 **/testdata/fuzz/
+website/

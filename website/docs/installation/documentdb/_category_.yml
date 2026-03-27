@@ -1,8 +1,0 @@
----
-label: DocumentDB
-position: 3
-link:
-  type: generated-index
-  slug: /installation/documentdb
-  description: >
-    Learn to install DocumentDB on your local machine
