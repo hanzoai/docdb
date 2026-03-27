@@ -1,3 +1,0 @@
-db.runCommand({
-  drop: 'books'
-})
