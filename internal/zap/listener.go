@@ -20,7 +20,7 @@ import (
 //	  │ translates mongo semantics → SQL
 //	  │ via documentdb_api PostgreSQL extension
 //	  ▼
-//	hanzo/sql (PostgreSQL :9651)
+//	hanzo/sql (PostgreSQL :9999)
 //	  ZAP binary — end-to-end, no JSON, no wire protocol translation
 type Listener struct {
 	config  Config
