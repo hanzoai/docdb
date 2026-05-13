@@ -2,9 +2,9 @@
 // https://github.com/cloudwego/eino#dependencies
 module github.com/hanzoai/docdb/v2/tools/mcphost
 
-go 1.26
+go 1.26.3
 
-toolchain go1.25.7
+toolchain go1.26.3
 
 tool github.com/mark3labs/mcphost
 
