@@ -1,8 +1,8 @@
 module github.com/hanzoai/docdb/tools
 
-go 1.26
+go 1.26.3
 
-toolchain go1.25.7
+toolchain go1.26.3
 
 // replace github.com/hanzoai/docdb-wire => ../../wire
 
