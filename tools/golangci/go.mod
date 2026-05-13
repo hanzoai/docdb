@@ -2,9 +2,9 @@
 
 module github.com/hanzoai/docdb/v2/tools/golangci
 
-go 1.26
+go 1.26.3
 
-toolchain go1.25.7
+toolchain go1.26.3
 
 tool github.com/golangci/golangci-lint/cmd/golangci-lint
 
