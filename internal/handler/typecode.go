@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 )
 
 //go:generate ../../bin/stringer -linecomment -type typeCode

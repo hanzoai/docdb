@@ -20,7 +20,7 @@ import (
 	"sync"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 )
 
 // circularBuffer is a storage of log records in memory.

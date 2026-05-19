@@ -20,8 +20,8 @@ import (
 	"testing"
 
 	"github.com/AlekSi/pointer"
-	"github.com/hanzoai/docdb-wire/wirebson"
-	"github.com/hanzoai/docdb-wire/wiretest"
+	"github.com/FerretDB/wire/wirebson"
+	"github.com/FerretDB/wire/wiretest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

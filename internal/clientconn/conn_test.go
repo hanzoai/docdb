@@ -21,7 +21,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/hanzoai/docdb-wire"
+	"github.com/FerretDB/wire"
 	"github.com/stretchr/testify/require"
 
 	"github.com/hanzoai/docdb/internal/util/testutil"

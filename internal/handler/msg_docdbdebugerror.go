@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 
 	"github.com/hanzoai/docdb/internal/handler/middleware"
 	"github.com/hanzoai/docdb/internal/mongoerrors"

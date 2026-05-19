@@ -23,7 +23,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 	"github.com/google/uuid"
 	"github.com/prometheus/client_golang/prometheus"
 

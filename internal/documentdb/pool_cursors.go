@@ -20,7 +20,7 @@ import (
 	"log/slog"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 	"go.opentelemetry.io/otel"
 
 	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"

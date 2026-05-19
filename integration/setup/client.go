@@ -23,7 +23,7 @@ import (
 	"testing"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire/wireclient"
+	"github.com/FerretDB/wire/wireclient"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
