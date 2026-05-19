@@ -17,8 +17,8 @@ package testutil
 import (
 	"testing"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
-	"github.com/hanzoai/docdb-wire/wiretest"
+	"github.com/FerretDB/wire/wirebson"
+	"github.com/FerretDB/wire/wiretest"
 )
 
 // AssertEqual asserts that two BSON values are equal.

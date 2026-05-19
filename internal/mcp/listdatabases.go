@@ -18,7 +18,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

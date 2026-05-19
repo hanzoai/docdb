@@ -21,7 +21,7 @@ import (
 	"net/http/httputil"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
 	"github.com/hanzoai/docdb/internal/util/must"

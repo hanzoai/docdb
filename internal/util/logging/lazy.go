@@ -17,7 +17,7 @@ package logging
 import (
 	"log/slog"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 )
 
 // lazyDecoder is a lazily evaluated [slog.LogValuer] for [wirebson.RawDocument]
