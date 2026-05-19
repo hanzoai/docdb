@@ -28,7 +28,7 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire"
+	"github.com/FerretDB/wire"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/hanzoai/docdb/internal/handler/middleware"

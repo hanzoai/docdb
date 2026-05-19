@@ -20,7 +20,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 )
 
 // bsonHexPrefix is the prefix for BSONHEX type.

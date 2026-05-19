@@ -4,7 +4,7 @@ go 1.26.3
 
 toolchain go1.26.3
 
-// replace github.com/hanzoai/docdb-wire => ../../wire
+// replace github.com/FerretDB/wire => ../../wire
 
 tool (
 	github.com/hanzoai/docdb/tools/checkcomments
@@ -51,7 +51,7 @@ require (
 	cloud.google.com/go/storage v1.58.0 // indirect
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/AlekSi/pointer v1.2.0 // indirect
-	github.com/hanzoai/docdb-wire v0.1.0 // indirect
+	github.com/FerretDB/wire v0.1.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.29.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.54.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.54.0 // indirect

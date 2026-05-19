@@ -26,7 +26,7 @@ import (
 	"sync"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire"
+	"github.com/FerretDB/wire"
 	"go.opentelemetry.io/otel"
 	otelcodes "go.opentelemetry.io/otel/codes"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
