@@ -21,7 +21,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 
 	"github.com/hanzoai/docdb/internal/documentdb/documentdb_api"
 	"github.com/hanzoai/docdb/internal/handler/middleware"

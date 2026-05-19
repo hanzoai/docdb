@@ -21,8 +21,8 @@ import (
 	"net"
 	"net/url"
 
-	"github.com/hanzoai/docdb-wire"
-	"github.com/hanzoai/docdb-wire/wireclient"
+	"github.com/FerretDB/wire"
+	"github.com/FerretDB/wire/wireclient"
 
 	"github.com/hanzoai/docdb/internal/util/logging"
 )

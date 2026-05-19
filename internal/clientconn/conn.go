@@ -32,7 +32,7 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire"
+	"github.com/FerretDB/wire"
 
 	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
 	"github.com/hanzoai/docdb/internal/handler/middleware"

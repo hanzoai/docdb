@@ -25,7 +25,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hanzoai/docdb-wire/wireclient"
+	"github.com/FerretDB/wire/wireclient"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"

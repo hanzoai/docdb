@@ -20,7 +20,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 	"github.com/jackc/pgx/v5"
 
 	"github.com/hanzoai/docdb/internal/util/logging"

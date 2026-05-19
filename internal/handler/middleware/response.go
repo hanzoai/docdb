@@ -18,8 +18,8 @@ import (
 	"fmt"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/hanzoai/docdb-wire"
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire"
+	"github.com/FerretDB/wire/wirebson"
 
 	"github.com/hanzoai/docdb/internal/mongoerrors"
 	"github.com/hanzoai/docdb/internal/util/must"
