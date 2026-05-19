@@ -21,7 +21,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"

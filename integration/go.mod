@@ -6,13 +6,13 @@ toolchain go1.26.3
 
 replace github.com/hanzoai/docdb => ../
 
-// replace github.com/hanzoai/docdb-wire => ../../wire
+// replace github.com/FerretDB/wire => ../../wire
 
 require (
 	github.com/AlekSi/lazyerrors v0.5.0
 	github.com/AlekSi/pointer v1.2.0
 	github.com/hanzoai/docdb v2.0.0-00010101000000-000000000000
-	github.com/hanzoai/docdb-wire v0.1.7
+	github.com/FerretDB/wire v0.1.7
 	github.com/hanzoai/xfail v0.1.0
 	github.com/google/uuid v1.6.0
 	github.com/prometheus/client_golang v1.23.2

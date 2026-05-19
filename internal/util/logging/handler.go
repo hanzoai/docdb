@@ -23,7 +23,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 
 	"github.com/hanzoai/docdb/internal/util/devbuild"
 	"github.com/hanzoai/docdb/internal/util/must"

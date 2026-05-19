@@ -22,9 +22,9 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/hanzoai/docdb-wire"
-	"github.com/hanzoai/docdb-wire/wirebson"
-	"github.com/hanzoai/docdb-wire/wireclient"
+	"github.com/FerretDB/wire"
+	"github.com/FerretDB/wire/wirebson"
+	"github.com/FerretDB/wire/wireclient"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"

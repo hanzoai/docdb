@@ -22,7 +22,7 @@ import (
 	"log/slog"
 	"regexp"
 
-	"github.com/hanzoai/docdb-wire/wirebson"
+	"github.com/FerretDB/wire/wirebson"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 	"go.mongodb.org/mongo-driver/v2/mongo"

@@ -19,9 +19,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hanzoai/docdb-wire"
-	"github.com/hanzoai/docdb-wire/wirebson"
-	"github.com/hanzoai/docdb-wire/wireclient"
+	"github.com/FerretDB/wire"
+	"github.com/FerretDB/wire/wirebson"
+	"github.com/FerretDB/wire/wireclient"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	xdgscram "github.com/xdg-go/scram"
