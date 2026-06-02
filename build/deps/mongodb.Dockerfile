@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # TODO https://github.com/hanzoai/docdb/issues/5073
-FROM mongo:7.0.8
+FROM mongo:8.2.6
 
 # If you encounter an "unknown instruction" error there,
 # please update Docker to the latest version.
