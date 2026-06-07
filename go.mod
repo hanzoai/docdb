@@ -1,6 +1,6 @@
 module github.com/hanzoai/docdb
 
-go 1.26.3
+go 1.26.4
 
 // replace github.com/FerretDB/wire => ../wire
 
