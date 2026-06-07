@@ -2,7 +2,7 @@
 
 module github.com/hanzoai/docdb/v2/tools/golangci
 
-go 1.26.3
+go 1.26.4
 
 toolchain go1.26.3
 
