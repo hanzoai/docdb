@@ -21,7 +21,7 @@ import (
 	"sync"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 	"go.opentelemetry.io/otel"
 	otelcodes "go.opentelemetry.io/otel/codes"
 	oteltrace "go.opentelemetry.io/otel/trace"
@@ -241,26 +241,26 @@ func (h *Handler) closeConn(ci *conninfo.ConnInfo) {
 	}
 }
 
-// Describe implements [prometheus.Collector].
-func (h *Handler) Describe(ch chan<- *prometheus.Desc) {
-	prometheus.DescribeByCollect(h, ch)
+// Describe implements [metric.Collector].
+func (h *Handler) Describe(ch chan<- *metric.Desc) {
+	metric.DescribeByCollect(h, ch)
 }
 
-// Collect implements [prometheus.Collector].
-func (h *Handler) Collect(ch chan<- prometheus.Metric) {
+// Collect implements [metric.Collector].
+func (h *Handler) Collect(ch chan<- metric.Metric) {
 	h.connsRW.RLock()
 	defer h.connsRW.RUnlock()
 
 	// We should have counters for connects/disconnects, not gauge for the current number.
 	// TODO https://github.com/hanzoai/docdb/issues/1997
 
-	ch <- prometheus.MustNewConstMetric(
-		prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, subsystem, "conns"),
+	ch <- metric.MustNewConstMetric(
+		metric.NewDesc(
+			metric.BuildFQName(namespace, subsystem, "conns"),
 			"The current number of connections.",
 			nil, nil,
 		),
-		prometheus.GaugeValue,
+		metric.GaugeValue,
 		float64(len(h.connsGet)),
 	)
 }

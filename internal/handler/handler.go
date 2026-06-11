@@ -24,7 +24,7 @@ import (
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 
 	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
 	"github.com/hanzoai/docdb/internal/documentdb"
@@ -235,14 +235,14 @@ func (h *Handler) Handle(ctx context.Context, req *middleware.Request) (*middlew
 	}
 }
 
-// Describe implements [prometheus.Collector].
-func (h *Handler) Describe(ch chan<- *prometheus.Desc) {
+// Describe implements [metric.Collector].
+func (h *Handler) Describe(ch chan<- *metric.Desc) {
 	h.p.Describe(ch)
 	h.s.Describe(ch)
 }
 
-// Collect implements [prometheus.Collector].
-func (h *Handler) Collect(ch chan<- prometheus.Metric) {
+// Collect implements [metric.Collector].
+func (h *Handler) Collect(ch chan<- metric.Metric) {
 	h.p.Collect(ch)
 	h.s.Collect(ch)
 }

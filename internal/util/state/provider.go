@@ -22,7 +22,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 
 	"github.com/hanzoai/docdb/internal/util/iface"
 	"github.com/hanzoai/docdb/internal/util/must"
@@ -98,7 +98,7 @@ func (p *Provider) Var() expvar.Var {
 // MetricsCollector returns Prometheus metrics collector for that provider.
 //
 // If addUUID is true, then the "uuid" label is added.
-func (p *Provider) MetricsCollector(addUUID bool) prometheus.Collector {
+func (p *Provider) MetricsCollector(addUUID bool) metric.Collector {
 	return newMetricsCollector(p, addUUID)
 }
 
