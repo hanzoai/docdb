@@ -24,7 +24,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/hanzoai/docdb/internal/util/debug"
@@ -70,7 +70,7 @@ func Startup() {
 		h, err := debug.Listen(&debug.ListenOpts{
 			TCPAddr: "127.0.0.1:0",
 			L:       logging.WithName(l, "debug"),
-			R:       prometheus.DefaultRegisterer,
+			R:       metric.DefaultRegisterer,
 		})
 		if err != nil {
 			l.LogAttrs(ctx, logging.LevelFatal, "Failed to create debug handler", logging.Error(err))
