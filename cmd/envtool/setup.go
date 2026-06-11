@@ -26,7 +26,7 @@ import (
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire/wirebson"
 	"github.com/jackc/pgx/v5"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 
 	"github.com/hanzoai/docdb/internal/documentdb"
 	"github.com/hanzoai/docdb/internal/util/ctxutil"
@@ -155,7 +155,7 @@ func setup(ctx context.Context, logger *slog.Logger) error {
 	h, err := debug.Listen(&debug.ListenOpts{
 		TCPAddr: "127.0.0.1:8089",
 		L:       logging.WithName(logger, "debug"),
-		R:       prometheus.DefaultRegisterer,
+		R:       metric.DefaultRegisterer,
 	})
 	if err != nil {
 		return lazyerrors.Error(err)

@@ -31,7 +31,7 @@ import (
 	"time"
 
 	"github.com/alecthomas/kong"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 	"github.com/prometheus/common/expfmt"
 	_ "golang.org/x/crypto/x509roots/fallback" // register root TLS certificates for production Docker image
 
@@ -210,16 +210,16 @@ func setupExpvar(stateProvider *state.Provider) {
 }
 
 // setupMetrics setups Prometheus metrics registerer with some metrics.
-func setupMetrics(stateProvider *state.Provider) prometheus.Registerer {
-	r := prometheus.DefaultRegisterer
+func setupMetrics(stateProvider *state.Provider) metric.Registerer {
+	r := metric.DefaultRegisterer
 	m := stateProvider.MetricsCollector(true)
 
 	// we don't do it by default due to
 	// https://prometheus.io/docs/instrumenting/writing_exporters/#target-labels-not-static-scraped-labels
 	if cli.MetricsUUID {
-		r = prometheus.WrapRegistererWith(
-			prometheus.Labels{"uuid": stateProvider.Get().UUID},
-			prometheus.DefaultRegisterer,
+		r = metric.WrapRegistererWith(
+			metric.Labels{"uuid": stateProvider.Get().UUID},
+			metric.DefaultRegisterer,
 		)
 		m = stateProvider.MetricsCollector(false)
 	}
@@ -289,7 +289,7 @@ func checkFlags(logger *slog.Logger) {
 
 // dumpMetrics dumps all Prometheus metrics to stderr.
 func dumpMetrics() {
-	mfs := must.NotFail(prometheus.DefaultGatherer.Gather())
+	mfs := must.NotFail(metric.DefaultGatherer.Gather())
 
 	for _, mf := range mfs {
 		must.NotFail(expfmt.MetricFamilyToText(os.Stderr, mf))

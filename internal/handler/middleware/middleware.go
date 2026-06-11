@@ -23,8 +23,8 @@ import (
 	"strings"
 	"sync"
 
+	metric "github.com/luxfi/metric"
 	"github.com/pmezard/go-difflib/difflib"
-	"github.com/prometheus/client_golang/prometheus"
 	"go.opentelemetry.io/otel"
 	otelattribute "go.opentelemetry.io/otel/attribute"
 	otelcodes "go.opentelemetry.io/otel/codes"
@@ -119,7 +119,7 @@ func (m *Middleware) Handle(ctx context.Context, req *Request) (resp *Response) 
 
 	defer m.runWG.Done()
 
-	labels := prometheus.Labels{
+	labels := metric.Labels{
 		"opcode":  req.WireHeader().OpCode.String(),
 		"command": req.Document().Command(),
 	}
@@ -314,17 +314,17 @@ func (m *Middleware) logDiff(ctx context.Context, docdb, proxy *Response) {
 	m.opts.L.Log(ctx, logLevel, msg)
 }
 
-// Describe implements [prometheus.Collector].
-func (m *Middleware) Describe(ch chan<- *prometheus.Desc) {
+// Describe implements [metric.Collector].
+func (m *Middleware) Describe(ch chan<- *metric.Desc) {
 	// m.opts.Metrics is not owned by the middleware; it exposes its own metrics.
 }
 
-// Collect implements [prometheus.Collector].
-func (m *Middleware) Collect(ch chan<- prometheus.Metric) {
+// Collect implements [metric.Collector].
+func (m *Middleware) Collect(ch chan<- metric.Metric) {
 	// m.opts.Metrics is not owned by the middleware; it exposes its own metrics.
 }
 
 // check interfaces
 var (
-	_ prometheus.Collector = (*Middleware)(nil)
+	_ metric.Collector = (*Middleware)(nil)
 )

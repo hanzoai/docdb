@@ -17,7 +17,7 @@ package clientconn
 import (
 	"time"
 
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 )
 
 // Parts of Prometheus metric names.
@@ -29,15 +29,15 @@ const (
 
 // listenerMetrics represents listener metrics.
 type listenerMetrics struct {
-	accepts   *prometheus.CounterVec
-	durations *prometheus.HistogramVec
+	accepts   *metric.CounterVec
+	durations *metric.HistogramVec
 }
 
 // NewListenerMetrics creates new listener metrics.
 func NewListenerMetrics() *listenerMetrics {
 	lm := &listenerMetrics{
-		accepts: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
+		accepts: metric.NewCounterVec(
+			metric.CounterOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "accepts_total",
@@ -45,8 +45,8 @@ func NewListenerMetrics() *listenerMetrics {
 			},
 			[]string{"error"},
 		),
-		durations: prometheus.NewHistogramVec(
-			prometheus.HistogramOpts{
+		durations: metric.NewHistogramVec(
+			metric.HistogramOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "duration_seconds",
@@ -72,19 +72,19 @@ func NewListenerMetrics() *listenerMetrics {
 	return lm
 }
 
-// Describe implements [prometheus.Collector].
-func (lm *listenerMetrics) Describe(ch chan<- *prometheus.Desc) {
+// Describe implements [metric.Collector].
+func (lm *listenerMetrics) Describe(ch chan<- *metric.Desc) {
 	lm.accepts.Describe(ch)
 	lm.durations.Describe(ch)
 }
 
-// Collect implements [prometheus.Collector].
-func (lm *listenerMetrics) Collect(ch chan<- prometheus.Metric) {
+// Collect implements [metric.Collector].
+func (lm *listenerMetrics) Collect(ch chan<- metric.Metric) {
 	lm.accepts.Collect(ch)
 	lm.durations.Collect(ch)
 }
 
 // check interfaces
 var (
-	_ prometheus.Collector = (*listenerMetrics)(nil)
+	_ metric.Collector = (*listenerMetrics)(nil)
 )

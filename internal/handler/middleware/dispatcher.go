@@ -23,7 +23,7 @@ import (
 	"time"
 
 	"github.com/AlekSi/lazyerrors"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 	otelattribute "go.opentelemetry.io/otel/attribute"
 	otelcodes "go.opentelemetry.io/otel/codes"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
@@ -39,7 +39,7 @@ import (
 type dispatcher struct {
 	h         Handler
 	l         *slog.Logger
-	responses *prometheus.CounterVec
+	responses *metric.CounterVec
 }
 
 // Dispatch sends the request to the handler, handling panics and response metrics, tracing, and logging.
@@ -99,7 +99,7 @@ func (d *dispatcher) Dispatch(ctx context.Context, req *Request) (resp *Response
 
 		// When both handlers are used, this metric is counted twice.
 		// TODO https://github.com/hanzoai/docdb/issues/4987
-		d.responses.With(prometheus.Labels{
+		d.responses.With(metric.Labels{
 			"opcode":   opcode,
 			"command":  command,
 			"argument": argument,

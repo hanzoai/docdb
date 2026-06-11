@@ -29,7 +29,7 @@ import (
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 
 	"github.com/hanzoai/docdb/internal/handler/middleware"
 	"github.com/hanzoai/docdb/internal/util/ctxutil"
@@ -356,17 +356,17 @@ func (l *Listener) TLSAddr() net.Addr {
 	return l.tlsListener.Addr()
 }
 
-// Describe implements [prometheus.Collector].
-func (l *Listener) Describe(ch chan<- *prometheus.Desc) {
+// Describe implements [metric.Collector].
+func (l *Listener) Describe(ch chan<- *metric.Desc) {
 	l.lm.Describe(ch)
 }
 
-// Collect implements [prometheus.Collector].
-func (l *Listener) Collect(ch chan<- prometheus.Metric) {
+// Collect implements [metric.Collector].
+func (l *Listener) Collect(ch chan<- metric.Metric) {
 	l.lm.Collect(ch)
 }
 
 // check interfaces
 var (
-	_ prometheus.Collector = (*Listener)(nil)
+	_ metric.Collector = (*Listener)(nil)
 )
