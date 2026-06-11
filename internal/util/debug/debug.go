@@ -34,8 +34,7 @@ import (
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/arl/statsviz"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	metric "github.com/luxfi/metric"
 	_ "golang.org/x/net/trace"
 
 	"github.com/hanzoai/docdb/internal/util/ctxutil"
@@ -75,7 +74,7 @@ type Listener struct {
 type ListenOpts struct {
 	TCPAddr string
 	L       *slog.Logger
-	R       prometheus.Registerer
+	R       metric.Registerer
 	Livez   Probe
 	Readyz  Probe
 }
@@ -94,8 +93,8 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 
 	stdL := slog.NewLogLogger(l.Handler(), slog.LevelError)
 
-	probeDurations := prometheus.NewHistogramVec(
-		prometheus.HistogramOpts{
+	probeDurations := metric.NewHistogramVec(
+		metric.HistogramOpts{
 			Namespace: namespace,
 			Subsystem: subsystem,
 			Name:      "probe_response_seconds",
@@ -107,10 +106,10 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 
 	opts.R.MustRegister(probeDurations)
 
-	http.Handle("/debug/metrics", promhttp.InstrumentMetricHandler(
-		opts.R, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{
+	http.Handle("/debug/metrics", metric.InstrumentMetricHandler(
+		opts.R, metric.NewHTTPHandler(metric.DefaultGatherer, metric.HandlerOpts{
 			ErrorLog:          stdL,
-			ErrorHandling:     promhttp.ContinueOnError,
+			ErrorHandling:     metric.ContinueOnError,
 			Registry:          opts.R,
 			EnableOpenMetrics: true,
 		}),
@@ -125,8 +124,8 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 	}
 	must.NoError(statsviz.Register(http.DefaultServeMux, svOpts...))
 
-	http.Handle("/debug/livez", promhttp.InstrumentHandlerDuration(
-		probeDurations.MustCurryWith(prometheus.Labels{"probe": "livez"}),
+	http.Handle("/debug/livez", metric.InstrumentHandlerDuration(
+		probeDurations.MustCurryWith(metric.Labels{"probe": "livez"}),
 		http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 			defer cancel()
@@ -143,8 +142,8 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 		}),
 	))
 
-	http.Handle("/debug/readyz", promhttp.InstrumentHandlerDuration(
-		probeDurations.MustCurryWith(prometheus.Labels{"probe": "readyz"}),
+	http.Handle("/debug/readyz", metric.InstrumentHandlerDuration(
+		probeDurations.MustCurryWith(metric.Labels{"probe": "readyz"}),
 		http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 			defer cancel()

@@ -22,7 +22,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 	"go.opentelemetry.io/otel"
 	otelcodes "go.opentelemetry.io/otel/codes"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
@@ -50,8 +50,8 @@ var queryKey = contextKey{}
 // TODO https://github.com/hanzoai/docdb/issues/3554
 type tracer struct {
 	tl       *tracelog.TraceLog
-	requests *prometheus.CounterVec
-	duration *prometheus.HistogramVec
+	requests *metric.CounterVec
+	duration *metric.HistogramVec
 }
 
 // newTracer creates a new tracer.
@@ -65,8 +65,8 @@ func newTracer(l *slog.Logger) *tracer {
 				TimeKey: slog.TimeKey,
 			},
 		},
-		requests: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
+		requests: metric.NewCounterVec(
+			metric.CounterOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "requests_total",
@@ -74,8 +74,8 @@ func newTracer(l *slog.Logger) *tracer {
 			},
 			[]string{},
 		),
-		duration: prometheus.NewHistogramVec(
-			prometheus.HistogramOpts{
+		duration: metric.NewHistogramVec(
+			metric.HistogramOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "responses_duration_seconds",
@@ -175,7 +175,7 @@ func (t *tracer) TracePrepareEnd(ctx context.Context, conn *pgx.Conn, data pgx.T
 func (t *tracer) TraceQueryStart(ctx context.Context, conn *pgx.Conn, data pgx.TraceQueryStartData) context.Context {
 	ctx = context.WithValue(ctx, queryKey, time.Now())
 
-	t.requests.With(prometheus.Labels{}).Inc()
+	t.requests.With(metric.Labels{}).Inc()
 
 	ctx, _ = otel.Tracer("").Start(
 		ctx,
@@ -193,7 +193,7 @@ func (t *tracer) TraceQueryStart(ctx context.Context, conn *pgx.Conn, data pgx.T
 func (t *tracer) TraceQueryEnd(ctx context.Context, conn *pgx.Conn, data pgx.TraceQueryEndData) {
 	duration := time.Since(ctx.Value(queryKey).(time.Time))
 
-	t.duration.With(prometheus.Labels{}).Observe(duration.Seconds())
+	t.duration.With(metric.Labels{}).Observe(duration.Seconds())
 
 	t.tl.TraceQueryEnd(ctx, conn, data)
 
@@ -209,14 +209,14 @@ func (t *tracer) TraceQueryEnd(ctx context.Context, conn *pgx.Conn, data pgx.Tra
 	span.End()
 }
 
-// Describe implements prometheus.Collector.
-func (t *tracer) Describe(ch chan<- *prometheus.Desc) {
+// Describe implements metric.Collector.
+func (t *tracer) Describe(ch chan<- *metric.Desc) {
 	t.requests.Describe(ch)
 	t.duration.Describe(ch)
 }
 
-// Collect implements prometheus.Collector.
-func (t *tracer) Collect(ch chan<- prometheus.Metric) {
+// Collect implements metric.Collector.
+func (t *tracer) Collect(ch chan<- metric.Metric) {
 	t.requests.Collect(ch)
 	t.duration.Collect(ch)
 }
@@ -228,5 +228,5 @@ var (
 	_ pgx.ConnectTracer     = (*tracer)(nil)
 	_ pgx.PrepareTracer     = (*tracer)(nil)
 	_ pgx.QueryTracer       = (*tracer)(nil)
-	_ prometheus.Collector  = (*tracer)(nil)
+	_ metric.Collector      = (*tracer)(nil)
 )

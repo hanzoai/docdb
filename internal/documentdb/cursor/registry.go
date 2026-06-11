@@ -22,7 +22,7 @@ import (
 
 	"github.com/FerretDB/wire/wirebson"
 	"github.com/jackc/pgx/v5"
-	"github.com/prometheus/client_golang/prometheus"
+	metric "github.com/luxfi/metric"
 
 	"github.com/hanzoai/docdb/internal/util/logging"
 	"github.com/hanzoai/docdb/internal/util/must"
@@ -45,8 +45,8 @@ type Registry struct {
 	l     *slog.Logger
 	token *resource.Token
 
-	created  *prometheus.CounterVec
-	duration *prometheus.HistogramVec
+	created  *metric.CounterVec
+	duration *metric.HistogramVec
 }
 
 // NewRegistry creates a new cursor registry.
@@ -56,8 +56,8 @@ func NewRegistry(l *slog.Logger) *Registry {
 		l:       l,
 		token:   resource.NewToken(),
 
-		created: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
+		created: metric.NewCounterVec(
+			metric.CounterOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "created_total",
@@ -65,8 +65,8 @@ func NewRegistry(l *slog.Logger) *Registry {
 			},
 			[]string{"type"},
 		),
-		duration: prometheus.NewHistogramVec(
-			prometheus.HistogramOpts{
+		duration: metric.NewHistogramVec(
+			metric.HistogramOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "duration_seconds",
@@ -90,8 +90,8 @@ func NewRegistry(l *slog.Logger) *Registry {
 		),
 	}
 
-	res.created.With(prometheus.Labels{"type": "normal"})
-	res.duration.With(prometheus.Labels{"type": "normal"})
+	res.created.With(metric.Labels{"type": "normal"})
+	res.duration.With(metric.Labels{"type": "normal"})
 
 	resource.Track(res, res.token)
 
@@ -136,7 +136,7 @@ func (r *Registry) NewCursor(ctx context.Context, id int64, continuation wirebso
 
 	r.l.DebugContext(ctx, "Storing new cursor", slog.Int64("id", id), slog.Any("cursor", c))
 
-	r.created.With(prometheus.Labels{"type": c.Type()}).Inc()
+	r.created.With(metric.Labels{"type": c.Type()}).Inc()
 
 	r.cursors[id] = c
 
@@ -237,26 +237,26 @@ func (r *Registry) removeCursor(ctx context.Context, id int64) *cursor {
 		slog.Int64("id", id), slog.Any("cursor", c), slog.Duration("duration", dur),
 	)
 
-	r.duration.With(prometheus.Labels{"type": c.Type()}).Observe(dur.Seconds())
+	r.duration.With(metric.Labels{"type": c.Type()}).Observe(dur.Seconds())
 
 	delete(r.cursors, id)
 
 	return c
 }
 
-// Describe implements [prometheus.Collector].
-func (r *Registry) Describe(ch chan<- *prometheus.Desc) {
+// Describe implements [metric.Collector].
+func (r *Registry) Describe(ch chan<- *metric.Desc) {
 	r.created.Describe(ch)
 	r.duration.Describe(ch)
 }
 
-// Collect implements [prometheus.Collector].
-func (r *Registry) Collect(ch chan<- prometheus.Metric) {
+// Collect implements [metric.Collector].
+func (r *Registry) Collect(ch chan<- metric.Metric) {
 	r.created.Collect(ch)
 	r.duration.Collect(ch)
 }
 
 // check interfaces
 var (
-	_ prometheus.Collector = (*Registry)(nil)
+	_ metric.Collector = (*Registry)(nil)
 )
