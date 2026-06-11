@@ -17,7 +17,6 @@ require (
 	github.com/modelcontextprotocol/go-sdk v0.2.0
 	github.com/oapi-codegen/runtime v1.1.2
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/prometheus/client_golang v1.23.2
 	github.com/prometheus/client_model v0.6.2
 	github.com/prometheus/common v0.67.5
 	github.com/stretchr/testify v1.11.1
@@ -51,6 +50,7 @@ require (
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/luxfi/mdns v0.1.0 // indirect
+	github.com/luxfi/metric v1.5.8
 	github.com/miekg/dns v1.1.62 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
