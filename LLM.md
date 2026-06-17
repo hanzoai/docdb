@@ -1,4 +1,4 @@
-# LLM.md - Hanzo Documentdb
+# Hanzo Documentdb
 
 ## Overview
 Go module: github.com/hanzoai/docdb
