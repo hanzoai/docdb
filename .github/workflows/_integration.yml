@@ -37,7 +37,7 @@ jobs:
   run:
     # make it short to fit in GitHub UI; all parameters are already in the caller's name
     name: Run
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 25
 
     steps:
