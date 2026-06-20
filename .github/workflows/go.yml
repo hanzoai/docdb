@@ -26,7 +26,7 @@ env:
 jobs:
   short-test:
     name: Short test
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 15
 
     # Do not run this job in parallel for any PR change or branch push.
@@ -86,7 +86,7 @@ jobs:
 
   test:
     name: Test
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 15
 
     # Do not run this job in parallel for any PR change or branch push.
@@ -265,7 +265,7 @@ jobs:
   # https://github.com/lemurheavy/coveralls-public/issues/1636
   submit-coveralls:
     name: Submit final coveralls report
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     needs: [test, integration]
 
     if: always() && (github.event_name != 'pull_request' || !contains(github.event.pull_request.labels.*.name, 'not ready'))
@@ -279,7 +279,7 @@ jobs:
 
   env-data:
     name: env-data
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 10
 
     # Do not run this job in parallel for any PR change or branch push.
@@ -338,7 +338,7 @@ jobs:
 
   golangci-lint:
     name: golangci-lint
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 10
 
     # Do not run this job in parallel for any PR change or branch push.
