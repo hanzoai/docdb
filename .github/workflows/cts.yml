@@ -24,7 +24,7 @@ env:
 jobs:
   run:
     name: Run CTS tests
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 10
 
     if: github.event_name != 'pull_request' || !contains(github.event.pull_request.labels.*.name, 'not ready')
