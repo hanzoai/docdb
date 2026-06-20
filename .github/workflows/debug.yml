@@ -28,7 +28,7 @@ concurrency:
 jobs:
   contexts:
     name: Contexts
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 5
 
     # comment out to enable this job
