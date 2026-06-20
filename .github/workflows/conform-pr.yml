@@ -63,7 +63,7 @@ env:
 jobs:
   conform-pr:
     name: Conform PR
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 5
 
     # No `trust` label check because we don't checkout PR's code.
