@@ -32,7 +32,7 @@ env:
 jobs:
   build:
     name: Build docs
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 10
 
     if: github.event_name != 'pull_request' || !contains(github.event.pull_request.labels.*.name, 'not ready')
@@ -104,7 +104,7 @@ jobs:
 
   github:
     name: Deploy to GitHub Pages
-    runs-on: ubuntu-24.04
+    runs-on: hanzo-build-linux-amd64
     timeout-minutes: 10
 
     # exclude pull_request and schedule
