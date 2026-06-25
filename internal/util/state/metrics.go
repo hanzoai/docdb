@@ -17,7 +17,7 @@ package state
 import (
 	"strconv"
 
-	metric "github.com/luxfi/metric"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/hanzoai/docdb/build/version"
 )
@@ -38,16 +38,16 @@ func newMetricsCollector(p *Provider, addUUID bool) *metricsCollector {
 	}
 }
 
-// Describe implements [metric.Collector].
-func (mc *metricsCollector) Describe(ch chan<- *metric.Desc) {
-	metric.DescribeByCollect(mc, ch)
+// Describe implements [prometheus.Collector].
+func (mc *metricsCollector) Describe(ch chan<- *prometheus.Desc) {
+	prometheus.DescribeByCollect(mc, ch)
 }
 
-// Collect implements [metric.Collector].
+// Collect implements [prometheus.Collector].
 // It exposes a single metric with various labels.
-func (mc *metricsCollector) Collect(ch chan<- metric.Metric) {
+func (mc *metricsCollector) Collect(ch chan<- prometheus.Metric) {
 	info := version.Get()
-	constLabels := metric.Labels{
+	constLabels := prometheus.Labels{
 		"version": info.Version,
 		"commit":  info.Commit,
 		"branch":  info.Branch,
@@ -78,14 +78,14 @@ func (mc *metricsCollector) Collect(ch chan<- metric.Metric) {
 		values = append(values, s.UUID)
 	}
 
-	ch <- metric.MustNewConstMetric(
-		metric.NewDesc(
+	ch <- prometheus.MustNewConstMetric(
+		prometheus.NewDesc(
 			"docdb_up",
 			"DocDB instance state.",
 			labels,
 			constLabels,
 		),
-		metric.GaugeValue,
+		prometheus.GaugeValue,
 		1,
 		values...,
 	)
@@ -93,5 +93,5 @@ func (mc *metricsCollector) Collect(ch chan<- metric.Metric) {
 
 // check interfaces
 var (
-	_ metric.Collector = (*metricsCollector)(nil)
+	_ prometheus.Collector = (*metricsCollector)(nil)
 )
