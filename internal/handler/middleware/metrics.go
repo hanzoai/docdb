@@ -17,7 +17,7 @@ package middleware
 import (
 	"fmt"
 
-	metric "github.com/luxfi/metric"
+	"github.com/prometheus/client_golang/prometheus"
 	dto "github.com/prometheus/client_model/go"
 
 	"github.com/hanzoai/docdb/internal/util/must"
@@ -32,8 +32,8 @@ const (
 
 // Metrics represents middleware Metrics.
 type Metrics struct {
-	requests  *metric.CounterVec
-	responses *metric.CounterVec
+	requests  *prometheus.CounterVec
+	responses *prometheus.CounterVec
 }
 
 // CommandMetrics represents command results metrics.
@@ -49,8 +49,8 @@ func NewMetrics() *Metrics {
 	// Or metric for that should be in the listener itself?
 	// TODO https://github.com/hanzoai/docdb/issues/4965
 	m := &Metrics{
-		requests: metric.NewCounterVec(
-			metric.CounterOpts{
+		requests: prometheus.NewCounterVec(
+			prometheus.CounterOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "requests_total",
@@ -61,8 +61,8 @@ func NewMetrics() *Metrics {
 
 		// That probably should be a histogram or summary by duration.
 		// TODO https://github.com/hanzoai/docdb/issues/4965
-		responses: metric.NewCounterVec(
-			metric.CounterOpts{
+		responses: prometheus.NewCounterVec(
+			prometheus.CounterOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "responses_total",
@@ -72,11 +72,11 @@ func NewMetrics() *Metrics {
 		),
 	}
 
-	m.requests.With(metric.Labels{
+	m.requests.With(prometheus.Labels{
 		"opcode":  "OP_MSG",
 		"command": "find",
 	})
-	m.responses.With(metric.Labels{
+	m.responses.With(prometheus.Labels{
 		"opcode":   "OP_MSG",
 		"command":  "find",
 		"argument": "unknown",
@@ -86,14 +86,14 @@ func NewMetrics() *Metrics {
 	return m
 }
 
-// Describe implements [metric.Collector].
-func (m *Metrics) Describe(ch chan<- *metric.Desc) {
+// Describe implements [prometheus.Collector].
+func (m *Metrics) Describe(ch chan<- *prometheus.Desc) {
 	m.requests.Describe(ch)
 	m.responses.Describe(ch)
 }
 
-// Collect implements [metric.Collector].
-func (m *Metrics) Collect(ch chan<- metric.Metric) {
+// Collect implements [prometheus.Collector].
+func (m *Metrics) Collect(ch chan<- prometheus.Metric) {
 	m.requests.Collect(ch)
 	m.responses.Collect(ch)
 }
@@ -106,7 +106,7 @@ func (m *Metrics) Collect(ch chan<- metric.Metric) {
 // result (e.g. "ok", "NotImplemented", "error", or "panic") ->
 // count.
 func (m *Metrics) GetResponses() map[string]map[string]map[string]CommandMetrics {
-	metrics := make(chan metric.Metric)
+	metrics := make(chan prometheus.Metric)
 	go func() {
 		m.responses.Collect(metrics)
 		close(metrics)
@@ -169,5 +169,5 @@ func (m *Metrics) GetResponses() map[string]map[string]map[string]CommandMetrics
 
 // check interfaces
 var (
-	_ metric.Collector = (*Metrics)(nil)
+	_ prometheus.Collector = (*Metrics)(nil)
 )
