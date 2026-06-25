@@ -25,7 +25,7 @@ import (
 
 	"github.com/FerretDB/wire/wirebson"
 	"github.com/google/uuid"
-	metric "github.com/luxfi/metric"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/hanzoai/docdb/internal/mongoerrors"
 	"github.com/hanzoai/docdb/internal/util/logging"
@@ -56,8 +56,8 @@ type Registry struct {
 	l     *slog.Logger
 	token *resource.Token
 
-	created  *metric.CounterVec
-	duration *metric.HistogramVec
+	created  *prometheus.CounterVec
+	duration *prometheus.HistogramVec
 }
 
 // cursorOwner identifies the user ID and session ID that created the cursor.
@@ -80,8 +80,8 @@ func NewRegistry(timeout time.Duration, l *slog.Logger) *Registry {
 		l:        logging.WithName(l, "session"),
 		token:    resource.NewToken(),
 
-		created: metric.NewCounterVec(
-			metric.CounterOpts{
+		created: prometheus.NewCounterVec(
+			prometheus.CounterOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "created_total",
@@ -89,8 +89,8 @@ func NewRegistry(timeout time.Duration, l *slog.Logger) *Registry {
 			},
 			[]string{"kind"},
 		),
-		duration: metric.NewHistogramVec(
-			metric.HistogramOpts{
+		duration: prometheus.NewHistogramVec(
+			prometheus.HistogramOpts{
 				Namespace: namespace,
 				Subsystem: subsystem,
 				Name:      "duration_seconds",
@@ -467,19 +467,19 @@ func (r *Registry) Stop() {
 	resource.Untrack(r, r.token)
 }
 
-// Describe implements [metric.Collector].
-func (r *Registry) Describe(ch chan<- *metric.Desc) {
+// Describe implements [prometheus.Collector].
+func (r *Registry) Describe(ch chan<- *prometheus.Desc) {
 	r.created.Describe(ch)
 	r.duration.Describe(ch)
 }
 
-// Collect implements [metric.Collector].
-func (r *Registry) Collect(ch chan<- metric.Metric) {
+// Collect implements [prometheus.Collector].
+func (r *Registry) Collect(ch chan<- prometheus.Metric) {
 	r.created.Collect(ch)
 	r.duration.Collect(ch)
 }
 
 // check interfaces
 var (
-	_ metric.Collector = (*Registry)(nil)
+	_ prometheus.Collector = (*Registry)(nil)
 )
