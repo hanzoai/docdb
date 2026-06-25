@@ -23,8 +23,8 @@ import (
 	"net/http"
 
 	"github.com/AlekSi/lazyerrors"
-	metric "github.com/luxfi/metric"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/hanzoai/docdb/build/version"
 	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
@@ -127,10 +127,10 @@ func (lis *Listener) Addr() net.Addr {
 	return lis.lis.Addr()
 }
 
-// Describe implements [metric.Collector].
-func (lis *Listener) Describe(ch chan<- *metric.Desc) {
+// Describe implements [prometheus.Collector].
+func (lis *Listener) Describe(ch chan<- *prometheus.Desc) {
 }
 
-// Collect implements [metric.Collector].
-func (lis *Listener) Collect(ch chan<- metric.Metric) {
+// Collect implements [prometheus.Collector].
+func (lis *Listener) Collect(ch chan<- prometheus.Metric) {
 }
