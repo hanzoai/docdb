@@ -25,7 +25,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	metric "github.com/luxfi/metric"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -49,7 +49,7 @@ func TestDebug(t *testing.T) {
 	h := must.NotFail(Listen(&ListenOpts{
 		TCPAddr: "127.0.0.1:0",
 		L:       testutil.Logger(t),
-		R:       metric.NewRegistry(),
+		R:       prometheus.NewRegistry(),
 		Livez:   func(context.Context) bool { return livez.Load() },
 		Readyz:  func(context.Context) bool { return readyz.Load() },
 	}))
