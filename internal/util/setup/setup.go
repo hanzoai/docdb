@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	metric "github.com/luxfi/metric"
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/hanzoai/docdb/internal/clientconn"
 	"github.com/hanzoai/docdb/internal/dataapi"
@@ -367,8 +367,8 @@ func (sr *SetupResult) runHandlers(ctx context.Context) {
 	wg.Wait()
 }
 
-// Describe implements [metric.Collector].
-func (sr *SetupResult) Describe(ch chan<- *metric.Desc) {
+// Describe implements [prometheus.Collector].
+func (sr *SetupResult) Describe(ch chan<- *prometheus.Desc) {
 	if sr.docdbH != nil {
 		sr.docdbH.Describe(ch)
 	}
@@ -392,8 +392,8 @@ func (sr *SetupResult) Describe(ch chan<- *metric.Desc) {
 	}
 }
 
-// Collect implements [metric.Collector].
-func (sr *SetupResult) Collect(ch chan<- metric.Metric) {
+// Collect implements [prometheus.Collector].
+func (sr *SetupResult) Collect(ch chan<- prometheus.Metric) {
 	if sr.docdbH != nil {
 		sr.docdbH.Collect(ch)
 	}
@@ -419,5 +419,5 @@ func (sr *SetupResult) Collect(ch chan<- metric.Metric) {
 
 // check interfaces
 var (
-	_ metric.Collector = (*SetupResult)(nil)
+	_ prometheus.Collector = (*SetupResult)(nil)
 )

@@ -17,7 +17,7 @@ package middleware
 import (
 	"context"
 
-	metric "github.com/luxfi/metric"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 // Handler is a common interface for [handler.Handler] and [proxy.Handler]
@@ -48,5 +48,5 @@ type Handler interface {
 	Handle(ctx context.Context, req *Request) (resp *Response, err error)
 
 	// Handler should expose its metrics, but not metrics of passed dependencies.
-	metric.Collector
+	prometheus.Collector
 }
