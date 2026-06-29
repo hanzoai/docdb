@@ -1,3 +1,5 @@
+<p align="center"><img src=".github/hero.svg" alt="docdb" width="880"></p>
+
 # DocDB
 
 <!-- textlint-disable one-sentence-per-line -->
