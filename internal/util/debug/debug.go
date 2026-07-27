@@ -18,10 +18,8 @@ package debug
 import (
 	"bytes"
 	"context"
-	"errors"
 	_ "expvar" // for metrics
 	"fmt"
-	"log"
 	"log/slog"
 	"maps"
 	"net"
@@ -36,11 +34,11 @@ import (
 	"github.com/arl/statsviz"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/zap-proto/zip"
 	_ "golang.org/x/net/trace"
 
-	"github.com/hanzoai/docdb/internal/util/ctxutil"
-	"github.com/hanzoai/docdb/internal/util/logging"
 	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // Parts of Prometheus metric names.
@@ -52,6 +50,23 @@ const (
 
 // setup ensures that debug handler is set up only once.
 var setup atomic.Bool
+
+// archive returns the debug archive route.
+//
+// [archiveHandler] fetches the other debug endpoints from the listener serving
+// it, and finds that listener's address the way [http.Server] published it:
+// under [http.LocalAddrContextKey] on the request context. The route puts it
+// there, so the handler needs to know nothing about what is serving it.
+func archive(l *slog.Logger) zip.Handler {
+	h := zip.AdaptNetHTTPFunc(archiveHandler(l))
+
+	return func(c *zip.Ctx) error {
+		fc := c.Fiber().RequestCtx()
+		fc.SetUserValue(http.LocalAddrContextKey, fc.LocalAddr())
+
+		return h(c)
+	}
+}
 
 // Probe should return true on success and false on failure (or context cancellation).
 // It may log additional information if needed.
@@ -65,8 +80,8 @@ type Probe func(ctx context.Context) bool
 type Listener struct {
 	opts     *ListenOpts
 	lis      net.Listener
+	app      *zip.App
 	handlers map[string]string
-	stdL     *log.Logger
 }
 
 // ListenOpts represents [Listen] options.
@@ -107,25 +122,16 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 
 	opts.R.MustRegister(probeDurations)
 
-	http.Handle("/debug/metrics", promhttp.InstrumentMetricHandler(
+	metrics := promhttp.InstrumentMetricHandler(
 		opts.R, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{
 			ErrorLog:          stdL,
 			ErrorHandling:     promhttp.ContinueOnError,
 			Registry:          opts.R,
 			EnableOpenMetrics: true,
 		}),
-	))
+	)
 
-	http.HandleFunc("/debug/archive", archiveHandler(l))
-	http.Handle("/debug/archive.zip", http.RedirectHandler("/debug/archive", 303))
-
-	svOpts := []statsviz.Option{
-		statsviz.Root("/debug/graphs"),
-		// TODO https://github.com/hanzoai/docdb/issues/3600
-	}
-	must.NoError(statsviz.Register(http.DefaultServeMux, svOpts...))
-
-	http.Handle("/debug/livez", promhttp.InstrumentHandlerDuration(
+	livez := promhttp.InstrumentHandlerDuration(
 		probeDurations.MustCurryWith(prometheus.Labels{"probe": "livez"}),
 		http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
@@ -141,9 +147,9 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 			l.Debug("Livez probe succeeded")
 			rw.WriteHeader(http.StatusOK)
 		}),
-	))
+	)
 
-	http.Handle("/debug/readyz", promhttp.InstrumentHandlerDuration(
+	readyz := promhttp.InstrumentHandlerDuration(
 		probeDurations.MustCurryWith(prometheus.Labels{"probe": "readyz"}),
 		http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
@@ -166,7 +172,13 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 			l.Debug("Readyz probe succeeded")
 			rw.WriteHeader(http.StatusOK)
 		}),
-	))
+	)
+
+	svOpts := []statsviz.Option{
+		statsviz.Root("/debug/graphs"),
+		// TODO https://github.com/hanzoai/docdb/issues/3600
+	}
+	must.NoError(statsviz.Register(http.DefaultServeMux, svOpts...))
 
 	handlers := map[string]string{
 		// custom handlers registered above
@@ -196,13 +208,31 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 	</html>
 	`)).Execute(&page, handlers))
 
-	http.HandleFunc("/debug", func(rw http.ResponseWriter, _ *http.Request) {
+	index := func(rw http.ResponseWriter, _ *http.Request) {
 		rw.Write(page.Bytes())
-	})
+	}
 
+	// The last resort for every path DocDB does not serve itself, and therefore
+	// the fallback of [http.DefaultServeMux] rather than a route of its own.
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
 		http.Redirect(rw, r, "/debug", http.StatusSeeOther)
 	})
+
+	app := zipapp.New("debug")
+
+	app.All("/debug/metrics", zip.AdaptNetHTTP(metrics))
+	app.All("/debug/archive", archive(l))
+	app.All("/debug/archive.zip", zip.AdaptNetHTTP(http.RedirectHandler("/debug/archive", 303)))
+	app.All("/debug/livez", zip.AdaptNetHTTPFunc(livez))
+	app.All("/debug/readyz", zip.AdaptNetHTTPFunc(readyz))
+	app.All("/debug", zip.AdaptNetHTTPFunc(index))
+
+	// Everything else is served by [http.DefaultServeMux]: the runtime's own
+	// pprof, expvar and trace endpoints, statsviz, and the "/" redirect above.
+	// None of them are DocDB's, so they are fronted whole instead of rewritten;
+	// the adapter forwards flushes and connection hijacks, which is what
+	// statsviz's WebSocket needs.
+	app.All("/*", zip.AdaptNetHTTP(http.DefaultServeMux))
 
 	lis, err := net.Listen("tcp", opts.TCPAddr)
 	if err != nil {
@@ -212,8 +242,8 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 	return &Listener{
 		opts:     opts,
 		lis:      lis,
+		app:      app,
 		handlers: handlers,
-		stdL:     stdL,
 	}, nil
 }
 
@@ -221,14 +251,6 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 //
 // It exits when handler is stopped and listener closed.
 func (lis *Listener) Run(ctx context.Context) {
-	s := http.Server{
-		Handler:  http.DefaultServeMux,
-		ErrorLog: lis.stdL,
-		BaseContext: func(net.Listener) context.Context {
-			return ctx
-		},
-	}
-
 	l := lis.opts.L
 
 	root := fmt.Sprintf("http://%s", lis.lis.Addr())
@@ -241,25 +263,5 @@ func (lis *Listener) Run(ctx context.Context) {
 		l.InfoContext(ctx, fmt.Sprintf("%s%s - %s", root, path, lis.handlers[path]))
 	}
 
-	go func() {
-		if err := s.Serve(lis.lis); !errors.Is(err, http.ErrServerClosed) {
-			l.LogAttrs(ctx, logging.LevelDPanic, "Serve exited with unexpected error", logging.Error(err))
-		}
-	}()
-
-	<-ctx.Done()
-
-	// ctx is already canceled, but we want to inherit its values
-	shutdownCtx, shutdownCancel := ctxutil.WithDelay(ctx)
-	defer shutdownCancel(nil)
-
-	if err := s.Shutdown(shutdownCtx); err != nil {
-		l.LogAttrs(ctx, logging.LevelDPanic, "Shutdown exited with unexpected error", logging.Error(err))
-	}
-
-	if err := s.Close(); err != nil {
-		l.LogAttrs(ctx, logging.LevelDPanic, "Close exited with unexpected error", logging.Error(err))
-	}
-
-	l.InfoContext(ctx, "Debug server stopped")
+	zipapp.Serve(ctx, "Debug", lis.app, lis.lis, l)
 }

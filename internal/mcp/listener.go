@@ -16,7 +16,6 @@ package mcp
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log/slog"
 	"net"
@@ -25,12 +24,12 @@ import (
 	"github.com/AlekSi/lazyerrors"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/build/version"
 	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
 	"github.com/hanzoai/docdb/internal/handler/middleware"
-	"github.com/hanzoai/docdb/internal/util/ctxutil"
-	"github.com/hanzoai/docdb/internal/util/logging"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // Listener represents MCP listener.
@@ -65,50 +64,32 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 	}, nil
 }
 
-// Run runs MCP handler until ctx is canceled.
-//
-// It exits when handler is stopped and listener closed.
-func (lis *Listener) Run(ctx context.Context) {
+// newApp returns the MCP router.
+func (lis *Listener) newApp(ctx context.Context) *zip.App {
 	s := mcp.NewServer(&mcp.Implementation{Name: "DocDB", Version: version.Get().Version}, nil)
 	lis.srv.addTools(s)
 
 	mcpHandler := mcp.NewStreamableHTTPHandler(func(req *http.Request) *mcp.Server { return s }, nil)
-	srvHandler := http.NewServeMux()
 
+	app := zipapp.New("mcp")
+	app.Use(zipapp.BaseContext(ctx))
+
+	// The MCP SDK's streamable HTTP handler owns the whole request/response
+	// lifecycle - session headers, SSE streams, flushing - so it is fronted
+	// as-is instead of being reimplemented.
 	// TODO https://github.com/hanzoai/docdb/issues/5309
-	srvHandler.Handle("/mcp", connInfoMiddleware(mcpHandler))
+	app.All("/mcp", zip.AdaptNetHTTP(connInfoMiddleware(mcpHandler)))
 
-	srv := &http.Server{
-		Handler:  srvHandler,
-		ErrorLog: slog.NewLogLogger(lis.opts.L.Handler(), slog.LevelError),
-		BaseContext: func(net.Listener) context.Context {
-			return ctx
-		},
-	}
+	return app
+}
 
+// Run runs MCP handler until ctx is canceled.
+//
+// It exits when handler is stopped and listener closed.
+func (lis *Listener) Run(ctx context.Context) {
 	lis.opts.L.InfoContext(ctx, fmt.Sprintf("Starting MCP server on http://%s/mcp", lis.lis.Addr()))
 
-	go func() {
-		if err := srv.Serve(lis.lis); !errors.Is(err, http.ErrServerClosed) {
-			lis.opts.L.LogAttrs(ctx, logging.LevelDPanic, "Serve exited with unexpected error", logging.Error(err))
-		}
-	}()
-
-	<-ctx.Done()
-
-	// ctx is already canceled, but we want to inherit its values
-	shutdownCtx, shutdownCancel := ctxutil.WithDelay(ctx)
-	defer shutdownCancel(nil)
-
-	if err := srv.Shutdown(shutdownCtx); err != nil {
-		lis.opts.L.LogAttrs(ctx, logging.LevelDPanic, "Shutdown exited with unexpected error", logging.Error(err))
-	}
-
-	if err := srv.Close(); err != nil {
-		lis.opts.L.LogAttrs(ctx, logging.LevelDPanic, "Close exited with unexpected error", logging.Error(err))
-	}
-
-	lis.opts.L.InfoContext(ctx, "MCP server stopped")
+	zipapp.Serve(ctx, "MCP", lis.newApp(ctx), lis.lis, lis.opts.L)
 }
 
 // connInfoMiddleware returns a handler function that creates a new [*conninfo.ConnInfo],
