@@ -15,8 +15,10 @@
 package server
 
 import (
+	"bytes"
 	"encoding/json"
-	"net/http"
+
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
 )
@@ -36,13 +38,15 @@ var (
 	}
 )
 
-// writeError encodes [api.Error] into JSON and writes it to w
+// writeError encodes [api.Error] into JSON and writes it as the response body
 // with provided HTTP status code.
 // TODO https://github.com/hanzoai/docdb/issues/4965
-func writeError(rw http.ResponseWriter, err api.Error, code int) {
-	rw.Header().Set("Content-Type", "application/json")
+func writeError(c *zip.Ctx, err api.Error, code int) error {
+	c.SetHeader("Content-Type", "application/json")
+	c.Status(code)
 
-	rw.WriteHeader(code)
+	buf := new(bytes.Buffer)
+	_ = json.NewEncoder(buf).Encode(err)
 
-	_ = json.NewEncoder(rw).Encode(err)
+	return c.Fiber().Send(buf.Bytes())
 }

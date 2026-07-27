@@ -16,41 +16,33 @@ package server
 
 import (
 	"fmt"
-	"log/slog"
 	"net/http"
-	"net/http/httputil"
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire/wirebson"
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
-	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // InsertMany implements [ServerInterface].
-func (s *Server) InsertMany(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	if s.l.Enabled(ctx, slog.LevelDebug) {
-		s.l.DebugContext(ctx, fmt.Sprintf("Request:\n%s", must.NotFail(httputil.DumpRequest(r, true))))
-	}
+func (s *Server) InsertMany(c *zip.Ctx) error {
+	ctx := c.Context()
 
 	var req api.InsertManyRequestBody
-	if err := decodeJSONRequest(r, &req); err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+	if err := s.decodeJSONRequest(c, &req); err != nil {
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	docsArr, err := unmarshalSingleJSON(&req.Documents)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	documents, err := docsArr.(wirebson.RawArray).Decode()
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	var insertedIds []any
@@ -58,29 +50,25 @@ func (s *Server) InsertMany(rw http.ResponseWriter, r *http.Request) {
 	for i, v := range documents.All() {
 		v, ok := v.(wirebson.AnyDocument)
 		if !ok {
-			http.Error(rw, fmt.Sprintf("document %d is not a valid BSON document", i), http.StatusBadRequest)
-			return
+			return zipapp.Text(c, http.StatusBadRequest, fmt.Sprintf("document %d is not a valid BSON document", i))
 		}
 
 		var doc *wirebson.Document
 
 		doc, err = ensureID(v)
 		if err != nil {
-			http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-			return
+			return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 		}
 
 		var insertedId any
 
 		insertedId, err = wirebson.ToDriver(doc.Get("_id"))
 		if err != nil {
-			http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-			return
+			return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 		}
 
 		if err = documents.Replace(i, doc); err != nil {
-			http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-			return
+			return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 		}
 
 		insertedIds = append(insertedIds, insertedId)
@@ -92,24 +80,21 @@ func (s *Server) InsertMany(rw http.ResponseWriter, r *http.Request) {
 		"documents", documents,
 	)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	resp := s.m.Handle(ctx, msg)
 	if resp == nil {
-		http.Error(rw, "internal error", http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, "internal error")
 	}
 
 	if !resp.OK() {
-		s.writeJSONError(ctx, rw, resp)
-		return
+		return s.writeJSONError(c, resp)
 	}
 
 	res := api.InsertManyResponseBody{
 		InsertedIds: &insertedIds,
 	}
 
-	s.writeJSONResponse(ctx, rw, &res)
+	return s.writeJSONResponse(c, &res)
 }

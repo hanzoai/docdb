@@ -15,30 +15,24 @@
 package server
 
 import (
-	"fmt"
-	"log/slog"
 	"net/http"
-	"net/http/httputil"
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire/wirebson"
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
 	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // FindOne implements [ServerInterface].
-func (s *Server) FindOne(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	if s.l.Enabled(ctx, slog.LevelDebug) {
-		s.l.DebugContext(ctx, fmt.Sprintf("Request:\n%s", must.NotFail(httputil.DumpRequest(r, true))))
-	}
+func (s *Server) FindOne(c *zip.Ctx) error {
+	ctx := c.Context()
 
 	var req api.FindOneRequestBody
-	if err := decodeJSONRequest(r, &req); err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+	if err := s.decodeJSONRequest(c, &req); err != nil {
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	msg, err := prepareRequest(
@@ -49,19 +43,16 @@ func (s *Server) FindOne(rw http.ResponseWriter, r *http.Request) {
 		"limit", float64(1),
 	)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	resp := s.m.Handle(ctx, msg)
 	if resp == nil {
-		http.Error(rw, "internal error", http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, "internal error")
 	}
 
 	if !resp.OK() {
-		s.writeJSONError(ctx, rw, resp)
-		return
+		return s.writeJSONError(c, resp)
 	}
 
 	cursor := resp.Document().Get("cursor").(wirebson.AnyDocument)
@@ -71,19 +62,17 @@ func (s *Server) FindOne(rw http.ResponseWriter, r *http.Request) {
 
 	docs := must.NotFail(firstBatch.Decode())
 	if docs.Len() == 0 {
-		s.writeJSONResponse(ctx, rw, &res)
-		return
+		return s.writeJSONResponse(c, &res)
 	}
 
 	doc := docs.Get(0).(wirebson.AnyDocument)
 
 	b, err := marshalSingleJSON(doc)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	res.Document = &b
 
-	s.writeJSONResponse(ctx, rw, &res)
+	return s.writeJSONResponse(c, &res)
 }

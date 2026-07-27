@@ -15,51 +15,41 @@
 package server
 
 import (
-	"fmt"
-	"log/slog"
 	"net/http"
-	"net/http/httputil"
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire/wirebson"
+	"github.com/zap-proto/zip"
 	"go.mongodb.org/mongo-driver/v2/bson"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
-	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // InsertOne implements [ServerInterface].
-func (s *Server) InsertOne(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	if s.l.Enabled(ctx, slog.LevelDebug) {
-		s.l.DebugContext(ctx, fmt.Sprintf("Request:\n%s", must.NotFail(httputil.DumpRequest(r, true))))
-	}
+func (s *Server) InsertOne(c *zip.Ctx) error {
+	ctx := c.Context()
 
 	var req api.InsertOneRequestBody
-	if err := decodeJSONRequest(r, &req); err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+	if err := s.decodeJSONRequest(c, &req); err != nil {
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	insert, err := unmarshalSingleJSON(&req.Document)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	insertDoc, ok := insert.(wirebson.AnyDocument)
 	if !ok {
-		http.Error(rw, lazyerrors.New("document must be a BSON document").Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.New("document must be a BSON document").Error())
 	}
 
 	var doc *wirebson.Document
 
 	doc, err = ensureID(insertDoc)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	documents := wirebson.MustArray(doc)
@@ -70,32 +60,28 @@ func (s *Server) InsertOne(rw http.ResponseWriter, r *http.Request) {
 		"documents", documents,
 	)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	resp := s.m.Handle(ctx, msg)
 	if resp == nil {
-		http.Error(rw, "internal error", http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, "internal error")
 	}
 
 	if !resp.OK() {
-		s.writeJSONError(ctx, rw, resp)
-		return
+		return s.writeJSONError(c, resp)
 	}
 
 	insertedId, err := wirebson.ToDriver(doc.Get("_id"))
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	res := api.InsertOneResponseBody{
 		InsertedId: &insertedId,
 	}
 
-	s.writeJSONResponse(ctx, rw, &res)
+	return s.writeJSONResponse(c, &res)
 }
 
 // ensureID ensures that inserted document has an "_id" field.
