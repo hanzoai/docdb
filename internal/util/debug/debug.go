@@ -58,7 +58,7 @@ var setup atomic.Bool
 // under [http.LocalAddrContextKey] on the request context. The route puts it
 // there, so the handler needs to know nothing about what is serving it.
 func archive(l *slog.Logger) zip.Handler {
-	h := zip.AdaptNetHTTPFunc(archiveHandler(l))
+	h := zip.AdaptNetHTTP(archiveHandler(l))
 
 	return func(c *zip.Ctx) error {
 		fc := c.Fiber().RequestCtx()
@@ -208,9 +208,9 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 	</html>
 	`)).Execute(&page, handlers))
 
-	index := func(rw http.ResponseWriter, _ *http.Request) {
+	index := http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
 		rw.Write(page.Bytes())
-	}
+	})
 
 	// The last resort for every path DocDB does not serve itself, and therefore
 	// the fallback of [http.DefaultServeMux] rather than a route of its own.
@@ -223,9 +223,9 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 	app.All("/debug/metrics", zip.AdaptNetHTTP(metrics))
 	app.All("/debug/archive", archive(l))
 	app.All("/debug/archive.zip", zip.AdaptNetHTTP(http.RedirectHandler("/debug/archive", 303)))
-	app.All("/debug/livez", zip.AdaptNetHTTPFunc(livez))
-	app.All("/debug/readyz", zip.AdaptNetHTTPFunc(readyz))
-	app.All("/debug", zip.AdaptNetHTTPFunc(index))
+	app.All("/debug/livez", zip.AdaptNetHTTP(livez))
+	app.All("/debug/readyz", zip.AdaptNetHTTP(readyz))
+	app.All("/debug", zip.AdaptNetHTTP(index))
 
 	// Everything else is served by [http.DefaultServeMux]: the runtime's own
 	// pprof, expvar and trace endpoints, statsviz, and the "/" redirect above.
