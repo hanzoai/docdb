@@ -18,6 +18,7 @@
 package observability
 
 import (
+	"strings"
 	"context"
 	"errors"
 	"log/slog"
@@ -25,7 +26,7 @@ import (
 	"time"
 
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	luxtrace "github.com/luxfi/trace"
 	otelsdkresource "go.opentelemetry.io/otel/sdk/resource"
 	otelsdktrace "go.opentelemetry.io/otel/sdk/trace"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"
@@ -70,14 +71,13 @@ func NewOTelTraceExporter(opts *OTelTraceExporterOpts) (*OTelTraceExporter, erro
 	// - OTEL_EXPORTER_OTLP_TRACES_CLIENT_CERTIFICATE
 	// - OTEL_EXPORTER_OTLP_TRACES_CLIENT_KEY
 
-	exporter := otlptracehttp.NewUnstarted(
-		otlptracehttp.WithEndpointURL(opts.URL),
-		otlptracehttp.WithHeaders(nil),
-		otlptracehttp.WithTimeout(10*time.Second),
-		otlptracehttp.WithCompression(otlptracehttp.NoCompression),
+	// ZAP carries a JSON SpanBatch to o11y/pkg/zapreceiver — no OTLP, no gRPC.
+	// The endpoint is host:port; a URL's scheme and path have no meaning here.
+	exporter, err := luxtrace.NewZAPExporter(
+		luxtrace.ExporterConfig{Type: luxtrace.ZAP, Endpoint: strings.TrimPrefix(strings.TrimPrefix(opts.URL, "https://"), "http://")},
+		opts.Service, "",
 	)
-
-	if err := exporter.Start(context.TODO()); err != nil {
+	if err != nil {
 		return nil, err
 	}
 
