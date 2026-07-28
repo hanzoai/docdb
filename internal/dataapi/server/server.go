@@ -17,10 +17,8 @@ package server
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -28,12 +26,14 @@ import (
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire/wirebson"
 	"github.com/xdg-go/scram"
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/internal/clientconn/conninfo"
 	"github.com/hanzoai/docdb/internal/dataapi/api"
 	"github.com/hanzoai/docdb/internal/handler/middleware"
 	"github.com/hanzoai/docdb/internal/util/logging"
 	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // New creates a new Server.
@@ -50,152 +50,140 @@ type Server struct {
 	m *middleware.Middleware
 }
 
-// AuthMiddleware handles SCRAM authentication based on the username and password specified in request.
+// Auth handles SCRAM authentication based on the username and password specified in request.
 // After a successful handshake it calls the next handler.
-func (s *Server) AuthMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-		username, password, ok := r.BasicAuth()
+func (s *Server) Auth(c *zip.Ctx) error {
+	ctx := c.Context()
+	username, password, ok := basicAuth(c)
 
-		if !ok {
-			writeError(rw, errorNoAuthenticationSpecified, http.StatusBadRequest)
-			return
-		}
-
-		if password == "" || username == "" {
-			writeError(rw, errorMissingAuthenticationParameter, http.StatusBadRequest)
-			return
-		}
-
-		client, err := scram.SHA256.NewClient(username, password, "")
-		if err != nil {
-			http.Error(rw, lazyerrors.Error(err).Error(), http.StatusBadRequest)
-			return
-		}
-
-		conv := client.NewConversation()
-
-		payload, err := conv.Step("")
-		if err != nil {
-			http.Error(rw, lazyerrors.Error(err).Error(), http.StatusBadRequest)
-			return
-		}
-
-		msg := must.NotFail(prepareRequest(
-			"saslStart", int32(1),
-			"mechanism", "SCRAM-SHA-256",
-			"payload", wirebson.Binary{B: []byte(payload)},
-			// use skipEmptyExchange to complete the handshake with one `saslStart` and one `saslContinue`
-			"options", wirebson.MustDocument("skipEmptyExchange", true),
-			"$db", "admin",
-		))
-
-		resp := s.m.Handle(ctx, msg)
-		if resp == nil {
-			http.Error(rw, "internal error", http.StatusInternalServerError)
-			return
-		}
-
-		if !resp.OK() {
-			s.writeJSONError(ctx, rw, resp)
-			return
-		}
-
-		convID := resp.Document().Get("conversationId").(int32)
-		payloadBytes := resp.Document().Get("payload").(wirebson.Binary).B
-
-		payload, err = conv.Step(string(payloadBytes))
-		if err != nil {
-			http.Error(rw, lazyerrors.Error(err).Error(), http.StatusUnauthorized)
-			return
-		}
-
-		msg = must.NotFail(prepareRequest(
-			"saslContinue", int32(1),
-			"conversationId", convID,
-			"payload", wirebson.Binary{B: []byte(payload)},
-			"$db", "admin",
-		))
-
-		resp = s.m.Handle(ctx, msg)
-		if resp == nil {
-			http.Error(rw, "internal error", http.StatusInternalServerError)
-			return
-		}
-
-		if !resp.OK() {
-			s.writeJSONError(ctx, rw, resp)
-			return
-		}
-
-		if !resp.Document().Get("done").(bool) {
-			http.Error(rw, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-			return
-		}
-
-		payloadBytes = resp.Document().Get("payload").(wirebson.Binary).B
-
-		if _, err = conv.Step(string(payloadBytes)); err != nil {
-			http.Error(rw, lazyerrors.Error(err).Error(), http.StatusUnauthorized)
-			return
-		}
-
-		if !conv.Valid() {
-			http.Error(rw, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-			return
-		}
-
-		next.ServeHTTP(rw, r.WithContext(ctx))
-	})
-}
-
-// ConnInfoMiddleware returns a handler function that creates a new [*conninfo.ConnInfo],
-// calls the next handler, and closes the connection info after the request is done.
-func (s *Server) ConnInfoMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		ci := conninfo.New()
-
-		defer ci.Close()
-
-		next.ServeHTTP(rw, r.WithContext(conninfo.Ctx(r.Context(), ci)))
-	})
-}
-
-// writeJSONResponse marshals provided res document into extended JSON and
-// writes it to provided [http.ResponseWriter].
-func (s *Server) writeJSONResponse(ctx context.Context, rw http.ResponseWriter, res api.Response) {
-	rw.Header().Set("Content-Type", "application/json")
-
-	var resWriter io.Writer = rw
-
-	if s.l.Enabled(ctx, slog.LevelDebug) {
-		buf := new(bytes.Buffer)
-
-		resWriter = io.MultiWriter(rw, buf)
-
-		defer func() {
-			// extended JSON value writer always finish with '\n' character
-			s.l.DebugContext(ctx, fmt.Sprintf("Results:\n%s", strings.TrimSpace(buf.String())))
-		}()
+	if !ok {
+		return writeError(c, errorNoAuthenticationSpecified, http.StatusBadRequest)
 	}
 
-	err := json.NewEncoder(resWriter).Encode(res)
+	if password == "" || username == "" {
+		return writeError(c, errorMissingAuthenticationParameter, http.StatusBadRequest)
+	}
+
+	client, err := scram.SHA256.NewClient(username, password, "")
 	if err != nil {
+		return zipapp.Text(c, http.StatusBadRequest, lazyerrors.Error(err).Error())
+	}
+
+	conv := client.NewConversation()
+
+	payload, err := conv.Step("")
+	if err != nil {
+		return zipapp.Text(c, http.StatusBadRequest, lazyerrors.Error(err).Error())
+	}
+
+	msg := must.NotFail(prepareRequest(
+		"saslStart", int32(1),
+		"mechanism", "SCRAM-SHA-256",
+		"payload", wirebson.Binary{B: []byte(payload)},
+		// use skipEmptyExchange to complete the handshake with one `saslStart` and one `saslContinue`
+		"options", wirebson.MustDocument("skipEmptyExchange", true),
+		"$db", "admin",
+	))
+
+	resp := s.m.Handle(ctx, msg)
+	if resp == nil {
+		return zipapp.Text(c, http.StatusInternalServerError, "internal error")
+	}
+
+	if !resp.OK() {
+		return s.writeJSONError(c, resp)
+	}
+
+	convID := resp.Document().Get("conversationId").(int32)
+	payloadBytes := resp.Document().Get("payload").(wirebson.Binary).B
+
+	payload, err = conv.Step(string(payloadBytes))
+	if err != nil {
+		return zipapp.Text(c, http.StatusUnauthorized, lazyerrors.Error(err).Error())
+	}
+
+	msg = must.NotFail(prepareRequest(
+		"saslContinue", int32(1),
+		"conversationId", convID,
+		"payload", wirebson.Binary{B: []byte(payload)},
+		"$db", "admin",
+	))
+
+	resp = s.m.Handle(ctx, msg)
+	if resp == nil {
+		return zipapp.Text(c, http.StatusInternalServerError, "internal error")
+	}
+
+	if !resp.OK() {
+		return s.writeJSONError(c, resp)
+	}
+
+	if !resp.Document().Get("done").(bool) {
+		return zipapp.Text(c, http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized))
+	}
+
+	payloadBytes = resp.Document().Get("payload").(wirebson.Binary).B
+
+	if _, err = conv.Step(string(payloadBytes)); err != nil {
+		return zipapp.Text(c, http.StatusUnauthorized, lazyerrors.Error(err).Error())
+	}
+
+	if !conv.Valid() {
+		return zipapp.Text(c, http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized))
+	}
+
+	return c.Next()
+}
+
+// basicAuth returns the username and password from the request's HTTP Basic
+// Authentication header, exactly as [http.Request.BasicAuth] parses it.
+func basicAuth(c *zip.Ctx) (username, password string, ok bool) {
+	r := http.Request{Header: http.Header{"Authorization": []string{c.Header("Authorization")}}}
+
+	return r.BasicAuth()
+}
+
+// ConnInfo creates a new [*conninfo.ConnInfo], calls the next handler,
+// and closes the connection info after the request is done.
+func (s *Server) ConnInfo(c *zip.Ctx) error {
+	ci := conninfo.New()
+
+	defer ci.Close()
+
+	c.SetContext(conninfo.Ctx(c.Context(), ci))
+
+	return c.Next()
+}
+
+// writeJSONResponse marshals provided res document into extended JSON and writes it as the response body.
+func (s *Server) writeJSONResponse(c *zip.Ctx, res api.Response) error {
+	ctx := c.Context()
+
+	c.SetHeader("Content-Type", "application/json")
+
+	buf := new(bytes.Buffer)
+
+	if err := json.NewEncoder(buf).Encode(res); err != nil {
 		s.l.ErrorContext(ctx, "marshalJSON failed", logging.Error(err))
 	}
+
+	if s.l.Enabled(ctx, slog.LevelDebug) {
+		// extended JSON value writer always finish with '\n' character
+		s.l.DebugContext(ctx, fmt.Sprintf("Results:\n%s", strings.TrimSpace(buf.String())))
+	}
+
+	return c.Fiber().Send(buf.Bytes())
 }
 
 // TODO https://github.com/hanzoai/docdb/issues/4965
-func (s *Server) writeJSONError(ctx context.Context, rw http.ResponseWriter, resp *middleware.Response) {
+func (s *Server) writeJSONError(c *zip.Ctx, resp *middleware.Response) error {
 	doc := resp.Document()
 	errmsg := doc.Get("errmsg").(string)
 	codeName := doc.Get("codeName").(string)
 
-	rw.Header().Set("Content-Type", "application/json")
+	c.Status(http.StatusInternalServerError)
 
-	rw.WriteHeader(http.StatusInternalServerError)
-
-	s.writeJSONResponse(ctx, rw, &api.Error{
+	return s.writeJSONResponse(c, &api.Error{
 		Error:     errmsg,
 		ErrorCode: codeName,
 	})
@@ -275,21 +263,20 @@ func prepareRequest(pairs ...any) (*middleware.Request, error) {
 	return middleware.RequestDoc(doc)
 }
 
-// decodeJSONRequest takes request with JSON body and decodes it into
-// provided oapi generated request struct.
-func decodeJSONRequest(r *http.Request, out any) error {
-	if !strings.HasPrefix(r.Header.Get("Content-Type"), "application/json") {
+// decodeJSONRequest logs the request when debug logging is enabled, then decodes
+// its JSON body into the provided oapi generated request struct.
+func (s *Server) decodeJSONRequest(c *zip.Ctx, out any) error {
+	if s.l.Enabled(c.Context(), slog.LevelDebug) {
+		s.l.DebugContext(c.Context(), fmt.Sprintf("Request:\n%s", c.Fiber().Request().String()))
+	}
+
+	if !strings.HasPrefix(c.Header("Content-Type"), "application/json") {
 		return lazyerrors.New("Content-Type must be set to application/json")
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&out); err != nil {
+	if err := json.NewDecoder(bytes.NewReader(c.Body())).Decode(&out); err != nil {
 		return lazyerrors.Error(err)
 	}
 
 	return nil
 }
-
-// check interfaces
-var (
-	_ api.ServerInterface = (*Server)(nil)
-)

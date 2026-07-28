@@ -15,30 +15,24 @@
 package server
 
 import (
-	"fmt"
-	"log/slog"
 	"net/http"
-	"net/http/httputil"
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/FerretDB/wire/wirebson"
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
 	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // Aggregate implements [ServerInterface].
-func (s *Server) Aggregate(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	if s.l.Enabled(ctx, slog.LevelDebug) {
-		s.l.DebugContext(ctx, fmt.Sprintf("Request:\n%s", must.NotFail(httputil.DumpRequest(r, true))))
-	}
+func (s *Server) Aggregate(c *zip.Ctx) error {
+	ctx := c.Context()
 
 	var req api.AggregateRequestBody
-	if err := decodeJSONRequest(r, &req); err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+	if err := s.decodeJSONRequest(c, &req); err != nil {
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	msg, err := prepareRequest(
@@ -48,19 +42,16 @@ func (s *Server) Aggregate(rw http.ResponseWriter, r *http.Request) {
 		"cursor", wirebson.MustDocument(),
 	)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	resp := s.m.Handle(ctx, msg)
 	if resp == nil {
-		http.Error(rw, "internal error", http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, "internal error")
 	}
 
 	if !resp.OK() {
-		s.writeJSONError(ctx, rw, resp)
-		return
+		return s.writeJSONError(c, resp)
 	}
 
 	cursor := resp.Document().Get("cursor").(wirebson.AnyDocument)
@@ -68,13 +59,12 @@ func (s *Server) Aggregate(rw http.ResponseWriter, r *http.Request) {
 
 	b, err := marshalSingleJSON(firstBatch)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	res := api.AggregateResponseBody{
 		Documents: b,
 	}
 
-	s.writeJSONResponse(ctx, rw, &res)
+	return s.writeJSONResponse(c, &res)
 }
