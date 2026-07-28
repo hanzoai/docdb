@@ -5,6 +5,9 @@ Go module: github.com/hanzoai/docdb
 
 ## Tech Stack
 - **Language**: Go
+- **HTTP**: every listener (Data API, MCP, debug) routes through
+  `internal/util/zipapp` on `github.com/zap-proto/zip` -- ZAP is the wire,
+  HTTP is a view of the same routes. Do not reach for `net/http.ServeMux`.
 
 ## Build & Run
 ```bash

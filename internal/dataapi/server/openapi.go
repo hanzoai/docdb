@@ -15,19 +15,19 @@
 package server
 
 import (
-	"net/http"
-	"strconv"
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
 	"github.com/hanzoai/docdb/internal/util/logging"
 )
 
 // OpenAPISpec serves the OpenAPI specification.
-func (s *Server) OpenAPISpec(rw http.ResponseWriter, r *http.Request) {
-	rw.Header().Set("Content-Type", "application/json")
-	rw.Header().Set("Content-Length", strconv.Itoa(len(api.Spec)))
+func (s *Server) OpenAPISpec(c *zip.Ctx) error {
+	c.SetHeader("Content-Type", "application/json")
 
-	if _, err := rw.Write(api.Spec); err != nil {
-		s.l.WarnContext(r.Context(), "Failed to write OpenAPI spec", logging.Error(err))
+	if err := c.Fiber().Send(api.Spec); err != nil {
+		s.l.WarnContext(c.Context(), "Failed to write OpenAPI spec", logging.Error(err))
 	}
+
+	return nil
 }
