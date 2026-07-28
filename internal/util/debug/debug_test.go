@@ -20,8 +20,10 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"maps"
 	"net/http"
 	"regexp"
+	"slices"
 	"sync/atomic"
 	"testing"
 
@@ -39,6 +41,24 @@ func assertProbe(t *testing.T, u string, expected int) {
 	res, err := http.Get(u)
 	require.NoError(t, err)
 	assert.Equal(t, expected, res.StatusCode)
+}
+
+// get returns the status, headers and body of a GET request to u, without following redirects.
+func get(t *testing.T, u string) (int, http.Header, string) {
+	t.Helper()
+
+	client := http.Client{
+		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
+	}
+
+	res, err := client.Get(u)
+	require.NoError(t, err)
+
+	body, err := io.ReadAll(res.Body)
+	require.NoError(t, err)
+	require.NoError(t, res.Body.Close())
+
+	return res.StatusCode, res.Header, string(body)
 }
 
 func TestDebug(t *testing.T) {
@@ -78,6 +98,72 @@ func TestDebug(t *testing.T) {
 
 		assertProbe(t, live, http.StatusOK)
 		assertProbe(t, ready, http.StatusOK)
+	})
+
+	t.Run("Routes", func(t *testing.T) {
+		root := "http://" + h.lis.Addr().String()
+
+		t.Run("Table", func(t *testing.T) {
+			paths := map[string]struct{}{}
+			for _, route := range h.app.Fiber().GetRoutes(true) {
+				paths[route.Path] = struct{}{}
+			}
+
+			assert.Equal(t, []string{
+				"/*",
+				"/debug",
+				"/debug/archive",
+				"/debug/archive.zip",
+				"/debug/livez",
+				"/debug/metrics",
+				"/debug/readyz",
+			}, slices.Sorted(maps.Keys(paths)))
+		})
+
+		t.Run("Index", func(t *testing.T) {
+			code, header, body := get(t, root+"/debug")
+
+			assert.Equal(t, http.StatusOK, code)
+			assert.Equal(t, "text/html; charset=utf-8", header.Get("Content-Type"))
+
+			for path := range h.handlers {
+				assert.Contains(t, body, `<a href="`+path+`">`)
+			}
+		})
+
+		t.Run("Metrics", func(t *testing.T) {
+			code, _, body := get(t, root+"/debug/metrics")
+
+			assert.Equal(t, http.StatusOK, code)
+			assert.Contains(t, body, "# TYPE go_goroutines gauge")
+		})
+
+		t.Run("ArchiveZip", func(t *testing.T) {
+			code, header, _ := get(t, root+"/debug/archive.zip")
+
+			assert.Equal(t, http.StatusSeeOther, code)
+			assert.Equal(t, "/debug/archive", header.Get("Location"))
+		})
+
+		// Handlers of other packages, served by [http.DefaultServeMux] behind the catch-all route.
+		for _, path := range []string{"/debug/vars", "/debug/pprof/", "/debug/graphs/", "/debug/requests"} {
+			t.Run(path, func(t *testing.T) {
+				code, _, body := get(t, root+path)
+
+				assert.Equal(t, http.StatusOK, code)
+				assert.NotEmpty(t, body)
+			})
+		}
+
+		// Anything else redirects to the index, as [http.DefaultServeMux]'s "/" handler always did.
+		for _, path := range []string{"/", "/no-such-path"} {
+			t.Run(path, func(t *testing.T) {
+				code, header, _ := get(t, root+path)
+
+				assert.Equal(t, http.StatusSeeOther, code)
+				assert.Equal(t, "/debug", header.Get("Location"))
+			})
+		}
 	})
 
 	t.Run("Archive", func(t *testing.T) {

@@ -16,30 +16,25 @@ package server
 
 import (
 	"fmt"
-	"log/slog"
 	"net/http"
-	"net/http/httputil"
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/AlekSi/pointer"
 	"github.com/FerretDB/wire/wirebson"
+	"github.com/zap-proto/zip"
 
 	"github.com/hanzoai/docdb/internal/dataapi/api"
 	"github.com/hanzoai/docdb/internal/util/must"
+	"github.com/hanzoai/docdb/internal/util/zipapp"
 )
 
 // UpdateOne implements [ServerInterface].
-func (s *Server) UpdateOne(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	if s.l.Enabled(ctx, slog.LevelDebug) {
-		s.l.DebugContext(ctx, fmt.Sprintf("Request:\n%s", must.NotFail(httputil.DumpRequest(r, true))))
-	}
+func (s *Server) UpdateOne(c *zip.Ctx) error {
+	ctx := c.Context()
 
 	var req api.UpdateRequestBody
-	if err := decodeJSONRequest(r, &req); err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+	if err := s.decodeJSONRequest(c, &req); err != nil {
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	updateDoc, err := prepareDocument(
@@ -49,8 +44,7 @@ func (s *Server) UpdateOne(rw http.ResponseWriter, r *http.Request) {
 		"multi", false,
 	)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	msg, err := prepareRequest(
@@ -59,19 +53,16 @@ func (s *Server) UpdateOne(rw http.ResponseWriter, r *http.Request) {
 		"updates", wirebson.MustArray(updateDoc),
 	)
 	if err != nil {
-		http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 	}
 
 	resp := s.m.Handle(ctx, msg)
 	if resp == nil {
-		http.Error(rw, "internal error", http.StatusInternalServerError)
-		return
+		return zipapp.Text(c, http.StatusInternalServerError, "internal error")
 	}
 
 	if !resp.OK() {
-		s.writeJSONError(ctx, rw, resp)
-		return
+		return s.writeJSONError(c, resp)
 	}
 
 	res := api.UpdateResponseBody{
@@ -89,13 +80,12 @@ func (s *Server) UpdateOne(rw http.ResponseWriter, r *http.Request) {
 
 			upsertedId, err = wirebson.ToDriver(item.Get("_id"))
 			if err != nil {
-				http.Error(rw, lazyerrors.Error(err).Error(), http.StatusInternalServerError)
-				return
+				return zipapp.Text(c, http.StatusInternalServerError, lazyerrors.Error(err).Error())
 			}
 
 			res.UpsertedId = pointer.To(fmt.Sprint(upsertedId))
 		}
 	}
 
-	s.writeJSONResponse(ctx, rw, &res)
+	return s.writeJSONResponse(c, &res)
 }
