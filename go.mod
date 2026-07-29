@@ -25,7 +25,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/xdg-go/scram v1.2.0
 	github.com/zap-proto/fiber/v3 v3.2.1
-	github.com/zap-proto/zip v1.17.2
+	github.com/zap-proto/zip v1.18.1
 	go.mongodb.org/mongo-driver/v2 v2.5.0
 	go.opentelemetry.io/otel v1.43.0
 	go.opentelemetry.io/otel/sdk v1.42.0
