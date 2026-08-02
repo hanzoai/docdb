@@ -33,8 +33,17 @@ jobs:
           lfs: false # LFS is used only by website
 
       - name: Setup Go
-        uses: hanzoai/github-actions/setup-go@main
-        # no cache-key on server
+        # actions/setup-go, not hanzoai/github-actions/setup-go: that repo does
+        # not exist. The reference is rebrand damage — upstream is
+        # FerretDB/github-actions (which is live), the org was renamed by a
+        # find-replace, and the renamed repo was never created. The runner cannot
+        # resolve the action, so the job dies before its first step:
+        #   Unable to clone .../hanzoai/github-actions: Repository not found
+        # It took no inputs here, so the official action with go-version-file is
+        # an exact replacement and drops a dependency on a repo we do not own.
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
 
       - name: Install Task
         run: go generate -x
