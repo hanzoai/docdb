@@ -2,8 +2,6 @@ module github.com/hanzoai/docdb
 
 go 1.26.5
 
-// replace github.com/FerretDB/wire => ../wire
-
 require (
 	github.com/AlekSi/lazyerrors v0.5.0
 	github.com/AlekSi/pointer v1.2.0
