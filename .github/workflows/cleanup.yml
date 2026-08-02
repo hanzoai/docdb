@@ -16,8 +16,12 @@ env:
 jobs:
   cleanup:
     name: Cleanup
-    runs-on: server
-
+    # hanzo-build-linux-amd64, not `server`. A runs-on label that matches no
+    # registered runner does not fail — it never dispatches, so the job reports
+    # zero steps and the run is red with an empty log. The fleet advertises the
+    # org pools (hanzo-*/lux-*/zoo-*) plus self-hosted/linux/amd64; `server` is
+    # not among them, so this job has never run.
+    runs-on: hanzo-build-linux-amd64
     permissions:
       contents: read
 
