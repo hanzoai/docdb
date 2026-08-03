@@ -227,7 +227,11 @@ func Setup(ctx context.Context, opts *SetupOpts) *SetupResult {
 		}
 	}
 
-	if opts.ZAPAddr != "" {
+	// "-" is what --listen-zap-addr documents as off, and it is the only lever
+	// an operator has over this listener: the node binds every interface with
+	// no TLS and no credentials, and advertises itself over mDNS. Without this
+	// the flag never disabled anything, because "-" is not the empty string.
+	if opts.ZAPAddr != "" && opts.ZAPAddr != "-" {
 		zapLogger := logging.WithName(opts.Logger, "zap")
 
 		res.zapPool, err = documentdb.NewPool(opts.PostgreSQLURL, logging.WithName(zapLogger, "pool"), opts.StateProvider)
