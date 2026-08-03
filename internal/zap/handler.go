@@ -91,19 +91,10 @@ func (h *Handler) handleFind(ctx context.Context, req map[string]interface{}) (*
 
 	var documents []json.RawMessage
 
-	err = h.pool.WithConn(func(conn *pgx.Conn) error {
-		query := fmt.Sprintf(
-			`SELECT documentdb_api.find('%s', '%s', '%s')`,
-			db, col, string(filter),
-		)
-		if limit > 0 {
-			query = fmt.Sprintf(
-				`SELECT documentdb_api.find('%s', '%s', '{"find": "%s", "filter": %s, "limit": %d}')`,
-				db, col, col, string(filter), limit,
-			)
-		}
+	query, args := findQuery(db, col, filter, limit)
 
-		rows, qErr := conn.Query(ctx, query)
+	err = h.pool.WithConn(func(conn *pgx.Conn) error {
+		rows, qErr := conn.Query(ctx, query, args...)
 		if qErr != nil {
 			return qErr
 		}
@@ -143,12 +134,10 @@ func (h *Handler) handleInsert(ctx context.Context, req map[string]interface{}) 
 
 	docsJSON, _ := json.Marshal(docs)
 
+	query, args := insertQuery(db, col, docsJSON)
+
 	err = h.pool.WithConn(func(conn *pgx.Conn) error {
-		query := fmt.Sprintf(
-			`SELECT documentdb_api.insert('%s', '%s', '%s')`,
-			db, col, string(docsJSON),
-		)
-		_, execErr := conn.Exec(ctx, query)
+		_, execErr := conn.Exec(ctx, query, args...)
 		return execErr
 	})
 	if err != nil {
@@ -171,12 +160,10 @@ func (h *Handler) handleUpdate(ctx context.Context, req map[string]interface{}) 
 	filter, _ := json.Marshal(req["filter"])
 	update, _ := json.Marshal(req["update"])
 
+	query, args := updateQuery(db, col, filter, update)
+
 	err = h.pool.WithConn(func(conn *pgx.Conn) error {
-		query := fmt.Sprintf(
-			`SELECT documentdb_api.update('%s', '%s', '{"q": %s, "u": %s}')`,
-			db, col, string(filter), string(update),
-		)
-		_, execErr := conn.Exec(ctx, query)
+		_, execErr := conn.Exec(ctx, query, args...)
 		return execErr
 	})
 	if err != nil {
@@ -196,12 +183,10 @@ func (h *Handler) handleDelete(ctx context.Context, req map[string]interface{}) 
 
 	filter, _ := json.Marshal(req["filter"])
 
+	query, args := deleteQuery(db, col, filter)
+
 	err = h.pool.WithConn(func(conn *pgx.Conn) error {
-		query := fmt.Sprintf(
-			`SELECT documentdb_api.delete('%s', '%s', '{"q": %s}')`,
-			db, col, string(filter),
-		)
-		_, execErr := conn.Exec(ctx, query)
+		_, execErr := conn.Exec(ctx, query, args...)
 		return execErr
 	})
 	if err != nil {
@@ -223,13 +208,10 @@ func (h *Handler) handleAggregate(ctx context.Context, req map[string]interface{
 
 	var results []json.RawMessage
 
-	err = h.pool.WithConn(func(conn *pgx.Conn) error {
-		query := fmt.Sprintf(
-			`SELECT documentdb_api.aggregate('%s', '{"aggregate": "%s", "pipeline": %s, "cursor": {}}')`,
-			db, col, string(pipeline),
-		)
+	query, args := aggregateQuery(db, col, pipeline)
 
-		rows, qErr := conn.Query(ctx, query)
+	err = h.pool.WithConn(func(conn *pgx.Conn) error {
+		rows, qErr := conn.Query(ctx, query, args...)
 		if qErr != nil {
 			return qErr
 		}
@@ -264,18 +246,98 @@ func (h *Handler) handleCount(ctx context.Context, req map[string]interface{}) (
 
 	var count int
 
+	query, args := countQuery(db, col, filter)
+
 	err = h.pool.WithConn(func(conn *pgx.Conn) error {
-		query := fmt.Sprintf(
-			`SELECT documentdb_api.count('%s', '{"count": "%s", "query": %s}')`,
-			db, col, string(filter),
-		)
-		return conn.QueryRow(ctx, query).Scan(&count)
+		return conn.QueryRow(ctx, query, args...).Scan(&count)
 	})
 	if err != nil {
 		return errorResponse(500, "count error: "+err.Error())
 	}
 
 	return jsonResponse(200, map[string]interface{}{"count": count})
+}
+
+// --- Query construction ---
+
+// The database name, the collection name and every filter, document, update and
+// pipeline in a ZAP message are caller input arriving unauthenticated on a
+// plaintext port, so all of them are bind parameters and none of them is ever
+// SQL text. That is the same thing the generated documentdb_api wrappers do.
+//
+// Interpolating them was exploitable in two independent ways. A single quote
+// closed the literal, and encoding/json escapes the double quote and the
+// backslash but not the single quote, so a quote inside a filter value or a
+// document survived marshalling and reached the statement byte for byte. And
+// conn.Exec with no bind arguments makes pgx use
+// the simple protocol, which hands PostgreSQL the text verbatim and runs every
+// statement in it, so a payload that kept the first statement valid — the third
+// argument of documentdb_api.insert defaults to NULL, so a two-argument call is
+// enough — got the rest executed as the DocumentDB role.
+//
+// The command specs are built with encoding/json rather than fmt.Sprintf so a
+// collection name cannot break out of the surrounding JSON either. They use
+// structs, not maps, because the command name has to stay the first field.
+
+type findSpec struct {
+	Find   string          `json:"find"`
+	Filter json.RawMessage `json:"filter"`
+	Limit  int             `json:"limit"`
+}
+
+type updateSpec struct {
+	Q json.RawMessage `json:"q"`
+	U json.RawMessage `json:"u"`
+}
+
+type deleteSpec struct {
+	Q json.RawMessage `json:"q"`
+}
+
+type aggregateSpec struct {
+	Aggregate string          `json:"aggregate"`
+	Pipeline  json.RawMessage `json:"pipeline"`
+	Cursor    struct{}        `json:"cursor"`
+}
+
+type countSpec struct {
+	Count string          `json:"count"`
+	Query json.RawMessage `json:"query"`
+}
+
+// spec marshals a command document. The value is always one of the spec structs
+// above, whose fields are json.RawMessage or Go scalars, so it cannot fail.
+func spec(v any) string {
+	b, _ := json.Marshal(v)
+	return string(b)
+}
+
+func findQuery(db, col string, filter json.RawMessage, limit int) (string, []any) {
+	const q = `SELECT documentdb_api.find($1, $2, $3)`
+	if limit > 0 {
+		return q, []any{db, col, spec(findSpec{Find: col, Filter: filter, Limit: limit})}
+	}
+	return q, []any{db, col, string(filter)}
+}
+
+func insertQuery(db, col string, docs json.RawMessage) (string, []any) {
+	return `SELECT documentdb_api.insert($1, $2, $3)`, []any{db, col, string(docs)}
+}
+
+func updateQuery(db, col string, filter, update json.RawMessage) (string, []any) {
+	return `SELECT documentdb_api.update($1, $2, $3)`, []any{db, col, spec(updateSpec{Q: filter, U: update})}
+}
+
+func deleteQuery(db, col string, filter json.RawMessage) (string, []any) {
+	return `SELECT documentdb_api.delete($1, $2, $3)`, []any{db, col, spec(deleteSpec{Q: filter})}
+}
+
+func aggregateQuery(db, col string, pipeline json.RawMessage) (string, []any) {
+	return `SELECT documentdb_api.aggregate($1, $2)`, []any{db, spec(aggregateSpec{Aggregate: col, Pipeline: pipeline})}
+}
+
+func countQuery(db, col string, filter json.RawMessage) (string, []any) {
+	return `SELECT documentdb_api.count($1, $2)`, []any{db, spec(countSpec{Count: col, Query: filter})}
 }
 
 // --- Helpers ---
