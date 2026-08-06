@@ -1,0 +1,26 @@
+# Canonical CI/CD config for hanzoai/docdb — read by the hanzoai/ci reusable
+# (.hanzo/workflows/cicd.yml) and by platform.hanzo.ai.
+#
+# Test-only caller, deliberately. docdb's image lane already exists and is not
+# this one: .github/workflows/packages.yml drives it through the repo's own
+# Taskfile (bin/task docker-local FILE=production, QEMU, definedockertag,
+# multi-registry push). Declaring `images:` here would build a SECOND, different
+# image from the same commit — two artifacts claiming to be the same thing.
+#
+# The gate is the repo's own `test-unit-short` (Taskfile.yml), minus the
+# `tools` sub-task that needs bin/task on PATH:
+#   - `go generate ./build/version` FIRST. version.go is generated from git
+#     (version.txt/commit.txt/branch.txt); without it build/version's own
+#     TestCase1 reads "unknown" and fails for a reason that has nothing to do
+#     with the code under test. The Taskfile makes gen-version a dependency of
+#     every build for exactly this reason.
+#   - `-tags=docdb_dev` is the repo's BUILD_TAGS. Without it the dev-only
+#     packages are excluded and their tests silently do not run.
+#   - `-short` skips the suites that need a live PostgreSQL/MongoDB (those are
+#     integration/, a separate module ./... does not reach anyway).
+
+test:
+  - name: unit
+    run: |
+      go generate ./build/version
+      go test -short -tags=docdb_dev -count=1 ./...
