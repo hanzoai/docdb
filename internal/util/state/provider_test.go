@@ -148,7 +148,17 @@ func TestProviderDir(t *testing.T) {
 	t.Run("NoAccess", func(t *testing.T) {
 		t.Parallel()
 
-		p, err := NewProviderDir("/")
+		// A directory this process cannot write to. It used to be "/", which is
+		// only unwritable when you are not root — in a container the tests run
+		// as root, "/" accepts the write and the error never arrives.
+		if os.Geteuid() == 0 {
+			t.Skip("running as root: file permissions do not deny anything")
+		}
+
+		dir := filepath.Join(t.TempDir(), "sealed")
+		require.NoError(t, os.Mkdir(dir, 0o500)) // r-x: may traverse, may not create
+
+		p, err := NewProviderDir(dir)
 		require.Error(t, err)
 		assert.Nil(t, p)
 	})

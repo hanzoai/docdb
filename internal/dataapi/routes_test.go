@@ -89,11 +89,18 @@ func TestSpecRoutes(t *testing.T) {
 	require.NoError(t, json.Unmarshal(api.Spec, &spec))
 	require.NotEmpty(t, spec.Paths)
 
-	expected := []string{"GET /openapi.json"}
+	// Fiber answers HEAD on every route registered with Get, so the spec's one
+	// GET arrives as a pair. Nothing registers HEAD — the router adds it.
+	expected := []string{"GET /openapi.json", "HEAD /openapi.json"}
 
 	for path, operations := range spec.Paths {
 		for method := range operations {
-			expected = append(expected, strings.ToUpper(method)+" "+path)
+			m := strings.ToUpper(method)
+			expected = append(expected, m+" "+path)
+
+			if m == http.MethodGet {
+				expected = append(expected, http.MethodHead+" "+path)
+			}
 		}
 	}
 
