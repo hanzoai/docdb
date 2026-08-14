@@ -1,11 +1,20 @@
 # Canonical CI/CD config for hanzoai/docdb — read by the hanzoai/ci reusable
 # (.hanzo/workflows/cicd.yml) and by platform.hanzo.ai.
 #
-# Test-only caller, deliberately. docdb's image lane already exists and is not
-# this one: .github/workflows/packages.yml drives it through the repo's own
-# Taskfile (bin/task docker-local FILE=production, QEMU, definedockertag,
-# multi-registry push). Declaring `images:` here would build a SECOND, different
-# image from the same commit — two artifacts claiming to be the same thing.
+# Test-only caller, and there is now no image lane in this repo at all.
+# packages.yml used to claim that role — the repo's own Taskfile driving
+# bin/task docker-local, QEMU, definedockertag and a push to Docker Hub, GHCR
+# and Quay — but it never once succeeded: it was dark on the forge (this repo
+# has .hanzo/workflows, which the forge reads instead), and every run it did
+# get, it failed. It wanted DOCKER_HUB_TOKEN and QUAY_TOKEN, and it published
+# eval/dev/prod variants plus .deb and .rpm packages, none of which anything
+# here consumes.
+#
+# Declaring `images:` in its place would not restore it; it would invent a
+# different artifact under the same name. What actually runs in the cluster is
+# ghcr.io/hanzoai/docdb-sqlite, and it is not built from this tree. Whoever
+# needs a docdb image from this repo should declare the one they want, once,
+# right here.
 #
 # The gate is the repo's own `test-unit-short` (Taskfile.yml), minus the
 # `tools` sub-task that needs bin/task on PATH:
