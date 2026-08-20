@@ -29,7 +29,7 @@ import (
 	"strconv"
 	"text/template"
 
-	"github.com/hanzoai/gh"
+	"github.com/FerretDB/gh"
 	"github.com/google/go-github/v70/github"
 )
 

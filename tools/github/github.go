@@ -26,7 +26,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/hanzoai/gh"
+	"github.com/FerretDB/gh"
 	"github.com/google/go-github/v70/github"
 	"github.com/rogpeppe/go-internal/lockedfile"
 )
