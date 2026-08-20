@@ -2,8 +2,6 @@ module github.com/hanzoai/docdb/tools
 
 go 1.26.4
 
-toolchain go1.26.3
-
 // replace github.com/FerretDB/wire => ../../wire
 
 tool (
