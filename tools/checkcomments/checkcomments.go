@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hanzoai/gh"
+	"github.com/FerretDB/gh"
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/singlechecker"
 

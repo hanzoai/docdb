@@ -7,14 +7,14 @@ toolchain go1.26.3
 // replace github.com/FerretDB/wire => ../../wire
 
 tool (
+	github.com/OpenDocDB/cts/opendocdb-cts
+	github.com/go-task/task/v3/cmd/task
+	github.com/goreleaser/nfpm/v2/cmd/nfpm
 	github.com/hanzoai/docdb/tools/checkcomments
 	github.com/hanzoai/docdb/tools/checkdocs
 	github.com/hanzoai/docdb/tools/checkswitch
 	github.com/hanzoai/docdb/tools/definedockertag
 	github.com/hanzoai/docdb/tools/generatechangelog
-	github.com/OpenDocDB/cts/opendocdb-cts
-	github.com/go-task/task/v3/cmd/task
-	github.com/goreleaser/nfpm/v2/cmd/nfpm
 	github.com/jstemmer/go-junit-report/v2
 	github.com/kisielk/godepgraph
 	github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
@@ -29,7 +29,7 @@ tool (
 )
 
 require (
-	github.com/hanzoai/gh v0.2.0
+	github.com/FerretDB/gh v0.2.0
 	github.com/google/go-github/v70 v70.0.1-0.20250402125210-3a3f51bc7c5d
 	github.com/rogpeppe/go-internal v1.14.1
 	github.com/sethvargo/go-githubactions v1.3.2
