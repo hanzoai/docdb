@@ -32,6 +32,22 @@ cache is shared with the `-build` stage via `--mount=type=cache,target=/cache`,
 so a downloaded toolchain reaches the build stage even though it sets
 `GOPROXY=off`.
 
+## Upstream libraries keep their upstream path
+This repo is a fork of FerretDB, but three of its dependencies are generic
+upstream libraries we do not modify: `github.com/FerretDB/gh` (rate-limit-aware
+GitHub client), `github.com/FerretDB/xfail` (expected-failure test helper), and
+`github.com/FerretDB/wire` (MongoDB wire protocol). They are required and
+imported under their upstream path, in every module, always.
+
+Only the fork itself is renamed to `github.com/hanzoai/docdb`. A rename applied
+to a dependency's path is not a fork -- it changes the label while `go.sum`
+still pins the upstream bytes, and Go then has nothing to resolve: any repo at
+the new path would have to ship a `go.mod` declaring the old one. Renaming a
+dependency means owning a real fork, with its own tag and its own hashes.
+
+These three sit outside `GOPRIVATE`, so they resolve through
+proxy.golang.org and verify against sum.golang.org.
+
 ## Structure
 ```
 documentdb/
