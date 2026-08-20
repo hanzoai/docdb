@@ -1,10 +1,9 @@
 // Use separate (sub-)module to prevent dependabot timeouts.
 
-module github.com/hanzoai/docdb/v2/tools/golangci
+module github.com/hanzoai/docdb/tools/golangci
 
 go 1.26.4
 
-toolchain go1.26.3
 
 tool github.com/golangci/golangci-lint/cmd/golangci-lint
 
