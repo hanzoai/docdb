@@ -222,7 +222,9 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 
 	app.All("/debug/metrics", zip.AdaptNetHTTP(metrics))
 	app.All("/debug/archive", archive(l))
-	app.All("/debug/archive.zip", zip.AdaptNetHTTP(http.RedirectHandler("/debug/archive", 303)))
+	app.All("/debug/archive.zip", func(c *zip.Ctx) error {
+		return c.Redirect(http.StatusSeeOther, "/debug/archive")
+	})
 	app.All("/debug/livez", zip.AdaptNetHTTP(livez))
 	app.All("/debug/readyz", zip.AdaptNetHTTP(readyz))
 	app.All("/debug", zip.AdaptNetHTTP(index))
