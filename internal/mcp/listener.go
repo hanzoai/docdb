@@ -74,9 +74,13 @@ func (lis *Listener) newApp(ctx context.Context) *zip.App {
 	app := zipapp.New("mcp")
 	app.Use(zipapp.BaseContext(ctx))
 
-	// The MCP SDK's streamable HTTP handler owns the whole request/response
-	// lifecycle - session headers, SSE streams, flushing - so it is fronted
-	// as-is instead of being reimplemented.
+	// The MCP SDK reaches its streamable HTTP handler through
+	// StreamableHTTPHandler.ServeHTTP and nothing else, and
+	// StreamableHTTPOptions carries no field to hand it a different writer.
+	// Its Transport interface is JSON-RPC, not HTTP, so the only other way in
+	// is StreamableServerTransport.ServeHTTP. Serving this address natively
+	// would mean writing the streamable HTTP protocol - session headers, SSE
+	// stream ids, resumability - a second time, so it is fronted as-is.
 	// TODO https://github.com/hanzoai/docdb/issues/5309
 	app.All("/mcp", zip.AdaptNetHTTP(connInfoMiddleware(mcpHandler)))
 
