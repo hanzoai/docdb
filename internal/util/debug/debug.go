@@ -26,6 +26,7 @@ import (
 	"net/http"
 	_ "net/http/pprof" // for profiling
 	"slices"
+	"strconv"
 	"sync/atomic"
 	"text/template"
 	"time"
@@ -34,6 +35,7 @@ import (
 	"github.com/arl/statsviz"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/zap-proto/fiber/v3"
 	"github.com/zap-proto/zip"
 	_ "golang.org/x/net/trace"
 
@@ -53,18 +55,80 @@ var setup atomic.Bool
 
 // archive returns the debug archive route.
 //
-// [archiveHandler] fetches the other debug endpoints from the listener serving
-// it, and finds that listener's address the way [http.Server] published it:
-// under [http.LocalAddrContextKey] on the request context. The route puts it
-// there, so the handler needs to know nothing about what is serving it.
+// [archiveFile] reads the endpoints it cannot produce itself back from the
+// listener serving this request, whose address fasthttp already holds.
 func archive(l *slog.Logger) zip.Handler {
-	h := zip.AdaptNetHTTP(archiveHandler(l))
+	return func(c *zip.Ctx) error {
+		fc := c.Fiber()
+
+		// net/http's transport touches an outbound request's context after the
+		// response is read, and fasthttp reuses its own context for the next
+		// request on the connection as soon as this handler returns. The reads
+		// get a context that keeps the request's values and ends with the
+		// handler instead.
+		ctx, cancel := context.WithCancel(context.WithoutCancel(c.Context()))
+		defer cancel()
+
+		name, body := archiveFile(ctx, l, fc.RequestCtx().LocalAddr())
+
+		fc.Set(fiber.HeaderContentType, "application/zip")
+		fc.Set(fiber.HeaderContentDisposition, "attachment; filename="+name)
+		fc.Status(http.StatusOK)
+
+		return fc.Send(body)
+	}
+}
+
+// redirect returns a route that answers with code and location the way
+// [http.Redirect] does: a one-line HTML body for GET, the same Content-Type but
+// no body for HEAD, and neither for any other method.
+func redirect(location string, code int) zip.Handler {
+	body := fmt.Sprintf("<a href=%q>%s</a>.\n\n", location, http.StatusText(code))
 
 	return func(c *zip.Ctx) error {
-		fc := c.Fiber().RequestCtx()
-		fc.SetUserValue(http.LocalAddrContextKey, fc.LocalAddr())
+		fc := c.Fiber()
+		fc.Set(fiber.HeaderLocation, location)
 
-		return h(c)
+		switch fc.Method() {
+		case fiber.MethodGet:
+			fc.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
+			fc.Status(code)
+
+			return fc.SendString(body)
+
+		case fiber.MethodHead:
+			fc.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
+		}
+
+		fc.Status(code)
+
+		return nil
+	}
+}
+
+// probe returns a route that answers 200 when check passes and 500 when it does
+// not, with an empty body either way, and observes how long check took on obs
+// under the code it answered.
+//
+// Currying obs with the probe's name leaves "code" as the one label this route
+// fills, which is what the histogram in [Listen] is partitioned by.
+func probe(obs prometheus.ObserverVec, check func(context.Context) bool) zip.Handler {
+	return func(c *zip.Ctx) error {
+		start := time.Now()
+
+		ctx, cancel := context.WithTimeout(c.Context(), 5*time.Second)
+		defer cancel()
+
+		code := http.StatusInternalServerError
+		if check(ctx) {
+			code = http.StatusOK
+		}
+
+		obs.With(prometheus.Labels{"code": strconv.Itoa(code)}).Observe(time.Since(start).Seconds())
+
+		c.Fiber().Status(code)
+
+		return nil
 	}
 }
 
@@ -131,47 +195,40 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 		}),
 	)
 
-	livez := promhttp.InstrumentHandlerDuration(
+	livez := probe(
 		probeDurations.MustCurryWith(prometheus.Labels{"probe": "livez"}),
-		http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-			ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
-			defer cancel()
-
+		func(ctx context.Context) bool {
 			if !opts.Livez(ctx) {
 				l.Warn("Livez probe failed")
-				rw.WriteHeader(http.StatusInternalServerError)
 
-				return
+				return false
 			}
 
 			l.Debug("Livez probe succeeded")
-			rw.WriteHeader(http.StatusOK)
-		}),
+
+			return true
+		},
 	)
 
-	readyz := promhttp.InstrumentHandlerDuration(
+	readyz := probe(
 		probeDurations.MustCurryWith(prometheus.Labels{"probe": "readyz"}),
-		http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-			ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
-			defer cancel()
-
+		func(ctx context.Context) bool {
 			if !opts.Livez(ctx) {
 				l.Warn("Readyz probe failed - livez probe failed")
-				rw.WriteHeader(http.StatusInternalServerError)
 
-				return
+				return false
 			}
 
 			if !opts.Readyz(ctx) {
 				l.Warn("Readyz probe failed")
-				rw.WriteHeader(http.StatusInternalServerError)
 
-				return
+				return false
 			}
 
 			l.Debug("Readyz probe succeeded")
-			rw.WriteHeader(http.StatusOK)
-		}),
+
+			return true
+		},
 	)
 
 	svOpts := []statsviz.Option{
@@ -208,9 +265,15 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 	</html>
 	`)).Execute(&page, handlers))
 
-	index := http.HandlerFunc(func(rw http.ResponseWriter, _ *http.Request) {
-		rw.Write(page.Bytes())
-	})
+	// page is written once here and only read from now on, so every request
+	// answers with the same bytes without copying them.
+	index := func(c *zip.Ctx) error {
+		fc := c.Fiber()
+		fc.Set(fiber.HeaderContentType, fiber.MIMETextHTMLCharsetUTF8)
+		fc.Status(http.StatusOK)
+
+		return fc.Send(page.Bytes())
+	}
 
 	// The last resort for every path DocDB does not serve itself, and therefore
 	// the fallback of [http.DefaultServeMux] rather than a route of its own.
@@ -220,18 +283,28 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 
 	app := zipapp.New("debug")
 
+	// promhttp hands out an [http.Handler] and nothing else - HandlerFor,
+	// HandlerForTransactional and InstrumentMetricHandler all return one, and
+	// exposition, content negotiation and the handler's own request counters
+	// live inside it. So this route is fronted rather than rewritten.
 	app.All("/debug/metrics", zip.AdaptNetHTTP(metrics))
+
 	app.All("/debug/archive", archive(l))
-	app.All("/debug/archive.zip", zip.AdaptNetHTTP(http.RedirectHandler("/debug/archive", 303)))
-	app.All("/debug/livez", zip.AdaptNetHTTP(livez))
-	app.All("/debug/readyz", zip.AdaptNetHTTP(readyz))
-	app.All("/debug", zip.AdaptNetHTTP(index))
+	app.All("/debug/archive.zip", redirect("/debug/archive", http.StatusSeeOther))
+	app.All("/debug/livez", livez)
+	app.All("/debug/readyz", readyz)
+	app.All("/debug", index)
 
 	// Everything else is served by [http.DefaultServeMux]: the runtime's own
 	// pprof, expvar and trace endpoints, statsviz, and the "/" redirect above.
-	// None of them are DocDB's, so they are fronted whole instead of rewritten;
-	// the adapter forwards flushes and connection hijacks, which is what
-	// statsviz's WebSocket needs.
+	// None of them are DocDB's, and none is reachable except as an
+	// [http.Handler], so they are fronted whole instead of rewritten; the
+	// adapter forwards flushes and connection hijacks, which is what statsviz's
+	// WebSocket needs.
+	//
+	// The mux also cleans the request path and answers 307 for the cleaned form
+	// before it matches anything, which the zip router does not do. It is
+	// therefore the only thing answering "/debug/../x" and "//x" here.
 	app.All("/*", zip.AdaptNetHTTP(http.DefaultServeMux))
 
 	lis, err := net.Listen("tcp", opts.TCPAddr)

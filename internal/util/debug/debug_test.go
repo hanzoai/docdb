@@ -66,10 +66,12 @@ func TestDebug(t *testing.T) {
 
 	var livez, readyz atomic.Bool
 
+	reg := prometheus.NewRegistry()
+
 	h := must.NotFail(Listen(&ListenOpts{
 		TCPAddr: "127.0.0.1:0",
 		L:       testutil.Logger(t),
-		R:       prometheus.NewRegistry(),
+		R:       reg,
 		Livez:   func(context.Context) bool { return livez.Load() },
 		Readyz:  func(context.Context) bool { return readyz.Load() },
 	}))
@@ -98,6 +100,10 @@ func TestDebug(t *testing.T) {
 
 		assertProbe(t, live, http.StatusOK)
 		assertProbe(t, ready, http.StatusOK)
+	})
+
+	t.Run("Wire", func(t *testing.T) {
+		testWire(t, h.lis.Addr().String(), reg, h.handlers, &livez, &readyz)
 	})
 
 	t.Run("Routes", func(t *testing.T) {
