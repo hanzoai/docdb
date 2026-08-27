@@ -28,7 +28,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/hanzoai/gh"
+	"github.com/FerretDB/gh"
 
 	"github.com/hanzoai/docdb/tools/github"
 )

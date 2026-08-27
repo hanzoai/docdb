@@ -202,6 +202,13 @@ func probeWire(t *testing.T, addr string, g prometheus.Gatherer, probe string, w
 // whose answer comes from [http.DefaultServeMux] are here for the same reason:
 // the catch-all is what cleans "/debug/../x", and dropping it would silently
 // turn three redirects into something else.
+//
+// Rows still served through [zip.AdaptNetHTTP] name no Content-Length, and by
+// this table's rule that asserts it is absent. The adapter streams the
+// handler's writes rather than buffering them, which is what forwards the
+// flushes and the hijack statsviz needs; the length of a body nobody held is
+// not known when the header goes out. A handler that sets the header itself
+// still keeps it — "/debug/graphs/" does, and is the row that shows it.
 func testWire(t *testing.T, addr string, reg *prometheus.Registry, handlers map[string]string, livez, readyz *atomic.Bool) {
 	livez.Store(true)
 	readyz.Store(true)
@@ -263,7 +270,6 @@ func testWire(t *testing.T, addr string, reg *prometheus.Registry, handlers map[
 		target: "/debug/metrics",
 		code:   http.StatusOK,
 		header: map[string]string{"Content-Type": "text/plain; version=0.0.4; charset=utf-8; escaping=underscores"},
-		prefix: map[string]string{"Content-Length": ""},
 		body:   "# HELP go_gc_duration_seconds ",
 	}, {
 		method: "GET",
@@ -278,49 +284,46 @@ func testWire(t *testing.T, addr string, reg *prometheus.Registry, handlers map[
 		target: "/debug/vars",
 		code:   http.StatusOK,
 		header: map[string]string{"Content-Type": "application/json; charset=utf-8"},
-		prefix: map[string]string{"Content-Length": ""},
 		body:   "{\n\"cmdline\": [",
 	}, {
 		method: "GET",
 		target: "/debug/pprof/",
 		code:   http.StatusOK,
 		header: map[string]string{"Content-Type": html, "X-Content-Type-Options": "nosniff"},
-		prefix: map[string]string{"Content-Length": ""},
 		body:   "<html>\n<head>\n<title>/debug/pprof/</title>",
 	}, {
 		method: "GET",
 		target: "/debug/pprof/cmdline",
 		code:   http.StatusOK,
 		header: map[string]string{"Content-Type": "text/plain; charset=utf-8", "X-Content-Type-Options": "nosniff"},
-		prefix: map[string]string{"Content-Length": ""},
 	}, {
 		method: "GET",
 		target: "/debug/pprof/heap?debug=1",
 		code:   http.StatusOK,
 		header: map[string]string{"Content-Type": "text/plain; charset=utf-8", "X-Content-Type-Options": "nosniff"},
-		prefix: map[string]string{"Content-Length": ""},
 		body:   "heap profile: ",
 	}, {
 		// The pprof patterns are registered for GET only, but "/" matches every
 		// method, so a POST reaches the fallback redirect rather than a 405.
+		// [http.Redirect] writes no body for a POST and therefore sets no
+		// Content-Type; the one here is the adapter's own default, which shows
+		// through because nothing overwrote it.
 		method: "POST",
 		target: "/debug/pprof/",
 		code:   http.StatusSeeOther,
-		header: map[string]string{"Location": "/debug", "Content-Length": "0"},
+		header: map[string]string{"Content-Type": "text/plain; charset=utf-8", "Location": "/debug"},
 		exact:  true,
 	}, {
 		method: "GET",
 		target: "/debug/requests",
 		code:   http.StatusOK,
 		header: map[string]string{"Content-Type": html},
-		prefix: map[string]string{"Content-Length": ""},
 		body:   "\n\n<html>\n\t<head>\n\t<title>/debug/requests</title>",
 	}, {
 		method: "GET",
 		target: "/debug/events",
 		code:   http.StatusOK,
 		header: map[string]string{"Content-Type": html},
-		prefix: map[string]string{"Content-Length": ""},
 		body:   "\n<html>\n\t<head>\n\t\t<title>events</title>",
 	}, {
 		method: "GET",
@@ -334,14 +337,14 @@ func testWire(t *testing.T, addr string, reg *prometheus.Registry, handlers map[
 		method: "GET",
 		target: "/",
 		code:   http.StatusSeeOther,
-		header: map[string]string{"Content-Type": html, "Location": "/debug", "Content-Length": "33"},
+		header: map[string]string{"Content-Type": html, "Location": "/debug"},
 		body:   "<a href=\"/debug\">See Other</a>.\n\n",
 		exact:  true,
 	}, {
 		method: "GET",
 		target: "/no-such-path",
 		code:   http.StatusSeeOther,
-		header: map[string]string{"Content-Type": html, "Location": "/debug", "Content-Length": "33"},
+		header: map[string]string{"Content-Type": html, "Location": "/debug"},
 		body:   "<a href=\"/debug\">See Other</a>.\n\n",
 		exact:  true,
 	}, {
@@ -351,14 +354,14 @@ func testWire(t *testing.T, addr string, reg *prometheus.Registry, handlers map[
 		method: "GET",
 		target: "/debug/../x",
 		code:   http.StatusTemporaryRedirect,
-		header: map[string]string{"Content-Type": html, "Location": "/x", "Content-Length": "38"},
+		header: map[string]string{"Content-Type": html, "Location": "/x"},
 		body:   "<a href=\"/x\">Temporary Redirect</a>.\n\n",
 		exact:  true,
 	}, {
 		method: "GET",
 		target: "//x",
 		code:   http.StatusTemporaryRedirect,
-		header: map[string]string{"Content-Type": html, "Location": "/x", "Content-Length": "38"},
+		header: map[string]string{"Content-Type": html, "Location": "/x"},
 		body:   "<a href=\"/x\">Temporary Redirect</a>.\n\n",
 		exact:  true,
 	}, {
@@ -366,7 +369,7 @@ func testWire(t *testing.T, addr string, reg *prometheus.Registry, handlers map[
 		method: "GET",
 		target: "/debug/./metrics",
 		code:   http.StatusTemporaryRedirect,
-		header: map[string]string{"Content-Type": html, "Location": "/debug/metrics", "Content-Length": "50"},
+		header: map[string]string{"Content-Type": html, "Location": "/debug/metrics"},
 		body:   "<a href=\"/debug/metrics\">Temporary Redirect</a>.\n\n",
 		exact:  true,
 	}} {

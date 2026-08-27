@@ -20,7 +20,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hanzoai/xfail"
+	"github.com/FerretDB/xfail"
 	"github.com/stretchr/testify/require"
 
 	"github.com/hanzoai/docdb/internal/util/must"
