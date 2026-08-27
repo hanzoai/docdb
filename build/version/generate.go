@@ -52,11 +52,22 @@ func main() {
 	var wg sync.WaitGroup
 
 	// git describe --dirty > version.txt
+	//
+	// The v1.24.x tags are excluded because they are not releases of this
+	// product — CHANGELOG.md says so in as many words. They sit on commits
+	// newer than v2.8.2, so a plain describe answers the nearest one and every
+	// binary built since has called itself v1.24.5: a version that names the v1
+	// line, which is a different backend from the one this tree compiles. The
+	// string is not cosmetic — it is what buildInfo and serverStatus hand a
+	// connected client, so a driver gating on it gates on the wrong number.
+	//
+	// Excluding rather than matching "v2.*" keeps the next major working
+	// without a second edit here.
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 
-		saveFile(runGit("describe", "--dirty"), "version.txt")
+		saveFile(runGit("describe", "--dirty", "--exclude", "v1.24.*"), "version.txt")
 	}()
 
 	// git rev-parse HEAD > commit.txt
