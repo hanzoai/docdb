@@ -227,12 +227,21 @@ func Setup(ctx context.Context, opts *SetupOpts) *SetupResult {
 		}
 	}
 
-	// "-" is what --listen-zap-addr documents as off, and it is the only lever
-	// an operator has over this listener: the node binds every interface with
-	// no TLS and no credentials, and advertises itself over mDNS. Without this
-	// the flag never disabled anything, because "-" is not the empty string.
-	if opts.ZAPAddr != "" && opts.ZAPAddr != "-" {
+	// An address here is the whole decision to serve: this listener
+	// authenticates nothing, encrypts nothing, and reaches the same pool the
+	// authenticated MongoDB port does, so it is off until someone names a port
+	// on purpose. checkFlags has already turned "-" into "".
+	if opts.ZAPAddr != "" {
 		zapLogger := logging.WithName(opts.Logger, "zap")
+
+		var port int
+
+		if port, err = internalzap.Port(opts.ZAPAddr); err != nil {
+			opts.Logger.LogAttrs(ctx, logging.LevelDPanic, "Failed to parse ZAP address", logging.Error(err))
+			res.Run(exitCtx)
+
+			return nil
+		}
 
 		res.zapPool, err = documentdb.NewPool(opts.PostgreSQLURL, logging.WithName(zapLogger, "pool"), opts.StateProvider)
 		if err != nil {
@@ -242,7 +251,7 @@ func Setup(ctx context.Context, opts *SetupOpts) *SetupResult {
 			return nil
 		}
 
-		res.ZAPListener = internalzap.NewListener(res.zapPool, zapLogger)
+		res.ZAPListener = internalzap.NewListener(res.zapPool, zapLogger, port)
 		if err = res.ZAPListener.Start(); err != nil {
 			opts.Logger.LogAttrs(ctx, logging.LevelDPanic, "Failed to start ZAP listener", logging.Error(err))
 			res.Run(exitCtx)

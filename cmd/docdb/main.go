@@ -75,7 +75,7 @@ var cli struct {
 		TLSCaFile   string `default:""                help:"TLS CA file path."`
 		DataAPIAddr string `default:""                help:"Listen TCP address for HTTP Data API."`
 		MCPAddr     string `default:""                help:"Listen TCP address for HTTP MCP server."`
-		ZAPAddr     string `default:":9654"           help:"Listen TCP address for ZAP binary protocol. Set to '-' to disable."`
+		ZAPAddr     string `default:"-"               help:"Listen TCP address for ZAP binary protocol; off unless set. Unauthenticated and plaintext, so it grants whoever reaches the port full access to the data. Host must be empty (every interface is bound)."`
 	} `embed:"" prefix:"listen-" group:"Interfaces"`
 
 	Proxy struct {

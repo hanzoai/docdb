@@ -17,12 +17,16 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io"
+	"log/slog"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"testing"
 	"time"
 
+	"github.com/alecthomas/kong"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -70,4 +74,33 @@ func TestDeps(t *testing.T) {
 	require.NoError(t, json.Unmarshal(b, &res))
 
 	assert.NotContains(t, res.Deps, "testing", `package "testing" should not be imported by non-testing code`)
+}
+
+// TestZAPListenerIsOffByDefault pins the default that keeps an unauthenticated,
+// plaintext door onto the whole dataset shut. The ZAP listener reaches the same
+// DocumentDB pool the MongoDB port does but asks nothing of the caller, so a
+// default that starts it hands the data to whoever can route to the port.
+//
+// Reaching it must be a decision someone wrote down, which is what "off unless
+// an address is given" means. [checkFlags] turns the "-" into the empty string
+// that [setup.Setup] reads as "do not listen".
+func TestZAPListenerIsOffByDefault(t *testing.T) {
+	// DefaultEnvars("DOCDB") would otherwise let the ambient environment
+	// answer the question this test is asking.
+	if v, ok := os.LookupEnv("DOCDB_LISTEN_ZAP_ADDR"); ok {
+		require.NoError(t, os.Unsetenv("DOCDB_LISTEN_ZAP_ADDR"))
+		t.Cleanup(func() { require.NoError(t, os.Setenv("DOCDB_LISTEN_ZAP_ADDR", v)) })
+	}
+
+	parser, err := kong.New(&cli, kongOptions...)
+	require.NoError(t, err)
+
+	_, err = parser.Parse(nil)
+	require.NoError(t, err)
+
+	assert.Equal(t, "-", cli.Listen.ZAPAddr, "the ZAP listener must be off unless asked for")
+
+	checkFlags(slog.New(slog.NewTextHandler(io.Discard, nil)))
+
+	assert.Empty(t, cli.Listen.ZAPAddr, "checkFlags must leave setup nothing to listen on")
 }

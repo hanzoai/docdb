@@ -23,39 +23,32 @@ import (
 //	hanzo/sql (PostgreSQL :9999)
 //	  ZAP binary — end-to-end, no JSON, no wire protocol translation
 type Listener struct {
-	config  Config
 	pool    *documentdb.Pool
 	node    *zaplib.Node
 	handler *Handler
 	logger  *slog.Logger
+	port    int
 }
 
-// NewListener creates a ZAP listener for DocumentDB.
-func NewListener(pool *documentdb.Pool, logger *slog.Logger) *Listener {
-	return NewListenerWithConfig(pool, logger, DefaultConfig())
-}
-
-// NewListenerWithConfig creates a ZAP listener with custom configuration.
-func NewListenerWithConfig(pool *documentdb.Pool, logger *slog.Logger, config Config) *Listener {
+// NewListener creates a ZAP listener for DocumentDB on port.
+//
+// Constructing one is already the decision to serve: whether to listen at all
+// belongs to the caller reading --listen-zap-addr, and is not asked again here.
+func NewListener(pool *documentdb.Pool, logger *slog.Logger, port int) *Listener {
 	return &Listener{
-		config:  config,
 		pool:    pool,
 		handler: NewHandler(pool, logger),
 		logger:  logger.With("component", "zap"),
+		port:    port,
 	}
 }
 
 // Start begins listening for ZAP connections.
 func (l *Listener) Start() error {
-	if !l.config.Enabled {
-		l.logger.Info("ZAP transport disabled")
-		return nil
-	}
-
 	l.node = zaplib.NewNode(zaplib.NodeConfig{
-		NodeID:      l.config.NodeID,
-		Port:        l.config.Port,
-		ServiceType: l.config.ServiceType,
+		NodeID:      nodeID(),
+		Port:        l.port,
+		ServiceType: service,
 		Logger:      l.logger,
 	})
 
@@ -71,10 +64,11 @@ func (l *Listener) Start() error {
 	}
 
 	l.logger.Info("ZAP transport listening",
-		"port", l.config.Port,
-		"discovery", l.config.ServiceType,
-		"nodeID", l.config.NodeID,
+		"port", l.port,
+		"discovery", service,
+		"nodeID", nodeID(),
 	)
+
 	return nil
 }
 
