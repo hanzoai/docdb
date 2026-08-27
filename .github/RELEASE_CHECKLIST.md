@@ -63,7 +63,7 @@
 
 1. Publish and announce blog post.
 2. Add link to blog post to `CHANGELOG.md` and release page.
-3. Bump the latest version on https://beacon.docdb.com and https://beacon.docdb.io.
+3. Bump the latest version on https://beacon.docdb.hanzo.ai.
 4. Update DocumentDB images/tags in Dockerfiles to point back to development version.
 5. Update DocumentDB images/tags in the current documentation (where we specify full tags)
    to point to the next (non-existing) version.

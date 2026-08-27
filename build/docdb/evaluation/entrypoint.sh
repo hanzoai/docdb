@@ -3,12 +3,12 @@
 set -e
 
 if [ -z "$POSTGRES_PASSWORD" ]; then
-    echo "Error: POSTGRES_PASSWORD must be set. See https://docs.docdb.io/installation/evaluation/"
+    echo "Error: POSTGRES_PASSWORD must be set. See https://hanzo.ai/docdb"
     exit 1
 fi
 
 if [ "${POSTGRES_DB:-postgres}" != "postgres" ]; then
-    echo "Error: POSTGRES_DB must be set to 'postgres' or unset. See https://docs.docdb.io/installation/evaluation/"
+    echo "Error: POSTGRES_DB must be set to 'postgres' or unset. See https://hanzo.ai/docdb"
     exit 1
 fi
 

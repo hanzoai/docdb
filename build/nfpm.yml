@@ -6,9 +6,9 @@ arch: ${PACKAGE_ARCH}
 platform: linux
 version: ${PACKAGE_VERSION}
 section: database
-maintainer: packages@docdb.io
+maintainer: Hanzo AI <dev@hanzo.ai>
 description: A truly Open Source MongoDB alternative
-homepage: https://www.docdb.hanzo.ai/
+homepage: https://hanzo.ai/docdb
 license: Apache License 2.0
 
 # https://www.debian.org/doc/debian-policy/ch-relationships.html#binary-dependencies-depends-recommends-suggests-enhances-pre-depends
