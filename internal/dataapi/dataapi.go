@@ -72,10 +72,13 @@ func newApp(ctx context.Context, opts *ListenOpts) *zip.App {
 	app := zipapp.New("dataapi")
 
 	app.Use(zipapp.BaseContext(ctx))
-	app.Use(s.ConnInfo)
+	// zip.H because a method value is a bare func, not the named Handler type
+	// Use's Component set is closed over. BaseContext needs no wrapper: it is
+	// declared as returning a zip.Handler already.
+	app.Use(zip.H(s.ConnInfo))
 
 	if opts.Auth {
-		app.Use(s.Auth)
+		app.Use(zip.H(s.Auth))
 	}
 
 	app.Get("/openapi.json", s.OpenAPISpec)
