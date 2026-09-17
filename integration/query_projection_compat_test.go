@@ -71,9 +71,9 @@ func TestQueryProjectionCompat(t *testing.T) {
 			projection: bson.D{{"foo", int32(0)}, {"bar", false}},
 		},
 		"Include1FieldExclude1Field": {
-			filter:           bson.D{},
-			projection:       bson.D{{"foo", int32(0)}, {"bar", true}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			projection:    bson.D{{"foo", int32(0)}, {"bar", true}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"Exclude1FieldInclude1Field": {
@@ -266,8 +266,8 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 			projection: bson.D{{"v$v", true}},
 		},
 		"ImplicitDotNotation": {
-			filter:           bson.D{{"v", float64(42)}},
-			projection:       bson.D{{"v.foo.$", true}},
+			filter:        bson.D{{"v", float64(42)}},
+			projection:    bson.D{{"v.foo.$", true}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayInt32s,
@@ -280,8 +280,8 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"GtDotNotation": {
-			filter:           bson.D{{"v", bson.D{{"$gt", 42}}}},
-			projection:       bson.D{{"v.foo.$", true}},
+			filter:        bson.D{{"v", bson.D{{"$gt", 42}}}},
+			projection:    bson.D{{"v.foo.$", true}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDoubles,
@@ -290,8 +290,8 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 			},
 		},
 		"GtDotNoMatch": {
-			filter:           bson.D{{"v", bson.D{{"$gt", 42}}}},
-			projection:       bson.D{{"v.foo.$", true}},
+			filter:        bson.D{{"v", bson.D{{"$gt", 42}}}},
+			projection:    bson.D{{"v.foo.$", true}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDoubles,
@@ -344,7 +344,7 @@ func TestQueryProjectionPositionalOperatorCompat(t *testing.T) {
 			filter: bson.D{
 				{"v", bson.D{{"$gt", 42}}},
 			},
-			projection:       bson.D{{"v.foo.$", true}},
+			projection:    bson.D{{"v.foo.$", true}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 			failsProviders: []shareddata.Provider{
 				shareddata.ArrayDoubles,

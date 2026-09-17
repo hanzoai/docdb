@@ -96,9 +96,9 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for test only
 		filter bson.D // required, aggregation pipeline stages
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
-		skip             string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
+		skip          string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 		failsForDocDB string
 	}{
 		"TooManyFields": {
@@ -108,7 +108,7 @@ func TestQueryEvaluationExprErrors(t *testing.T) {
 				Name:    "Location15983",
 				Message: `An object representing an expression must have exactly one field: { $type: "v", $op: "v" }`,
 			},
-			altMessage:       "An object representing an expression must have exactly one field",
+			altMessage:    "An object representing an expression must have exactly one field",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/267",
 		},
 		"TypeWrongLen": {

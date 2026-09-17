@@ -33,7 +33,7 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"Pop": {
-			update:           bson.D{{"$pop", bson.D{{"v", 1}}}},
+			update:        bson.D{{"$pop", bson.D{{"v", 1}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/314",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -79,7 +79,7 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 			},
 		},
 		"PopFirst": {
-			update:           bson.D{{"$pop", bson.D{{"v", -1}}}},
+			update:        bson.D{{"$pop", bson.D{{"v", -1}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/314",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -137,9 +137,9 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 			update: bson.D{{"$pop", bson.D{{"v.0.foo", -1}}}},
 		},
 		"DotNotationNonArray": {
-			filter:           bson.D{{"_id", "array-documents-nested"}},
-			update:           bson.D{{"$pop", bson.D{{"v.0.foo.0.bar", 1}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"_id", "array-documents-nested"}},
+			update:        bson.D{{"$pop", bson.D{{"v.0.foo.0.bar", 1}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/314",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -165,8 +165,8 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationObjectInArray": {
-			update:           bson.D{{"$pop", bson.D{{"v.array.foo.array", 1}}}},
-			resultType:       EmptyResult,
+			update:        bson.D{{"$pop", bson.D{{"v.array.foo.array", 1}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/413",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -187,8 +187,8 @@ func TestUpdateArrayCompatPop(t *testing.T) {
 			},
 		},
 		"DotNotationObject": {
-			update:           bson.D{{"$pop", bson.D{{"v.foo", 1}}}},
-			resultType:       EmptyResult,
+			update:        bson.D{{"$pop", bson.D{{"v.foo", 1}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/413",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -384,8 +384,8 @@ func TestUpdateArrayCompatAddToSetEach(t *testing.T) {
 			}}}}},
 		},
 		"NotArray": {
-			update:           bson.D{{"$addToSet", bson.D{{"v", bson.D{{"$each", int32(1)}}}}}},
-			resultType:       EmptyResult,
+			update:        bson.D{{"$addToSet", bson.D{{"v", bson.D{{"$each", int32(1)}}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/478",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -479,9 +479,9 @@ func TestUpdateArrayCompatPushEach(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"EmptyArray": {
-			filter:           bson.D{{"_id", "array-documents-nested"}},
-			update:           bson.D{{"$push", bson.D{{"v", bson.D{{"$each", bson.A{}}}}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"_id", "array-documents-nested"}},
+			update:        bson.D{{"$push", bson.D{{"v", bson.D{{"$each", bson.A{}}}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/373",
 			failsIDs: []struct {
 				provider shareddata.Provider

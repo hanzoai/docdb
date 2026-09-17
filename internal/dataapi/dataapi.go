@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net"
+	"net/http"
 
 	"github.com/AlekSi/lazyerrors"
 	"github.com/prometheus/client_golang/prometheus"
@@ -78,18 +79,18 @@ func newApp(ctx context.Context, opts *ListenOpts) *zip.App {
 		app.Use(zip.H(s.Auth))
 	}
 
-	app.Get("/openapi.json", s.OpenAPISpec)
+	app.Raw(http.MethodGet, "/openapi.json", s.OpenAPISpec)
 
 	action := app.Group("/action")
-	action.Post("/aggregate", s.Aggregate)
-	action.Post("/deleteMany", s.DeleteMany)
-	action.Post("/deleteOne", s.DeleteOne)
-	action.Post("/find", s.Find)
-	action.Post("/findOne", s.FindOne)
-	action.Post("/insertMany", s.InsertMany)
-	action.Post("/insertOne", s.InsertOne)
-	action.Post("/updateMany", s.UpdateMany)
-	action.Post("/updateOne", s.UpdateOne)
+	action.Raw(http.MethodPost, "/aggregate", s.Aggregate)
+	action.Raw(http.MethodPost, "/deleteMany", s.DeleteMany)
+	action.Raw(http.MethodPost, "/deleteOne", s.DeleteOne)
+	action.Raw(http.MethodPost, "/find", s.Find)
+	action.Raw(http.MethodPost, "/findOne", s.FindOne)
+	action.Raw(http.MethodPost, "/insertMany", s.InsertMany)
+	action.Raw(http.MethodPost, "/insertOne", s.InsertOne)
+	action.Raw(http.MethodPost, "/updateMany", s.UpdateMany)
+	action.Raw(http.MethodPost, "/updateOne", s.UpdateOne)
 
 	return app
 }

@@ -18,15 +18,15 @@
 package observability
 
 import (
-	"strings"
 	"context"
 	"errors"
 	"log/slog"
+	"strings"
 	"sync/atomic"
 	"time"
 
-	"go.opentelemetry.io/otel"
 	luxtrace "github.com/luxfi/trace"
+	"go.opentelemetry.io/otel"
 	otelsdkresource "go.opentelemetry.io/otel/sdk/resource"
 	otelsdktrace "go.opentelemetry.io/otel/sdk/trace"
 	otelsemconv "go.opentelemetry.io/otel/semconv/v1.34.0"

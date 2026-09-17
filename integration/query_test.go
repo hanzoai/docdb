@@ -176,8 +176,8 @@ func TestQuerySortErrors(t *testing.T) {
 	for name, tc := range map[string]struct {
 		command bson.D // required, command to run
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
 		failsForDocDB string
 	}{
 		"SortTypeDouble": {
@@ -217,7 +217,7 @@ func TestQuerySortErrors(t *testing.T) {
 				Name:    "Location15974",
 				Message: `Illegal key in $sort specification: asc: "123"`,
 			},
-			altMessage:       `Illegal key in $sort specification: asc: 123`,
+			altMessage:    `Illegal key in $sort specification: asc: 123`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"DoubleValue": {
@@ -651,12 +651,12 @@ func TestQueryShowRecordID(t *testing.T) {
 		collection   *mongo.Collection
 		showRecordID bool
 
-		nonZeroRecordID  bool // if true, asserts recordID is not zero
-		failsForDocDB string
+		nonZeroRecordID bool // if true, asserts recordID is not zero
+		failsForDocDB   string
 	}{
 		"ShowRecordID": {
-			showRecordID:     true,
-			collection:       collection,
+			showRecordID:  true,
+			collection:    collection,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/242",
 		},
 		"ShowRecordIDFalse": {

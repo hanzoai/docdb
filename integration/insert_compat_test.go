@@ -28,10 +28,10 @@ import (
 )
 
 type insertCompatTestCase struct {
-	insert           []any // required, slice of bson.D to be insert
-	ordered          bool  // defaults to false
+	insert        []any // required, slice of bson.D to be insert
+	ordered       bool  // defaults to false
 	failsForDocDB string
-	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
+	resultType    CompatTestCaseResultType // defaults to NonEmptyResult
 }
 
 // testInsertCompat tests insert compatibility test cases.
@@ -178,13 +178,13 @@ func TestInsertCompat(t *testing.T) {
 		},
 
 		"IDArray": {
-			insert:           []any{bson.D{{"_id", bson.A{"foo", "bar"}}}},
-			resultType:       EmptyResult,
+			insert:        []any{bson.D{{"_id", bson.A{"foo", "bar"}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"IDRegex": {
-			insert:           []any{bson.D{{"_id", primitive.Regex{Pattern: "^regex$", Options: "i"}}}},
-			resultType:       EmptyResult,
+			insert:        []any{bson.D{{"_id", primitive.Regex{Pattern: "^regex$", Options: "i"}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 
@@ -193,8 +193,8 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", bson.A{"foo", "bar"}}},
 				bson.D{{"_id", primitive.Regex{Pattern: "^regex$", Options: "i"}}},
 			},
-			ordered:          true,
-			resultType:       EmptyResult,
+			ordered:       true,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"UnorderedAllErrors": {
@@ -202,8 +202,8 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", bson.A{"foo", "bar"}}},
 				bson.D{{"_id", primitive.Regex{Pattern: "^regex$", Options: "i"}}},
 			},
-			ordered:          false,
-			resultType:       EmptyResult,
+			ordered:       false,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 
@@ -213,7 +213,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", primitive.Regex{Pattern: "^regex$", Options: "i"}}},
 				bson.D{{"_id", "2"}},
 			},
-			ordered:          true,
+			ordered:       true,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"UnorderedTwoErrors": {
@@ -223,7 +223,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", primitive.Regex{Pattern: "^regex$", Options: "i"}}},
 				bson.D{{"_id", "2"}},
 			},
-			ordered:          false,
+			ordered:       false,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"OrderedThreeErrors": {
@@ -235,7 +235,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", "3"}},
 				bson.D{{"_id", "4"}, {"_id", "4"}},
 			},
-			ordered:          true,
+			ordered:       true,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 		"UnorderedThreeErrors": {
@@ -247,7 +247,7 @@ func TestInsertCompat(t *testing.T) {
 				bson.D{{"_id", "3"}},
 				bson.D{{"_id", "4"}, {"_id", "4"}},
 			},
-			ordered:          false,
+			ordered:       false,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/295",
 		},
 	}

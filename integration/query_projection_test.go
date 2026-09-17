@@ -36,8 +36,8 @@ func TestQueryProjectionErrors(t *testing.T) {
 		filter     bson.D // required
 		projection any    // required
 
-		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // required, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"EmptyKey": {

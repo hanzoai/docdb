@@ -33,7 +33,7 @@ type explainCompatTestCase struct {
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
 	failsForDocDB string
-	skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+	skip          string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 }
 
 // testExplainCompatError tests explain compatibility test cases.

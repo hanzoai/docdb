@@ -178,31 +178,31 @@ func TestQueryEvaluationCompatMod(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"MinInt64_Divisor": {
-			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{math.MinInt64, 0}}}}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/331",
-			failsProviders:   []shareddata.Provider{shareddata.Doubles, shareddata.Scalars},
+			filter:         bson.D{{"v", bson.D{{"$mod", bson.A{math.MinInt64, 0}}}}},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/331",
+			failsProviders: []shareddata.Provider{shareddata.Doubles, shareddata.Scalars},
 		},
 		"MinInt64_Remainder": {
 			filter:     bson.D{{"v", bson.D{{"$mod", bson.A{1, math.MinInt64}}}}},
 			resultType: EmptyResult,
 		},
 		"MinInt64_floatDivisor": {
-			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{float64(math.MinInt64), 0}}}}},
+			filter:        bson.D{{"v", bson.D{{"$mod", bson.A{float64(math.MinInt64), 0}}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_floatRemainder": {
-			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{1, float64(math.MinInt64)}}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"v", bson.D{{"$mod", bson.A{1, float64(math.MinInt64)}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_minus": {
-			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854775809e+18, 0}}}}},
+			filter:        bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854775809e+18, 0}}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_1": {
-			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{-922337203685477580, -8}}}}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/331",
-			failsProviders:   []shareddata.Provider{shareddata.Doubles, shareddata.Scalars},
+			filter:         bson.D{{"v", bson.D{{"$mod", bson.A{-922337203685477580, -8}}}}},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/331",
+			failsProviders: []shareddata.Provider{shareddata.Doubles, shareddata.Scalars},
 		},
 		"MinInt64_2": {
 			filter:     bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854775808e+17, -8}}}}},
@@ -217,7 +217,7 @@ func TestQueryEvaluationCompatMod(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"MinInt64_overflowVerge": {
-			filter:           bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854776832e+18, 0}}}}},
+			filter:        bson.D{{"v", bson.D{{"$mod", bson.A{-9.223372036854776832e+18, 0}}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/330",
 		},
 		"MinInt64_overflowDivisor": {
@@ -315,9 +315,9 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 
 	testCases := map[string]queryCompatTestCase{
 		"Expression": {
-			filter:           bson.D{{"$expr", "$v"}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/332",
-			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
+			filter:         bson.D{{"$expr", "$v"}},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/332",
+			failsProviders: []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"ExpressionDotNotation": {
 			filter: bson.D{{"$expr", "$v.foo"}},
@@ -332,13 +332,13 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 			filter: bson.D{{"$expr", bson.D{{"v", "$v"}}}},
 		},
 		"DocumentNestedExpr": {
-			filter:           bson.D{{"$expr", bson.D{{"v", bson.D{{"$expr", int32(1)}}}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"$expr", bson.D{{"v", bson.D{{"$expr", int32(1)}}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"DocumentInvalid": {
-			filter:           bson.D{{"$expr", bson.D{{"v", "$"}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"$expr", bson.D{{"v", "$"}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/268",
 		},
 		"Array": {
@@ -348,8 +348,8 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 			filter: bson.D{{"$expr", bson.A{nil, "foo", int32(42)}}},
 		},
 		"ArrayInvalid": {
-			filter:           bson.D{{"$expr", bson.A{"$"}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"$expr", bson.A{"$"}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/268",
 		},
 		"String": {
@@ -391,9 +391,9 @@ func TestQueryEvaluationCompatExpr(t *testing.T) {
 			filter: bson.D{{"$expr", bson.D{{"$type", "$v"}}}},
 		},
 		"Sum": {
-			filter:           bson.D{{"$expr", bson.D{{"$sum", "$v"}}}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/332",
-			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
+			filter:         bson.D{{"$expr", bson.D{{"$sum", "$v"}}}},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/332",
+			failsProviders: []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"SumType": {
 			filter: bson.D{{"$expr", bson.D{{"$type", bson.D{{"$sum", "$v"}}}}}},

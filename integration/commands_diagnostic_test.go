@@ -510,7 +510,7 @@ func TestValidateCommandError(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // for readability
 		command bson.D
 
-		err              *mongo.CommandError
+		err           *mongo.CommandError
 		failsForDocDB string
 	}{
 		"InvalidTypeDocument": {

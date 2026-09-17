@@ -109,7 +109,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 
 	testCases := map[string]updateCompatTestCase{
 		"Int32": {
-			update:           bson.D{{"$inc", bson.D{{"v", int32(42)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", int32(42)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -129,7 +129,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 			},
 		},
 		"Int32Negative": {
-			update:           bson.D{{"$inc", bson.D{{"v", int32(-42)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", int32(-42)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -149,7 +149,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 			},
 		},
 		"Int64Max": {
-			update:           bson.D{{"$inc", bson.D{{"v", math.MaxInt64}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", math.MaxInt64}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -162,7 +162,7 @@ func TestUpdateFieldCompatInc(t *testing.T) {
 			},
 		},
 		"Int64Min": {
-			update:           bson.D{{"$inc", bson.D{{"v", math.MinInt64}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", math.MinInt64}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -196,7 +196,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 
 	testCases := map[string]updateCompatTestCase{
 		"IntNegativeIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", int32(-1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", int32(-1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -217,7 +217,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", float64(42.13)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", float64(42.13)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -237,7 +237,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"LongNegativeIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", int64(-1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", int64(-1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -258,7 +258,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"IncTwoFields": {
-			update:           bson.D{{"$inc", bson.D{{"foo", int32(12)}, {"v", int32(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"foo", int32(12)}, {"v", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -270,7 +270,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleBigDoubleIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", 42.13}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", 42.13}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -290,7 +290,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleIntIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", int32(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -311,7 +311,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"IntOverflow": {
-			update:           bson.D{{"$inc", bson.D{{"v", math.MaxInt64}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", math.MaxInt64}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -324,7 +324,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleIncrementIntField": {
-			update:           bson.D{{"$inc", bson.D{{"v", float64(1.13)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", float64(1.13)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -344,7 +344,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleLongIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", int64(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", int64(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -365,7 +365,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleNegativeIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", float64(-42.13)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", float64(-42.13)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -385,7 +385,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleDoubleBigIncrement": {
-			update:           bson.D{{"$inc", bson.D{{"v", float64(1 << 61)}}}}, // TODO https://github.com/hanzoai/docdb/issues/3626
+			update:        bson.D{{"$inc", bson.D{{"v", float64(1 << 61)}}}}, // TODO https://github.com/hanzoai/docdb/issues/3626
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -398,7 +398,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DoubleIncOnNullValue": {
-			update:           bson.D{{"$inc", bson.D{{"v", float64(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v", float64(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -434,7 +434,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationFieldExist": {
-			update:           bson.D{{"$inc", bson.D{{"v.foo", int32(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v.foo", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -456,7 +456,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DotNotationArrayValue": {
-			update:           bson.D{{"$inc", bson.D{{"v.0", int32(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v.0", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -473,7 +473,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$inc", bson.D{{"v.-1", int32(42)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v.-1", int32(42)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -513,7 +513,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			update: bson.D{{"$inc", bson.D{{"v.100", int32(42)}}}},
 		},
 		"DotNotatArrayFieldNotExist": {
-			update:           bson.D{{"$inc", bson.D{{"v.array.foo", int32(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v.array.foo", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -544,7 +544,7 @@ func TestUpdateFieldCompatIncComplex(t *testing.T) {
 			},
 		},
 		"DotNotatArrFieldExist": {
-			update:           bson.D{{"$inc", bson.D{{"v.array.0", int32(1)}}}},
+			update:        bson.D{{"$inc", bson.D{{"v.array.0", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/421",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -701,8 +701,8 @@ func TestUpdateFieldCompatMax(t *testing.T) {
 			update: bson.D{{"$max", bson.D{{"v", bson.A{bson.D{{"foo", int32(42)}}, bson.D{{"foo", nil}}}}}}},
 		},
 		"DotNotation": {
-			update:           bson.D{{"$max", bson.D{{"v.foo", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$max", bson.D{{"v.foo", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -749,8 +749,8 @@ func TestUpdateFieldCompatMax(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$max", bson.D{{"v.-1", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$max", bson.D{{"v.-1", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -793,8 +793,8 @@ func TestUpdateFieldCompatMax(t *testing.T) {
 			},
 		},
 		"DotNotationIndexOutsideArray": {
-			update:           bson.D{{"$max", bson.D{{"v.100", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$max", bson.D{{"v.100", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -931,8 +931,8 @@ func TestUpdateFieldCompatMin(t *testing.T) {
 			update: bson.D{{"$min", bson.D{{"v", bson.A{bson.D{{"foo", int32(42)}}, bson.D{{"foo", nil}}}}}}},
 		},
 		"DotNotation": {
-			update:           bson.D{{"$min", bson.D{{"v.foo", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$min", bson.D{{"v.foo", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -979,8 +979,8 @@ func TestUpdateFieldCompatMin(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$min", bson.D{{"v.-1", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$min", bson.D{{"v.-1", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1023,8 +1023,8 @@ func TestUpdateFieldCompatMin(t *testing.T) {
 			},
 		},
 		"DotNotationIndexOutOfArray": {
-			update:           bson.D{{"$min", bson.D{{"v.100", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$min", bson.D{{"v.100", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1069,8 +1069,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 			update: bson.D{{"$rename", bson.D{{"v", "foo"}}}},
 		},
 		"DuplicateField": {
-			update:           bson.D{{"$rename", bson.D{{"v", "v"}}}},
-			resultType:       EmptyResult,
+			update:        bson.D{{"$rename", bson.D{{"v", "v"}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"NonExistingField": {
@@ -1114,8 +1114,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationDocumentMove": {
-			update:           bson.D{{"$rename", bson.D{{"v.foo", "boo"}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$rename", bson.D{{"v.foo", "boo"}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1135,8 +1135,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 			},
 		},
 		"DotNotationDocumentDuplicate": {
-			update:           bson.D{{"$rename", bson.D{{"v.foo", "v.array"}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
+			update:        bson.D{{"$rename", bson.D{{"v.foo", "v.array"}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1191,8 +1191,8 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationMultipleFields": {
-			update:           bson.D{{"$rename", bson.D{{"v.foo", "v.bar"}, {"v.42", "v.43"}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
+			update:        bson.D{{"$rename", bson.D{{"v.foo", "v.bar"}, {"v.42", "v.43"}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1239,9 +1239,9 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$rename", bson.D{{"v.-1.bar", "v.-1.baz"}}}},
-			resultType:       EmptyResult,
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
+			update:        bson.D{{"$rename", bson.D{{"v.-1.bar", "v.-1.baz"}}}},
+			resultType:    EmptyResult,
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/429
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1284,9 +1284,9 @@ func TestUpdateFieldCompatRename(t *testing.T) {
 			},
 		},
 		"DotNotationIndexOutOfArray": {
-			update:           bson.D{{"$rename", bson.D{{"v.100.bar", "v.100.baz"}}}},
-			resultType:       EmptyResult,
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/449
+			update:        bson.D{{"$rename", bson.D{{"v.100.bar", "v.100.baz"}}}},
+			resultType:    EmptyResult,
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/449
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/448", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/449
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1358,8 +1358,8 @@ func TestUpdateFieldCompatUnset(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotation": {
-			update:           bson.D{{"$unset", bson.D{{"v.foo", ""}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/442", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/445
+			update:        bson.D{{"$unset", bson.D{{"v.foo", ""}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/442", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/445
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/442", // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/445
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1391,14 +1391,14 @@ func TestUpdateFieldCompatUnset(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationMissingField": {
-			update:           bson.D{{"$unset", bson.D{{"v..", ""}}}},
-			resultType:       EmptyResult,
+			update:        bson.D{{"$unset", bson.D{{"v..", ""}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$unset", bson.D{{"v.-1.bar", ""}}}},
-			resultType:       EmptyResult,
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/442",
+			update:        bson.D{{"$unset", bson.D{{"v.-1.bar", ""}}}},
+			resultType:    EmptyResult,
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/442",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/442",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1418,9 +1418,9 @@ func TestUpdateFieldCompatUnset(t *testing.T) {
 			},
 		},
 		"DotNotationIndexOutOfArray": {
-			update:           bson.D{{"$unset", bson.D{{"v.100.bar", ""}}}},
-			resultType:       EmptyResult,
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/445",
+			update:        bson.D{{"$unset", bson.D{{"v.100.bar", ""}}}},
+			resultType:    EmptyResult,
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/445",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/445",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1508,7 +1508,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 			update: bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int32(42)}}}}}},
 		},
 		"DocDifferentNumberType": {
-			update:           bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int64(42)}}}}}},
+			update:        bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int64(42)}}}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/501",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1572,7 +1572,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 			update: bson.D{{"$set", bson.D{{"v", primitive.Timestamp{I: 12}}}}},
 		},
 		"DocFieldExist": {
-			update:           bson.D{{"$set", bson.D{{"v.foo", int32(1)}}}},
+			update:        bson.D{{"$set", bson.D{{"v.foo", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/479",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1595,7 +1595,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 			update: bson.D{{"$set", bson.D{{"foo.bar", int32(1)}}}},
 		},
 		"ArrayFieldExist": {
-			update:           bson.D{{"$set", bson.D{{"v.array.0", int32(1)}}}},
+			update:        bson.D{{"$set", bson.D{{"v.array.0", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/479",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1631,7 +1631,7 @@ func TestUpdateFieldCompatSet(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$set", bson.D{{"v.-1.bar", int32(1)}}}},
+			update:        bson.D{{"$set", bson.D{{"v.-1.bar", int32(1)}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/479",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1747,7 +1747,7 @@ func TestUpdateFieldCompatSetArray(t *testing.T) {
 			update: bson.D{{"$set", bson.D{{"v", bson.A{"c", "b", "a"}}}}},
 		},
 		"ArrayChangedNumberType": {
-			update:           bson.D{{"$set", bson.D{{"v", bson.A{int64(42), int64(43), 45.5}}}}},
+			update:        bson.D{{"$set", bson.D{{"v", bson.A{int64(42), int64(43), 45.5}}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/501",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1763,7 +1763,7 @@ func TestUpdateFieldCompatSetArray(t *testing.T) {
 			update: bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int32(42)}, {"42", "foo"}, {"array", bson.A{int32(42), "foo", nil}}}}}}},
 		},
 		"DocDifferentNumberType": {
-			update:           bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int32(42)}, {"42", "foo"}, {"array", bson.A{int64(42), "foo", nil}}}}}}},
+			update:        bson.D{{"$set", bson.D{{"v", bson.D{{"foo", int32(42)}, {"42", "foo"}, {"array", bson.A{int64(42), "foo", nil}}}}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/501",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1802,8 +1802,8 @@ func TestUpdateFieldCompatSetOnInsert(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DuplicateKeys": {
-			update:           bson.D{{"$setOnInsert", bson.D{{"v", 1}, {"v", 2}}}},
-			resultType:       EmptyResult,
+			update:        bson.D{{"$setOnInsert", bson.D{{"v", 1}, {"v", 2}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1041",
 		},
 		"DocumentFieldExist": {
@@ -1827,8 +1827,8 @@ func TestUpdateFieldCompatSetOnInsert(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationMissingField": {
-			update:           bson.D{{"$setOnInsert", bson.D{{"v..", int32(1)}}}},
-			resultType:       EmptyResult,
+			update:        bson.D{{"$setOnInsert", bson.D{{"v..", int32(1)}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1041",
 		},
 		"DotNotationNegativeIdx": {
@@ -1970,8 +1970,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 
 	testCases := map[string]updateCompatTestCase{
 		"Int32": {
-			update:           bson.D{{"$mul", bson.D{{"v", int32(42)}}}},
-			providers:        providers,
+			update:        bson.D{{"$mul", bson.D{{"v", int32(42)}}}},
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1981,8 +1981,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			},
 		},
 		"Int32Negative": {
-			update:           bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
-			providers:        providers,
+			update:        bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -1992,8 +1992,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			},
 		},
 		"Int32Min": {
-			update:           bson.D{{"$mul", bson.D{{"v", math.MinInt32}}}},
-			providers:        providers,
+			update:        bson.D{{"$mul", bson.D{{"v", math.MinInt32}}}},
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2007,8 +2007,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			providers: providers,
 		},
 		"Int64": {
-			update:           bson.D{{"$mul", bson.D{{"v", int64(42)}}}},
-			providers:        providers,
+			update:        bson.D{{"$mul", bson.D{{"v", int64(42)}}}},
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2018,8 +2018,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			},
 		},
 		"Int64Negative": {
-			update:           bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
-			providers:        providers,
+			update:        bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2029,8 +2029,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			},
 		},
 		"Int64Min": {
-			update:           bson.D{{"$mul", bson.D{{"v", math.MinInt64}}}},
-			providers:        providers,
+			update:        bson.D{{"$mul", bson.D{{"v", math.MinInt64}}}},
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2052,8 +2052,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			providers: providers,
 		},
 		"DoubleNegative": {
-			update:           bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
-			providers:        providers,
+			update:        bson.D{{"$mul", bson.D{{"v", int32(-42)}}}},
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2109,7 +2109,7 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 				{"$set", bson.D{{"foo", int32(43)}}},
 				{"$mul", bson.D{{"v", int32(42)}}},
 			},
-			providers:        providers,
+			providers:     providers,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/434",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2183,8 +2183,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotation": {
-			update:           bson.D{{"$mul", bson.D{{"v.foo", int32(45)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$mul", bson.D{{"v.foo", int32(45)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2230,8 +2230,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			update: bson.D{{"$mul", bson.D{{"not.existent.path", int32(45)}}}},
 		},
 		"DotNotationArrayFieldExist": {
-			update:           bson.D{{"$mul", bson.D{{"v.array.0", int32(45)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$mul", bson.D{{"v.array.0", int32(45)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2274,8 +2274,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			},
 		},
 		"DotNotationArrayFieldNotExist": {
-			update:           bson.D{{"$mul", bson.D{{"v.array.0.foo", int32(45)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$mul", bson.D{{"v.array.0.foo", int32(45)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2322,8 +2322,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotatIndexOverArrayLen": {
-			update:           bson.D{{"$mul", bson.D{{"v.100.bar", int32(45)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$mul", bson.D{{"v.100.bar", int32(45)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2356,8 +2356,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			},
 		},
 		"DotNotationFieldNumericName": {
-			update:           bson.D{{"$mul", bson.D{{"v.array.42", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$mul", bson.D{{"v.array.42", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2400,8 +2400,8 @@ func TestUpdateFieldCompatMul(t *testing.T) {
 			},
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$mul", bson.D{{"v.array.-1", int32(42)}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$mul", bson.D{{"v.array.-1", int32(42)}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2542,8 +2542,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 			update: bson.D{{"$bit", bson.D{{"non-existent", bson.D{{"xor", int32(1)}}}}}},
 		},
 		"DotNotation": {
-			update:           bson.D{{"$bit", bson.D{{"v.foo", bson.D{{"xor", int32(1)}}}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$bit", bson.D{{"v.foo", bson.D{{"xor", int32(1)}}}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2589,8 +2589,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 			},
 		},
 		"DotNotationArray": {
-			update:           bson.D{{"$bit", bson.D{{"v.0", bson.D{{"xor", int32(1)}}}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$bit", bson.D{{"v.0", bson.D{{"xor", int32(1)}}}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2630,8 +2630,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"DotNotationNegativeIndex": {
-			update:           bson.D{{"$bit", bson.D{{"v.-1", bson.D{{"or", int32(10)}}}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$bit", bson.D{{"v.-1", bson.D{{"or", int32(10)}}}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2677,8 +2677,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 			},
 		},
 		"DotNotationArrayFieldNotExist": {
-			update:           bson.D{{"$bit", bson.D{{"v.array.0.foo", bson.D{{"xor", int32(11)}}}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$bit", bson.D{{"v.array.0.foo", bson.D{{"xor", int32(11)}}}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -2725,8 +2725,8 @@ func TestUpdateFieldCompatBit(t *testing.T) {
 			},
 		},
 		"DotNotAtIndexOverArrayLen": {
-			update:           bson.D{{"$bit", bson.D{{"v.100.foo", bson.D{{"and", int32(11)}}}}}},
-			skip:             "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
+			update:        bson.D{{"$bit", bson.D{{"v.100.foo", bson.D{{"and", int32(11)}}}}}},
+			skip:          "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/429",
 			failsIDs: []struct {
 				provider shareddata.Provider

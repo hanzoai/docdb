@@ -280,8 +280,8 @@ func TestCreateCollection(t *testing.T) {
 	testCases := map[string]struct {
 		collection string // collection name, defaults to empty string
 
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"TooLongForBothDBs": {
@@ -298,7 +298,7 @@ func TestCreateCollection(t *testing.T) {
 			altMessage: fmt.Sprintf("Invalid collection name: %s", collectionName300),
 		},
 		"LongEnough": {
-			collection:       collectionName235,
+			collection:    collectionName235,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/380",
 		},
 		"Short": {

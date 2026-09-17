@@ -60,9 +60,9 @@ func TestDelete(t *testing.T) {
 	for name, tc := range map[string]struct {
 		deletes bson.A // required, set to deletes parameter
 
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
-		skip             string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
+		skip          string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 		failsForDocDB string
 	}{
 		"QueryNotSet": {

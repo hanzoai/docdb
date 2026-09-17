@@ -44,8 +44,8 @@ func TestQueryBitwiseAllClear(t *testing.T) {
 		value       any   // required, used for $bitsAllClear filter value
 		expectedIDs []any // optional
 
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"Array": {
@@ -145,7 +145,7 @@ func TestQueryBitwiseAllClear(t *testing.T) {
 				Name:    "BadValue",
 				Message: `v takes an Array, a number, or a BinData but received: $bitsAllClear: "123"`,
 			},
-			altMessage:       `value takes an Array, a number, or a BinData but received: $bitsAllClear: "123"`,
+			altMessage:    `value takes an Array, a number, or a BinData but received: $bitsAllClear: "123"`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 
@@ -268,8 +268,8 @@ func TestQueryBitwiseAllSet(t *testing.T) {
 		value       any   // required, used for $bitsAllSet filter value
 		expectedIDs []any // optional
 
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"Array": {
@@ -339,7 +339,7 @@ func TestQueryBitwiseAllSet(t *testing.T) {
 				Name:    "BadValue",
 				Message: `v takes an Array, a number, or a BinData but received: $bitsAllSet: "123"`,
 			},
-			altMessage:       `value takes an Array, a number, or a BinData but received: $bitsAllSet: "123"`,
+			altMessage:    `value takes an Array, a number, or a BinData but received: $bitsAllSet: "123"`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 
@@ -371,8 +371,8 @@ func TestQueryBitwiseAllSet(t *testing.T) {
 		},
 
 		"Int64Max": {
-			value:            math.MaxInt64,
-			expectedIDs:      []any{"int64-max"},
+			value:         math.MaxInt64,
+			expectedIDs:   []any{"int64-max"},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/257",
 		},
 		"Int64NegativeValue": {
@@ -430,8 +430,8 @@ func TestQueryBitwiseAnyClear(t *testing.T) {
 		value       any   // required, used for $bitsAnyClear filter value
 		expectedIDs []any // optional
 
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"Array": {
@@ -506,7 +506,7 @@ func TestQueryBitwiseAnyClear(t *testing.T) {
 				Name:    "BadValue",
 				Message: `v takes an Array, a number, or a BinData but received: $bitsAnyClear: "123"`,
 			},
-			altMessage:       `value takes an Array, a number, or a BinData but received: $bitsAnyClear: "123"`,
+			altMessage:    `value takes an Array, a number, or a BinData but received: $bitsAnyClear: "123"`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 
@@ -623,8 +623,8 @@ func TestQueryBitwiseAnySet(t *testing.T) {
 		value       any   // required, used for $bitsAnySet filter value
 		expectedIDs []any // optional
 
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"Array": {
@@ -693,7 +693,7 @@ func TestQueryBitwiseAnySet(t *testing.T) {
 				Name:    "BadValue",
 				Message: `v takes an Array, a number, or a BinData but received: $bitsAnySet: "123"`,
 			},
-			altMessage:       `value takes an Array, a number, or a BinData but received: $bitsAnySet: "123"`,
+			altMessage:    `value takes an Array, a number, or a BinData but received: $bitsAnySet: "123"`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 

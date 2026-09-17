@@ -26,9 +26,9 @@ import (
 )
 
 type countCommandCompatTestCase struct {
-	collectionName   any
-	command          bson.D
-	failsForDocDB string
+	collectionName any
+	command        bson.D
+	failsForDocDB  string
 }
 
 // testCountCommandCompat tests query compatibility test cases.

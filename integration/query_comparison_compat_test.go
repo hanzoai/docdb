@@ -1012,8 +1012,8 @@ func TestQueryComparisonCompatNin(t *testing.T) {
 			filter: bson.D{{"v", bson.D{{"$nin", compositeDataTypesFilter}}}},
 		},
 		"RegexString": {
-			filter:           bson.D{{"v", bson.D{{"$nin", bson.A{bson.D{{"$regex", "/foo/"}}}}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"v", bson.D{{"$nin", bson.A{bson.D{{"$regex", "/foo/"}}}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/262",
 		},
 		"Regex": {
@@ -1058,8 +1058,8 @@ func TestQueryComparisonCompatIn(t *testing.T) {
 			filter: bson.D{{"v", bson.D{{"$in", compositeDataTypesFilter}}}},
 		},
 		"RegexString": {
-			filter:           bson.D{{"v", bson.D{{"$in", bson.A{bson.D{{"$regex", "/foo/"}}}}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"v", bson.D{{"$in", bson.A{bson.D{{"$regex", "/foo/"}}}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/262",
 		},
 		"Regex": {

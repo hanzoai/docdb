@@ -36,8 +36,8 @@ func TestQueryArrayCompatSize(t *testing.T) {
 			filter: bson.D{{"v", bson.D{{"$size", int64(2)}}}},
 		},
 		"Infinity": {
-			filter:           bson.D{{"v", bson.D{{"$size", math.Inf(+1)}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"v", bson.D{{"$size", math.Inf(+1)}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/245",
 		},
 		"InvalidUse": {
@@ -200,7 +200,7 @@ func TestQueryArrayCompatElemMatch(t *testing.T) {
 					},
 				},
 			}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/785",
 		},
 	}

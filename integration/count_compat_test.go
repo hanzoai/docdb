@@ -33,8 +33,8 @@ type countCompatTestCase struct {
 
 	// TODO https://github.com/hanzoai/docdb/issues/2255
 	// those two probably should be of the same type
-	optSkip          any   // optional, skip option for the query, defaults to nil
-	limit            int64 // optional, limit option for the query, defaults to 0
+	optSkip       any   // optional, skip option for the query, defaults to nil
+	limit         int64 // optional, limit option for the query, defaults to 0
 	failsForDocDB string
 
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
@@ -198,8 +198,8 @@ func TestCountCompat(t *testing.T) {
 			optSkip: 1000,
 		},
 		"SkipDouble": {
-			filter:           bson.D{},
-			optSkip:          1.111,
+			filter:        bson.D{},
+			optSkip:       1.111,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/405",
 		},
 		"SkipNegative": {

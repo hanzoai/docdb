@@ -34,9 +34,9 @@ func TestInsertCommandErrors(t *testing.T) {
 		toInsert []any // required, slice of bson.D to insert
 		ordered  any   // required, sets it to `ordered`
 
-		cerr             *mongo.CommandError // optional, expected command error from MongoDB
-		werr             *mongo.WriteError   // optional, expected write error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		cerr          *mongo.CommandError // optional, expected command error from MongoDB
+		werr          *mongo.WriteError   // optional, expected write error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"InsertOrderedInvalid": {
@@ -120,7 +120,7 @@ func TestInsertCommandErrors(t *testing.T) {
 				Code:    2,
 				Message: "can't have multiple _id fields in one document",
 			},
-			altMessage:       `invalid key: "_id" (duplicate keys are not allowed)`,
+			altMessage:    `invalid key: "_id" (duplicate keys are not allowed)`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/293",
 		},
 	} {

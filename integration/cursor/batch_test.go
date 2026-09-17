@@ -42,9 +42,9 @@ func TestFindCommandBatchSize(t *testing.T) {
 		filter    any // optional, nil to leave filter unset
 		batchSize any // optional, nil to leave batchSize unset
 
-		firstBatch       primitive.A         // optional, expected firstBatch
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		firstBatch    primitive.A         // optional, expected firstBatch
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"Int": {
@@ -66,7 +66,7 @@ func TestFindCommandBatchSize(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
-			altMessage:       "BSON field 'batchSize' value must be >= 0, actual value '-1'",
+			altMessage:    "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"DoubleZero": {

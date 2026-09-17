@@ -55,10 +55,10 @@ func TestGetMoreCommand(t *testing.T) {
 		collection       any // optional, nil to leave collection unset
 		cursorID         any // optional, defaults to cursorID from find()/aggregate()
 
-		firstBatch       bson.A
-		nextBatch        bson.A              // optional, expected getMore nextBatch
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		firstBatch    bson.A
+		nextBatch     bson.A              // optional, expected getMore nextBatch
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"Int": {
@@ -86,7 +86,7 @@ func TestGetMoreCommand(t *testing.T) {
 			collection:       collection.Name(),
 			firstBatch:       arr[:1],
 			nextBatch:        arr[1:],
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
+			failsForDocDB:    "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
 		},
 		"Long": {
 			firstBatchSize:   1,
@@ -113,7 +113,7 @@ func TestGetMoreCommand(t *testing.T) {
 			collection:       collection.Name(),
 			firstBatch:       arr[:1],
 			nextBatch:        arr[1:],
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
+			failsForDocDB:    "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
 		},
 		"Double": {
 			firstBatchSize:   1,
@@ -140,7 +140,7 @@ func TestGetMoreCommand(t *testing.T) {
 			collection:       collection.Name(),
 			firstBatch:       arr[:1],
 			nextBatch:        arr[1:],
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
+			failsForDocDB:    "https://github.com/hanzoai/docdb-DocumentDB/issues/336",
 		},
 		"DoubleFloor": {
 			firstBatchSize:   1,
@@ -210,7 +210,7 @@ func TestGetMoreCommand(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'getMore.getMore' is the wrong type 'int', expected type 'long'",
 			},
-			altMessage:       "BSON field 'getMore.getMore' is the wrong type, expected type 'long'",
+			altMessage:    "BSON field 'getMore.getMore' is the wrong type, expected type 'long'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"NotFoundCursorID": {
@@ -641,8 +641,8 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for testing only
 		command bson.D // required, command to run
 
-		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // required, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"NegativeLong": {
@@ -656,7 +656,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "-1 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "-1 value for maxTimeMS is out of range",
+			altMessage:    "-1 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"MaxLong": {
@@ -670,7 +670,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "9223372036854775807 value for maxTimeMS is out of range",
+			altMessage:    "9223372036854775807 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"Double": {
@@ -684,7 +684,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "maxTimeMS has non-integral value",
 			},
-			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'double', expected types '[long, int, decimal, double]'",
+			altMessage:    "BSON field 'getMore.maxTimeMS' is the wrong type 'double', expected types '[long, int, decimal, double]'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"NegativeDouble": {
@@ -698,7 +698,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "-14245345234123246 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "-1.4245345234123246e+16 value for maxTimeMS is out of range",
+			altMessage:    "-1.4245345234123246e+16 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"BigDouble": {
@@ -712,7 +712,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "1.797693134862316e+308 value for maxTimeMS is out of range",
+			altMessage:    "1.797693134862316e+308 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"BigNegativeDouble": {
@@ -726,7 +726,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "-9223372036854775808 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "-1.797693134862316e+308 value for maxTimeMS is out of range",
+			altMessage:    "-1.797693134862316e+308 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"NegativeInt": {
@@ -740,7 +740,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "-1123123 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "-1123123 value for maxTimeMS is out of range",
+			altMessage:    "-1123123 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"MaxInt": {
@@ -755,7 +755,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "2147483648 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
-			altMessage:       "2147483648 value for maxTimeMS is out of range",
+			altMessage:    "2147483648 value for maxTimeMS is out of range",
 		},
 		"Null": {
 			command: bson.D{
@@ -781,7 +781,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'getMore.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double']",
 			},
-			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double]'",
+			altMessage:    "BSON field 'getMore.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double]'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"Array": {
@@ -795,7 +795,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'getMore.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double']",
 			},
-			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double]'",
+			altMessage:    "BSON field 'getMore.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double]'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
 		},
 		"Document": {
@@ -810,7 +810,7 @@ func TestGetMoreCommandMaxTimeMSErrors(t *testing.T) {
 				Message: "BSON field 'getMore.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double']",
 			},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/334",
-			altMessage:       "BSON field 'getMore.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double]'",
+			altMessage:    "BSON field 'getMore.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double]'",
 		},
 	} {
 		t.Run(name, func(tt *testing.T) {

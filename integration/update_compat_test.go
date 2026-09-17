@@ -43,9 +43,9 @@ type updateCompatTestCase struct {
 	resultType  CompatTestCaseResultType // defaults to NonEmptyResult
 	providers   []shareddata.Provider    // defaults to shareddata.AllProviders()
 
-	skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+	skip          string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 	failsForDocDB string
-	failsIDs         []struct {
+	failsIDs      []struct {
 		provider shareddata.Provider
 		ids      []string // defaults to all IDs of the provider
 	} // defaults to all providers
@@ -309,7 +309,7 @@ type updateCommandCompatTestCase struct {
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
 	failsForDocDB string
-	failsIDs         []struct {
+	failsIDs      []struct {
 		provider shareddata.Provider
 		ids      []string // defaults to all IDs of the provider
 	} // defaults to all providers
@@ -484,7 +484,7 @@ type updateCurrentDateCompatTestCase struct {
 	filter     bson.D                   // defaults to bson.D{{"_id", id}}
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-	failsForDocDB   string
+	failsForDocDB      string
 	failsProvidersDocs []struct {
 		provider shareddata.Provider
 		ids      []string
@@ -702,7 +702,7 @@ func TestUpdateCompat(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"ReplaceSimple": {
-			replace:          bson.D{{"v", "foo"}},
+			replace:       bson.D{{"v", "foo"}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/489",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -713,7 +713,7 @@ func TestUpdateCompat(t *testing.T) {
 			},
 		},
 		"ReplaceEmpty": {
-			replace:          bson.D{{"v", ""}},
+			replace:       bson.D{{"v", ""}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/489",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -724,7 +724,7 @@ func TestUpdateCompat(t *testing.T) {
 			},
 		},
 		"ReplaceNull": {
-			replace:          bson.D{{"v", nil}},
+			replace:       bson.D{{"v", nil}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/489",
 			failsIDs: []struct {
 				provider shareddata.Provider
@@ -943,9 +943,9 @@ func TestUpdateCompatReplacementDoc(t *testing.T) {
 			update: bson.D{},
 		},
 		"FilterAndUpsertTrue": {
-			filter:           bson.D{{"_id", "non-existent"}},
-			update:           bson.D{{"v", int32(43)}},
-			upsert:           true,
+			filter:        bson.D{{"_id", "non-existent"}},
+			update:        bson.D{{"v", int32(43)}},
+			upsert:        true,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/359",
 			failsIDs: []struct {
 				provider shareddata.Provider

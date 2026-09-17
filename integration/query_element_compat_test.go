@@ -124,13 +124,13 @@ func TestQueryElementCompatElementType(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"TypeArrayBadValuePlusInf": {
-			filter:           bson.D{{"v", bson.D{{"$type", []any{"binData", math.Inf(+1)}}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"v", bson.D{{"$type", []any{"binData", math.Inf(+1)}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/245",
 		},
 		"TypeArrayBadValueMinusInf": {
-			filter:           bson.D{{"v", bson.D{{"$type", []any{"binData", math.Inf(-1)}}}}},
-			resultType:       EmptyResult,
+			filter:        bson.D{{"v", bson.D{{"$type", []any{"binData", math.Inf(-1)}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/245",
 		},
 		"TypeArrayBadValueNegativeFloat": {

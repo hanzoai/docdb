@@ -43,7 +43,7 @@ func TestCreateUserCommand(t *testing.T) {
 		expectedCredentialsComparable bson.D // field keys without values are compared for `salt`, `serverKey` and `storedKey` fields
 		err                           *mongo.CommandError
 		altMessage                    string
-		failsForDocDB              string
+		failsForDocDB                 string
 	}{
 		"Empty": {
 			payload: bson.D{
@@ -71,7 +71,7 @@ func TestCreateUserCommand(t *testing.T) {
 				Name:    "Location50687",
 				Message: "Error preflighting UTF-8 conversion: U_STRING_NOT_TERMINATED_WARNING",
 			},
-			altMessage:       "Password cannot be empty",
+			altMessage:    "Password cannot be empty",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/934",
 		},
 		"BadPasswordValue": {

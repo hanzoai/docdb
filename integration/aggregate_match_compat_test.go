@@ -30,15 +30,15 @@ func TestAggregateCompatMatchExpr(t *testing.T) {
 			pipeline: bson.A{
 				bson.D{{"$match", bson.D{{"$expr", "$v"}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
-			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
+			failsProviders: []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"Sum": {
 			pipeline: bson.A{bson.D{{"$match", bson.D{
 				{"$expr", bson.D{{"$sum", "$v"}}},
 			}}}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
-			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
+			failsProviders: []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 		"Gt": {
 			pipeline: bson.A{bson.D{{"$match", bson.D{

@@ -110,15 +110,15 @@ func TestHelloWithSupportedMechs(t *testing.T) {
 		user  string
 		mechs bson.A
 
-		err              *mongo.CommandError
+		err           *mongo.CommandError
 		failsForDocDB string
 	}{
 		"NotFound": {
-			user:             db.Name() + ".not_found",
+			user:          db.Name() + ".not_found",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/955",
 		},
 		"AnotherDB": {
-			user:             db.Name() + "_not_found.another_db",
+			user:          db.Name() + "_not_found.another_db",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/955",
 		},
 		"HelloUserSCRAM256": {
@@ -126,8 +126,8 @@ func TestHelloWithSupportedMechs(t *testing.T) {
 			mechs: bson.A{"SCRAM-SHA-256"},
 		},
 		"EmptyUsername": {
-			user:             db.Name() + ".",
-			mechs:            nil,
+			user:          db.Name() + ".",
+			mechs:         nil,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/955",
 		},
 		"MissingSeparator": {

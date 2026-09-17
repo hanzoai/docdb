@@ -145,7 +145,7 @@ func TestUsersInfoCommand(t *testing.T) {
 		expectedComparable bson.D // field keys without values are compared for `userId`, `salt`, `serverKey` and `storedKey` fields
 		err                *mongo.CommandError
 		altMessage         string
-		failsForDocDB   string
+		failsForDocDB      string
 	}{
 		"NoUserFound": {
 			dbName: "no_users",
@@ -181,7 +181,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				Message: "UserName contains an unknown field named: 'foo",
 				Name:    "BadValue",
 			},
-			altMessage:       "UserName must contain a field named: user",
+			altMessage:    "UserName must contain a field named: user",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/963",
 		},
 		"Default": {
@@ -359,7 +359,7 @@ func TestUsersInfoCommand(t *testing.T) {
 				Message: "UserName must contain a string field named: db. But, has type int",
 				Name:    "BadValue",
 			},
-			altMessage:       "UserName must contain a string field named: db. But, has type int32",
+			altMessage:    "UserName must contain a string field named: db. But, has type int32",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/964",
 		},
 		"FromOthersMultipleDatabases": {

@@ -45,9 +45,9 @@ func TestDropUserCommand(t *testing.T) {
 	testCases := map[string]struct { //nolint:vet // for readability
 		username string
 
-		expected         bson.D
-		err              *mongo.CommandError
-		altMessage       string
+		expected      bson.D
+		err           *mongo.CommandError
+		altMessage    string
 		failsForDocDB string
 	}{
 		"NotFound": {

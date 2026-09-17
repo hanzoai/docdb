@@ -200,7 +200,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 					`cannot use the part (v of v.-1) to traverse the element ` +
 					`({v: [ { foo: [ { bar: "hello" }, { bar: "world" } ] } ]})`,
 			},
-			altMessage:       "cannot use path 'v.-1' to traverse the document",
+			altMessage:    "cannot use path 'v.-1' to traverse the document",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"RenameUnsuitableValue": {
@@ -333,7 +333,7 @@ func TestFindAndModifyCommandErrors(tt *testing.T) {
 				Name:    "TypeMismatch",
 				Message: `Cannot multiply with non-numeric argument: {v: "string"}`,
 			},
-			altMessage:       `Cannot multiply with non-numeric argument: { v: "string" }`,
+			altMessage:    `Cannot multiply with non-numeric argument: { v: "string" }`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
 		},
 		"MulTypeMismatchNonExistent": {

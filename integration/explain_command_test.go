@@ -32,8 +32,8 @@ func TestExplainCommandQueryErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for testing only
 		command bson.D // required, command to run
 
-		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // required, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"LimitDocument": {
@@ -48,7 +48,7 @@ func TestExplainCommandQueryErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'FindCommandRequest.limit' is the wrong type 'object', expected types '[long, int, decimal, double']",
 			},
-			altMessage:       "BSON field 'limit' is the wrong type 'object', expected type 'long'",
+			altMessage:    "BSON field 'limit' is the wrong type 'object', expected type 'long'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/960",
 		},
 		"LimitNegative": {
@@ -77,7 +77,7 @@ func TestExplainCommandQueryErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'FindCommandRequest.skip' is the wrong type 'object', expected types '[long, int, decimal, double']",
 			},
-			altMessage:       "BSON field 'skip' is the wrong type 'object', expected type 'long'",
+			altMessage:    "BSON field 'skip' is the wrong type 'object', expected type 'long'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/960",
 		},
 		"SkipNegative": {

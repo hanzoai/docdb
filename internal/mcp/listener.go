@@ -78,7 +78,7 @@ func (lis *Listener) newApp(ctx context.Context) *zip.App {
 	// lifecycle - session headers, SSE streams, flushing - so it is fronted
 	// as-is instead of being reimplemented.
 	// TODO https://github.com/hanzoai/docdb/issues/5309
-	app.All("/mcp", zip.AdaptNetHTTP(connInfoMiddleware(mcpHandler)))
+	app.Raw(zip.MethodAll, "/mcp", zip.AdaptNetHTTP(connInfoMiddleware(mcpHandler)))
 
 	return app
 }

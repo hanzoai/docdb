@@ -528,11 +528,11 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 	t.Parallel()
 
 	for name, tc := range map[string]struct {
-		collectionName   any
-		indexName        any
-		err              *mongo.CommandError
-		altMessage       string
-		failsForDocDB string
+		collectionName any
+		indexName      any
+		err            *mongo.CommandError
+		altMessage     string
+		failsForDocDB  string
 	}{
 		"NonExistentCollection": {
 			collectionName: "non-existent",
@@ -551,7 +551,7 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 				Name:    "BadValue",
 				Message: "collection name has invalid type int",
 			},
-			altMessage:       "required parameter \"dropIndexes\" has type int32 (expected string)",
+			altMessage:    "required parameter \"dropIndexes\" has type int32 (expected string)",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/305",
 		},
 		"NilCollection": {
@@ -562,7 +562,7 @@ func TestDropIndexesCommandInvalidCollection(t *testing.T) {
 				Name:    "BadValue",
 				Message: "collection name has invalid type null",
 			},
-			altMessage:       "required parameter \"dropIndexes\" has type types.NullType (expected string)",
+			altMessage:    "required parameter \"dropIndexes\" has type types.NullType (expected string)",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/305",
 		},
 		"EmptyCollection": {

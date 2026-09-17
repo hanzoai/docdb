@@ -120,7 +120,7 @@ func TestFindAndModifyCompatErrors(t *testing.T) {
 			command: bson.D{
 				{"maxTimeMS", "string"},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/318",
 		},
 		"DuplicateID": {
@@ -129,8 +129,8 @@ func TestFindAndModifyCompatErrors(t *testing.T) {
 				{"update", bson.D{{"_id", "int32"}, {"v", int32(43)}}},
 				{"upsert", true},
 			},
-			providers:        []shareddata.Provider{shareddata.Int32s},
-			resultType:       integration.EmptyResult,
+			providers:     []shareddata.Provider{shareddata.Int32s},
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/894",
 		},
 		"InvalidID": {
@@ -139,8 +139,8 @@ func TestFindAndModifyCompatErrors(t *testing.T) {
 				{"update", bson.D{{"_id", primitive.Regex{Pattern: "[a-z]*[0-9]"}}, {"v", int32(43)}}},
 				{"upsert", true},
 			},
-			providers:        []shareddata.Provider{shareddata.Int32s},
-			resultType:       integration.EmptyResult,
+			providers:     []shareddata.Provider{shareddata.Int32s},
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/317",
 		},
 	}
@@ -292,8 +292,8 @@ func TestFindAndModifyCompatDotNotation(t *testing.T) {
 					{"$inc", bson.D{{"v.field", 4}}},
 				}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
-			failsProviders:   []shareddata.Provider{shareddata.ArrayAndDocuments},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/320",
+			failsProviders: []shareddata.Provider{shareddata.ArrayAndDocuments},
 		},
 		"ParentConflict": {
 			command: bson.D{
@@ -346,16 +346,16 @@ func TestFindAndModifyCompatUpdateSet(t *testing.T) {
 				{"query", bson.D{{"non-existent", bson.D{{"$exists", false}}}}},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Strings},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Strings},
 		},
 		"ExistsTrue": {
 			command: bson.D{
 				{"query", bson.D{{"_id", bson.D{{"$exists", true}}}}},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Strings},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Strings},
 		},
 		"ExistsFalse": {
 			command: bson.D{
@@ -367,8 +367,8 @@ func TestFindAndModifyCompatUpdateSet(t *testing.T) {
 			command: bson.D{
 				{"update", bson.D{{"$set", bson.D{{"_id", "int32"}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Int32s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Int32s},
 		},
 		"UpdateExistingID": {
 			command: bson.D{
@@ -381,8 +381,8 @@ func TestFindAndModifyCompatUpdateSet(t *testing.T) {
 				{"query", bson.D{{"_id", "int32"}}},
 				{"update", bson.D{{"$set", bson.D{{"_id", "int32"}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Int32s, shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Int32s, shareddata.Scalars},
 		},
 	}
 
@@ -404,16 +404,16 @@ func TestFindAndModifyCompatUnset(t *testing.T) {
 				{"query", bson.D{{"non-existent", bson.D{{"$exists", false}}}}},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Unsets},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsTrue": {
 			command: bson.D{
 				{"query", bson.D{{"_id", bson.D{{"$exists", true}}}}},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Unsets},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsFalse": {
 			command: bson.D{
@@ -426,8 +426,8 @@ func TestFindAndModifyCompatUnset(t *testing.T) {
 				{"query", bson.D{{"_id", "double"}}},
 				{"update", bson.D{{"$unset", bson.D{{"non-existent-field", ""}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars, shareddata.Doubles, shareddata.SmallDoubles},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Scalars, shareddata.Doubles, shareddata.SmallDoubles},
 		},
 	}
 
@@ -450,7 +450,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"query", bson.D{{"_id", "datetime"}}},
 				{"update", bson.D{{"$currentDate", bson.D{{"v", bson.D{{"foo", int32(1)}}}}}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
@@ -468,7 +468,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"query", bson.D{{"_id", "datetime"}}},
 				{"update", bson.D{{"$currentDate", bson.D{{"v", bson.D{{"$type", int32(1)}}}}}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
@@ -486,7 +486,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"query", bson.D{{"_id", "datetime"}}},
 				{"update", bson.D{{"$currentDate", bson.D{{"v", bson.D{{"$type", "unknown"}}}}}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
@@ -504,7 +504,7 @@ func TestFindAndModifyCompatUpdateCurrentDate(t *testing.T) {
 				{"query", bson.D{{"_id", "datetime"}}},
 				{"update", bson.D{{"$currentDate", bson.D{{"v", 1}}}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/323",
 			failsProviders: []shareddata.Provider{
 				shareddata.Unsets, shareddata.Nulls, shareddata.DocumentsDocuments, shareddata.Mixed,
@@ -545,7 +545,7 @@ func TestFindAndModifyCompatUpdateRename(t *testing.T) {
 				{"query", bson.D{{"_id", "int64"}}},
 				{"update", bson.D{{"$rename", bson.D{{"v", "v"}}}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/324",
 		},
 		"DuplicateSource": {
@@ -553,7 +553,7 @@ func TestFindAndModifyCompatUpdateRename(t *testing.T) {
 				{"query", bson.D{{"_id", "int64"}}},
 				{"update", bson.D{{"$rename", bson.D{{"v", "w"}, {"v", "x"}}}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/324",
 		},
 		"DuplicateTarget": {
@@ -600,7 +600,7 @@ func TestFindAndModifyCompatSort(t *testing.T) {
 				{"update", bson.D{{"$set", bson.D{{"v.0.foo.0.bar", "baz"}}}}},
 				{"sort", bson.D{{"v..foo", 1}, {"_id", 1}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 		},
 		"DollarPrefixedFieldName": {
@@ -609,7 +609,7 @@ func TestFindAndModifyCompatSort(t *testing.T) {
 				{"update", bson.D{{"$set", bson.D{{"v.0.foo.0.bar", "baz"}}}}},
 				{"sort", bson.D{{"$v.foo", 1}, {"_id", 1}}},
 			},
-			resultType:       integration.EmptyResult,
+			resultType:    integration.EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
 		},
 	}
@@ -735,8 +735,8 @@ func TestFindAndModifyCompatUpsertSet(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Strings},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Strings},
 		},
 		"ExistsTrue": {
 			command: bson.D{
@@ -744,8 +744,8 @@ func TestFindAndModifyCompatUpsertSet(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$set", bson.D{{"v", "foo"}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Strings},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Strings},
 		},
 		"UpsertID": {
 			command: bson.D{
@@ -825,9 +825,9 @@ func TestFindAndModifyCompatSetOnInsert(t *testing.T) {
 				{"new", true},
 				{"update", bson.D{{"$setOnInsert", bson.D{{"new", "val"}}}}},
 			},
-			providers:        []shareddata.Provider{shareddata.Int32s},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Int32s},
+			providers:      []shareddata.Provider{shareddata.Int32s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Int32s},
 		},
 		"IDNotExists": {
 			command: bson.D{
@@ -893,8 +893,8 @@ func TestFindAndModifyCompatUpsertUnset(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Unsets},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsTrue": {
 			command: bson.D{
@@ -902,8 +902,8 @@ func TestFindAndModifyCompatUpsertUnset(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$unset", bson.D{{"v", ""}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Unsets},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Unsets},
 		},
 		"ExistsFalse": {
 			command: bson.D{
@@ -921,8 +921,8 @@ func TestFindAndModifyCompatUpsertUnset(t *testing.T) {
 				{"upsert", true},
 				{"update", bson.D{{"$unset", bson.D{{"non-existent-field", ""}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars, shareddata.Doubles, shareddata.SmallDoubles},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Scalars, shareddata.Doubles, shareddata.SmallDoubles},
 		},
 	}
 
@@ -972,8 +972,8 @@ func TestFindAndModifyCompatReplacementDoc(t *testing.T) {
 			command: bson.D{
 				{"update", bson.D{}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
-			failsProviders:   []shareddata.Provider{shareddata.Unsets},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/321",
+			failsProviders: []shareddata.Provider{shareddata.Unsets},
 		},
 		"FilterAndUpsertTrue": {
 			command: bson.D{
@@ -1011,8 +1011,8 @@ type findAndModifyCompatTestCase struct {
 	resultType integration.CompatTestCaseResultType // defaults to NonEmptyResult
 	providers  []shareddata.Provider                // defaults to shareddata.AllProviders()
 
-	failsForDocDB string
-	failsProviders   []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
+	failsForDocDB  string
+	failsProviders []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
 }
 
 // testFindAndModifyCompat tests findAndModify compatibility test cases.

@@ -1033,25 +1033,25 @@ func TestCollStatsCommandScale(t *testing.T) {
 	ctx, collection := s.Ctx, s.Collection
 
 	for name, tc := range map[string]struct { //nolint:vet // for readability
-		scale            any
-		scaleFactor      any
-		err              *mongo.CommandError
-		altMessage       string
+		scale         any
+		scaleFactor   any
+		err           *mongo.CommandError
+		altMessage    string
 		failsForDocDB string
 	}{
 		"scaleOne": {
-			scale:            int32(1),
-			scaleFactor:      int32(1),
+			scale:         int32(1),
+			scaleFactor:   int32(1),
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleBig": {
-			scale:            int64(1000),
-			scaleFactor:      int32(1000),
+			scale:         int64(1000),
+			scaleFactor:   int32(1000),
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleMaxInt": {
-			scale:            math.MaxInt64,
-			scaleFactor:      int32(math.MaxInt32),
+			scale:         math.MaxInt64,
+			scaleFactor:   int32(math.MaxInt32),
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleZero": {
@@ -1071,8 +1071,8 @@ func TestCollStatsCommandScale(t *testing.T) {
 			},
 		},
 		"scaleFloat": {
-			scale:            2.8,
-			scaleFactor:      int32(2),
+			scale:         2.8,
+			scaleFactor:   int32(2),
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleFloatNegative": {
@@ -1092,8 +1092,8 @@ func TestCollStatsCommandScale(t *testing.T) {
 			},
 		},
 		"scaleMaxFloat": {
-			scale:            math.MaxFloat64,
-			scaleFactor:      int32(math.MaxInt32),
+			scale:         math.MaxFloat64,
+			scaleFactor:   int32(math.MaxInt32),
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 		"scaleString": {
@@ -1115,8 +1115,8 @@ func TestCollStatsCommandScale(t *testing.T) {
 			altMessage: `BSON field 'collStats.scale' is the wrong type 'wirebson.RawDocument', expected types '[long, int, decimal, double]'`,
 		},
 		"scaleNull": {
-			scale:            nil,
-			scaleFactor:      int32(1),
+			scale:         nil,
+			scaleFactor:   int32(1),
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/4792",
 		},
 	} {

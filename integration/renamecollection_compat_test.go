@@ -147,8 +147,8 @@ func TestRenameCollectionCompatErrors(t *testing.T) {
 	compatDBConnect := compatCollection.Database().Client().Database("admin")
 
 	for name, tc := range map[string]struct {
-		from             any
-		to               any
+		from          any
+		to            any
 		failsForDocDB string
 	}{
 		"NilFrom": {
@@ -208,13 +208,13 @@ func TestRenameCollectionCompatErrors(t *testing.T) {
 			to:   dbName + "." + cName,
 		},
 		"InvalidNameTo": {
-			from:             dbName + "." + cName,
-			to:               dbName + ".new$Collection",
+			from:          dbName + "." + cName,
+			to:            dbName + ".new$Collection",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/341",
 		},
 		"LongNameTo": {
-			from:             dbName + "." + cName,
-			to:               dbName + "." + strings.Repeat("aB", 150),
+			from:          dbName + "." + cName,
+			to:            dbName + "." + strings.Repeat("aB", 150),
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/341",
 		},
 	} {

@@ -220,21 +220,21 @@ func Listen(opts *ListenOpts) (*Listener, error) {
 
 	app := zipapp.New("debug")
 
-	app.All("/debug/metrics", zip.AdaptNetHTTP(metrics))
-	app.All("/debug/archive", archive(l))
-	app.All("/debug/archive.zip", func(c *zip.Ctx) error {
+	app.Raw(zip.MethodAll, "/debug/metrics", zip.AdaptNetHTTP(metrics))
+	app.Raw(zip.MethodAll, "/debug/archive", archive(l))
+	app.Raw(zip.MethodAll, "/debug/archive.zip", func(c *zip.Ctx) error {
 		return c.Redirect(http.StatusSeeOther, "/debug/archive")
 	})
-	app.All("/debug/livez", zip.AdaptNetHTTP(livez))
-	app.All("/debug/readyz", zip.AdaptNetHTTP(readyz))
-	app.All("/debug", zip.AdaptNetHTTP(index))
+	app.Raw(zip.MethodAll, "/debug/livez", zip.AdaptNetHTTP(livez))
+	app.Raw(zip.MethodAll, "/debug/readyz", zip.AdaptNetHTTP(readyz))
+	app.Raw(zip.MethodAll, "/debug", zip.AdaptNetHTTP(index))
 
 	// Everything else is served by [http.DefaultServeMux]: the runtime's own
 	// pprof, expvar and trace endpoints, statsviz, and the "/" redirect above.
 	// None of them are DocDB's, so they are fronted whole instead of rewritten;
 	// the adapter forwards flushes and connection hijacks, which is what
 	// statsviz's WebSocket needs.
-	app.All("/*", zip.AdaptNetHTTP(http.DefaultServeMux))
+	app.Raw(zip.MethodAll, "/*", zip.AdaptNetHTTP(http.DefaultServeMux))
 
 	lis, err := net.Listen("tcp", opts.TCPAddr)
 	if err != nil {

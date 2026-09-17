@@ -53,7 +53,7 @@ func TestNetHTTPParity(t *testing.T) {
 	t.Parallel()
 
 	app := New("test")
-	app.Get("/known", func(c *zip.Ctx) error { return Text(c, http.StatusTeapot, "brewing") })
+	app.Raw(http.MethodGet, "/known", func(c *zip.Ctx) error { return Text(c, http.StatusTeapot, "brewing") })
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /known", func(rw http.ResponseWriter, _ *http.Request) {

@@ -27,9 +27,9 @@ import (
 
 // distinctCompatTestCase describes distinct compatibility test case.
 type distinctCompatTestCase struct {
-	field            string                   // required
-	filter           bson.D                   // required
-	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
+	field         string                   // required
+	filter        bson.D                   // required
+	resultType    CompatTestCaseResultType // defaults to NonEmptyResult
 	failsForDocDB string
 }
 
@@ -119,9 +119,9 @@ func TestDistinctCompat(t *testing.T) {
 
 	testCases := map[string]distinctCompatTestCase{
 		"EmptyField": {
-			field:            "",
-			filter:           bson.D{},
-			resultType:       EmptyResult,
+			field:         "",
+			filter:        bson.D{},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/309",
 		},
 		"IDAny": {

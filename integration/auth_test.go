@@ -1044,7 +1044,7 @@ func TestSASLStartOpQueryErrors(t *testing.T) {
 		query              *wirebson.Document
 		fullCollectionName string
 
-		reply            *wirebson.Document
+		reply         *wirebson.Document
 		failsForDocDB string
 	}{
 		"WrongAuthDB": {

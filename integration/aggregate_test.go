@@ -38,8 +38,8 @@ func TestAggregateAddFieldsErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for test only
 		pipeline bson.A // required, aggregation pipeline stages
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
 		failsForDocDB string
 	}{
 		"NotDocument": {
@@ -126,9 +126,9 @@ func TestAggregateGroupErrors(t *testing.T) {
 	for name, tc := range map[string]struct {
 		pipeline bson.A // required, aggregation pipeline stages
 
-		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
-		skip             string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		err           *mongo.CommandError // required, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
+		skip          string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 		failsForDocDB string
 	}{
 		"UnaryOperatorSum": {
@@ -140,7 +140,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "Location40237",
 				Message: "The $sum accumulator is a unary operator",
 			},
-			altMessage:       "The $sum accumulator is a unary operator",
+			altMessage:    "The $sum accumulator is a unary operator",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"TypeEmpty": {
@@ -163,7 +163,7 @@ func TestAggregateGroupErrors(t *testing.T) {
 				Name:    "Location15983",
 				Message: "An object representing an expression must have exactly one field: { $type: 42, $op: 42 }",
 			},
-			altMessage:       "An object representing an expression must have exactly one field",
+			altMessage:    "An object representing an expression must have exactly one field",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"TypeInvalidLen": {
@@ -349,9 +349,9 @@ func TestAggregateProjectErrors(t *testing.T) {
 	for name, tc := range map[string]struct {
 		pipeline bson.A // required, aggregation pipeline stages
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
-		skip             string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
+		skip          string              // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 		failsForDocDB string
 	}{
 		"EmptyPipeline": {
@@ -408,7 +408,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location31253",
 				Message: "Invalid $project :: caused by :: Cannot do inclusion on field bar in exclusion projection",
 			},
-			altMessage:       "Cannot do inclusion on field bar in exclusion projection",
+			altMessage:    "Cannot do inclusion on field bar in exclusion projection",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"IncludeExclude": {
@@ -420,7 +420,7 @@ func TestAggregateProjectErrors(t *testing.T) {
 				Name:    "Location31254",
 				Message: "Invalid $project :: caused by :: Cannot do exclusion on field bar in inclusion projection",
 			},
-			altMessage:       "Cannot do exclusion on field bar in inclusion projection",
+			altMessage:    "Cannot do exclusion on field bar in inclusion projection",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"PositionalOperatorMultiple": {
@@ -741,8 +741,8 @@ func TestAggregateSetErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for test only
 		pipeline bson.A // required, aggregation pipeline stages
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
 		failsForDocDB string
 	}{
 		"NotDocument": {
@@ -794,8 +794,8 @@ func TestAggregateUnsetErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for test only
 		pipeline bson.A // required, aggregation pipeline stages
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
 		failsForDocDB string
 	}{
 		"EmptyString": {
@@ -1010,8 +1010,8 @@ func TestAggregateSortErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for test only
 		pipeline bson.A // required, aggregation pipeline stages
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
 		failsForDocDB string
 	}{
 		"DotNotationMissingField": {
@@ -1051,8 +1051,8 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 	for name, tc := range map[string]struct { //nolint:vet // used for testing only
 		command bson.D // required, command to run
 
-		err              *mongo.CommandError // required, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		err           *mongo.CommandError // required, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"NegativeLong": {
@@ -1081,7 +1081,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "9223372036854775807 value for maxTimeMS is out of range",
+			altMessage:    "9223372036854775807 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Double": {
@@ -1110,7 +1110,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'maxTimeMS' value must be >= 0, actual value '-14245345234123246'",
 			},
-			altMessage:       "BSON field 'maxTimeMS' value must be >= 0, actual value '-1.424534523412325e+16'",
+			altMessage:    "BSON field 'maxTimeMS' value must be >= 0, actual value '-1.424534523412325e+16'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"BigDouble": {
@@ -1125,7 +1125,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "9223372036854775807 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "1.797693134862316e+308 value for maxTimeMS is out of range",
+			altMessage:    "1.797693134862316e+308 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"BigNegativeDouble": {
@@ -1140,7 +1140,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'maxTimeMS' value must be >= 0, actual value '-9223372036854775808'",
 			},
-			altMessage:       "BSON field 'maxTimeMS' value must be >= 0, actual value '-1.797693134862316e+308'",
+			altMessage:    "BSON field 'maxTimeMS' value must be >= 0, actual value '-1.797693134862316e+308'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"NegativeInt32": {
@@ -1169,7 +1169,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "BadValue",
 				Message: "2147483648 value for maxTimeMS is out of range " + shareddata.Int32Interval,
 			},
-			altMessage:       "2147483648 value for maxTimeMS is out of range",
+			altMessage:    "2147483648 value for maxTimeMS is out of range",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Null": {
@@ -1198,7 +1198,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'aggregate.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double']",
 			},
-			altMessage:       "BSON field 'aggregate.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double]'",
+			altMessage:    "BSON field 'aggregate.maxTimeMS' is the wrong type 'string', expected types '[long, int, decimal, double]'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Array": {
@@ -1213,7 +1213,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'aggregate.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double']",
 			},
-			altMessage:       "BSON field 'aggregate.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double]'",
+			altMessage:    "BSON field 'aggregate.maxTimeMS' is the wrong type 'array', expected types '[long, int, decimal, double]'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"Document": {
@@ -1228,7 +1228,7 @@ func TestAggregateCommandMaxTimeMSErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: "BSON field 'aggregate.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double']",
 			},
-			altMessage:       "BSON field 'aggregate.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double]'",
+			altMessage:    "BSON field 'aggregate.maxTimeMS' is the wrong type 'object', expected types '[long, int, decimal, double]'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 	} {
@@ -1265,9 +1265,9 @@ func TestAggregateCommandCursor(t *testing.T) {
 		pipeline any // optional, defaults to bson.A{}
 		cursor   any // optional, nil to leave cursor unset
 
-		firstBatch       primitive.A         // optional, expected firstBatch
-		err              *mongo.CommandError // optional, expected error from MongoDB
-		altMessage       string              // optional, alternative error message for DocDB, ignored if empty
+		firstBatch    primitive.A         // optional, expected firstBatch
+		err           *mongo.CommandError // optional, expected error from MongoDB
+		altMessage    string              // optional, alternative error message for DocDB, ignored if empty
 		failsForDocDB string
 	}{
 		"Int": {
@@ -1289,7 +1289,7 @@ func TestAggregateCommandCursor(t *testing.T) {
 				Name:    "Location51024",
 				Message: "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			},
-			altMessage:       "BSON field 'batchSize' value must be >= 0, actual value '-1'",
+			altMessage:    "BSON field 'batchSize' value must be >= 0, actual value '-1'",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"DoubleZero": {

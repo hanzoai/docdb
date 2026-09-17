@@ -41,7 +41,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 		failsForDocDB string
 	}{
 		"EmptyCollStats": {
-			pipeline:         bson.A{bson.D{{"$collStats", bson.D{}}}},
+			pipeline:      bson.A{bson.D{{"$collStats", bson.D{}}}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 			expected: bson.D{
 				{
@@ -112,7 +112,7 @@ func TestAggregateCommandCollStats(tt *testing.T) {
 				}},
 			},
 			expectedSizeIsZero: true,
-			failsForDocDB:   "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
+			failsForDocDB:      "https://github.com/hanzoai/docdb-DocumentDB/issues/534",
 		},
 		"StorageStatsFloatScale": {
 			pipeline: bson.A{bson.D{{"$collStats", bson.D{{"storageStats", bson.D{{"scale", 42.42}}}}}}},
@@ -290,8 +290,8 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 		command  bson.D          // required, command to run
 		database *mongo.Database // defaults to collection.Database()
 
-		err              *mongo.CommandError // required
-		altMessage       string              // optional, alternative error message
+		err           *mongo.CommandError // required
+		altMessage    string              // optional, alternative error message
 		failsForDocDB string
 	}{
 		"NonExistentDatabase": {
@@ -336,7 +336,7 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 				Name:    "Location5447000",
 				Message: `$collStats must take a nested object but found: $collStats: null`,
 			},
-			altMessage:       `$collStats must take a nested object but found: { $collStats: null }`,
+			altMessage:    `$collStats must take a nested object but found: { $collStats: null }`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"StorageStatsNegativeScale": {
@@ -363,7 +363,7 @@ func TestAggregateCommandCollStatsErrors(t *testing.T) {
 				Name:    "TypeMismatch",
 				Message: `BSON field '$collStats.storageStats.scale' is the wrong type 'string', expected types '[long, int, decimal, double']`,
 			},
-			altMessage:       `BSON field '$collStats.storageStats.scale' is the wrong type 'string', expected types '[long, int, decimal, double]'`,
+			altMessage:    `BSON field '$collStats.storageStats.scale' is the wrong type 'string', expected types '[long, int, decimal, double]'`,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/536",
 		},
 		"CountCollStatsCount": {

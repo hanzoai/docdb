@@ -42,10 +42,10 @@ type queryCompatTestCase struct {
 	projection bson.D                   // nil for leaving projection unset
 	resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-	skipIDCheck      bool   // skip check collected IDs, use it when no ids returned from query
-	skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
-	failsForDocDB string
-	failsProviders   []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
+	skipIDCheck    bool   // skip check collected IDs, use it when no ids returned from query
+	skip           string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+	failsForDocDB  string
+	failsProviders []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
 }
 
 func testQueryCompatWithProviders(t *testing.T, providers shareddata.Providers, testCases map[string]queryCompatTestCase) {
@@ -235,22 +235,22 @@ func TestQueryCompatSort(t *testing.T) {
 
 	testCases := map[string]queryCompatTestCase{
 		"Asc": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v", 1}, {"_id", 1}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
-			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites},
+			filter:         bson.D{},
+			sort:           bson.D{{"v", 1}, {"_id", 1}},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
+			failsProviders: []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites},
 		},
 		"Desc": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v", -1}, {"_id", 1}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
-			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
+			filter:         bson.D{},
+			sort:           bson.D{{"v", -1}, {"_id", 1}},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
+			failsProviders: []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"AscDesc": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v", 1}, {"_id", -1}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
-			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
+			filter:         bson.D{},
+			sort:           bson.D{{"v", 1}, {"_id", -1}},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/264",
+			failsProviders: []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"DescDesc": {
 			filter: bson.D{},
@@ -266,21 +266,21 @@ func TestQueryCompatSort(t *testing.T) {
 		},
 
 		"Bad": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v", 13}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			sort:          bson.D{{"v", 13}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"BadZero": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v", 0}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			sort:          bson.D{{"v", 0}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"BadNull": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v", nil}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			sort:          bson.D{{"v", nil}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 
@@ -295,28 +295,28 @@ func TestQueryCompatSort(t *testing.T) {
 			sort:   bson.D{{"invalid.foo", 1}, {"_id", 1}},
 		},
 		"DotNotationMissingField": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v..foo", 1}, {"_id", 1}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			sort:          bson.D{{"v..foo", 1}, {"_id", 1}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 
 		"BadDollarStart": {
-			filter:           bson.D{},
-			sort:             bson.D{{"$v.foo", 1}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			sort:          bson.D{{"$v.foo", 1}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/265",
 		},
 		"BadDollarMid": {
-			filter:           bson.D{},
-			sort:             bson.D{{"v.$foo.bar", 1}, {"_id", 1}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			sort:          bson.D{{"v.$foo.bar", 1}, {"_id", 1}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/265",
 		},
 		"BadDollarEnd": {
-			filter:           bson.D{},
-			sort:             bson.D{{"_id", 1}, {"v.$foo.bar", 1}},
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			sort:          bson.D{{"_id", 1}, {"v.$foo.bar", 1}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/265",
 		},
 		"DollarPossible": {
@@ -379,9 +379,9 @@ func TestQueryCompatSkip(t *testing.T) {
 			optSkip: pointer.ToInt64(0),
 		},
 		"Bad": {
-			filter:           bson.D{},
-			optSkip:          pointer.ToInt64(-1),
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			optSkip:       pointer.ToInt64(-1),
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 		"MaxInt64": {
@@ -390,9 +390,9 @@ func TestQueryCompatSkip(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"MinInt64": {
-			filter:           bson.D{},
-			optSkip:          pointer.ToInt64(math.MinInt64),
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			optSkip:       pointer.ToInt64(math.MinInt64),
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 	}
@@ -471,9 +471,9 @@ func TestQueryCompatBatchSize(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"Bad": {
-			filter:           bson.D{},
-			batchSize:        pointer.ToInt32(-1),
-			resultType:       EmptyResult,
+			filter:        bson.D{},
+			batchSize:     pointer.ToInt32(-1),
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/241",
 		},
 	}

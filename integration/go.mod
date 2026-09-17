@@ -1,6 +1,6 @@
 module github.com/hanzoai/docdb/integration
 
-go 1.26.5
+go 1.27.1
 
 replace github.com/hanzoai/docdb => ../
 
@@ -18,7 +18,7 @@ require (
 	github.com/xdg-go/scram v1.2.0
 	go.mongodb.org/mongo-driver v1.17.9
 	go.opentelemetry.io/contrib/instrumentation/go.mongodb.org/mongo-driver/mongo/otelmongo v0.66.0
-	go.opentelemetry.io/otel v1.43.0
+	go.opentelemetry.io/otel v1.44.0
 )
 
 require (
@@ -35,6 +35,7 @@ require (
 	github.com/gofiber/schema v1.7.1 // indirect
 	github.com/gofiber/utils/v2 v2.0.4 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
+	github.com/gorilla/rpc v1.2.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grandcat/zeroconf v1.0.0 // indirect
 	github.com/jackc/pgerrcode v0.0.0-20250907135507-afb5586c32a6 // indirect
@@ -47,8 +48,9 @@ require (
 	github.com/luxfi/crypto v1.20.2 // indirect
 	github.com/luxfi/log v1.4.3 // indirect
 	github.com/luxfi/mdns v0.1.1 // indirect
+	github.com/luxfi/metric v1.10.0 // indirect
 	github.com/luxfi/trace v1.4.0 // indirect
-	github.com/luxfi/zap v1.2.6 // indirect
+	github.com/luxfi/zap v1.2.7 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.21 // indirect
 	github.com/miekg/dns v1.1.72 // indirect
@@ -69,14 +71,15 @@ require (
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	github.com/zap-proto/fiber/v3 v3.2.1 // indirect
-	github.com/zap-proto/go v1.3.0 // indirect
-	github.com/zap-proto/http v0.3.1 // indirect
-	github.com/zap-proto/zip v1.24.2 // indirect
+	github.com/zap-proto/go v1.8.3 // indirect
+	github.com/zap-proto/http v0.3.5 // indirect
+	github.com/zap-proto/mcp v1.0.5 // indirect
+	github.com/zap-proto/zip v1.37.3 // indirect
 	go.mongodb.org/mongo-driver/v2 v2.5.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/otel/metric v1.43.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.42.0 // indirect
-	go.opentelemetry.io/otel/trace v1.43.0 // indirect
+	go.opentelemetry.io/otel/metric v1.44.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.44.0 // indirect
+	go.opentelemetry.io/otel/trace v1.44.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	golang.org/x/crypto v0.52.0 // indirect
 	golang.org/x/mod v0.36.0 // indirect

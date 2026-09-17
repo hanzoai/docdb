@@ -40,9 +40,9 @@ func TestUpdateUserCommand(t *testing.T) {
 		mechanisms    bson.A
 		updatePayload bson.D
 
-		expected         bson.D
-		err              *mongo.CommandError
-		altMessage       string
+		expected      bson.D
+		err           *mongo.CommandError
+		altMessage    string
 		failsForDocDB string
 	}{
 		"MissingFields": {
@@ -98,7 +98,7 @@ func TestUpdateUserCommand(t *testing.T) {
 				Name:    "Location50687",
 				Message: "Error preflighting UTF-8 conversion: U_STRING_NOT_TERMINATED_WARNING",
 			},
-			altMessage:       "Password cannot be empty",
+			altMessage:    "Password cannot be empty",
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/945",
 		},
 		"BadPasswordValue": {

@@ -82,7 +82,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 		models     []mongo.IndexModel
 		resultType CompatTestCaseResultType // defaults to NonEmptyResult
 
-		skip             string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+		skip          string // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
 		failsForDocDB string
 	}{
 		"Empty": {
@@ -103,7 +103,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 			models: []mongo.IndexModel{
 				{Keys: bson.D{{"_id", -1}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/297",
 		},
 		"NonExistentField": {
@@ -130,7 +130,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 			models: []mongo.IndexModel{
 				{Keys: bson.D{{"v", -1}, {"v", 1}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/297",
 		},
 		"CustomName": {
@@ -190,7 +190,7 @@ func TestCreateIndexesCompat(t *testing.T) {
 					Keys: bson.D{{"v", -1}, {"v", 1}},
 				},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/297",
 		},
 		"SameKeyDifferentNames": {
@@ -313,10 +313,10 @@ func TestDropIndexesCompat(t *testing.T) {
 	t.Parallel()
 
 	for name, tc := range map[string]struct { //nolint:vet // for readability
-		dropIndexName    string                   // name of a single index to drop
-		dropAll          bool                     // set true for drop all indexes, if true dropIndexName must be empty.
-		resultType       CompatTestCaseResultType // defaults to NonEmptyResult
-		toCreate         []mongo.IndexModel       // optional, if not nil create indexes before dropping
+		dropIndexName string                   // name of a single index to drop
+		dropAll       bool                     // set true for drop all indexes, if true dropIndexName must be empty.
+		resultType    CompatTestCaseResultType // defaults to NonEmptyResult
+		toCreate      []mongo.IndexModel       // optional, if not nil create indexes before dropping
 		failsForDocDB string
 	}{
 		"DropAllCommand": {
@@ -450,9 +450,9 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 	t.Parallel()
 
 	for name, tc := range map[string]struct { //nolint:vet // for readability
-		models           []mongo.IndexModel // required, index to create
-		insertDoc        bson.D             // required, document to insert for uniqueness check
-		new              bool               // optional, insert new document before check uniqueness
+		models        []mongo.IndexModel // required, index to create
+		insertDoc     bson.D             // required, document to insert for uniqueness check
+		new           bool               // optional, insert new document before check uniqueness
 		failsForDocDB string
 	}{
 		"IDIndex": {
@@ -462,7 +462,7 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 					Options: options.Index().SetUnique(true),
 				},
 			},
-			insertDoc:        bson.D{{"_id", "int322"}},
+			insertDoc:     bson.D{{"_id", "int322"}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/296",
 		},
 		"ExistingFieldIndex": {
@@ -485,7 +485,7 @@ func TestCreateIndexesCompatUnique(t *testing.T) {
 					Options: options.Index().SetUnique(true),
 				},
 			},
-			insertDoc:        bson.D{{"not-existing-field", "value"}},
+			insertDoc:     bson.D{{"not-existing-field", "value"}},
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/296",
 		},
 		"NotUniqueIndex": {

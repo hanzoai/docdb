@@ -80,10 +80,10 @@ func TestCreateIndexesCommandCompat(t *testing.T) {
 			resultType:     EmptyResult,
 		},
 		"ExistingNameDifferentKeyLength": {
-			collectionName:   "test",
-			key:              bson.D{{"_id", 1}, {"v", 1}},
-			indexName:        "_id_", // the same name as the default index
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/290",
+			collectionName: "test",
+			key:            bson.D{{"_id", 1}, {"v", 1}},
+			indexName:      "_id_", // the same name as the default index
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/290",
 		},
 		"InvalidKey": {
 			collectionName: "test",
@@ -283,7 +283,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{Keys: bson.D{{"v", 1}, {"foo", 1}}},
 				{Keys: bson.D{{"v.foo", -1}}},
 			},
-			toDrop:           bson.A{"v_-1", "v_1_foo_1"},
+			toDrop:        bson.A{"v_-1", "v_1_foo_1"},
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"MultipleIndexesByKey": {
@@ -313,7 +313,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 			toCreate: []mongo.IndexModel{
 				{Keys: bson.D{{"v", -1}}},
 			},
-			toDrop:           bson.D{{"v", -1}},
+			toDrop:        bson.D{{"v", -1}},
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"SimilarIndexes": {
@@ -321,7 +321,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{Keys: bson.D{{"v", 1}, {"foo", 1}}},
 				{Keys: bson.D{{"v", 1}, {"bar", 1}}},
 			},
-			toDrop:           bson.D{{"v", 1}, {"bar", 1}},
+			toDrop:        bson.D{{"v", 1}, {"bar", 1}},
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"DropAllExpression": {
@@ -330,7 +330,7 @@ func TestDropIndexesCommandCompat(t *testing.T) {
 				{Keys: bson.D{{"foo.bar", 1}}},
 				{Keys: bson.D{{"foo", 1}, {"bar", 1}}},
 			},
-			toDrop:           "*",
+			toDrop:        "*",
 			failsForDocDB: "https://github.com/hanzoai/docdb/issues/5119",
 		},
 		"WrongExpression": {

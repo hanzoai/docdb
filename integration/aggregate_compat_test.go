@@ -38,10 +38,10 @@ type aggregateStagesCompatTestCase struct {
 	pipeline bson.A         // required, unspecified $sort appends bson.D{{"$sort", bson.D{{"_id", 1}}}} for non empty pipeline.
 	maxTime  *time.Duration // optional, leave nil for unset maxTime
 
-	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
-	skip             string                   // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
-	failsForDocDB string
-	failsProviders   []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
+	resultType     CompatTestCaseResultType // defaults to NonEmptyResult
+	skip           string                   // TODO https://github.com/hanzoai/docdb-DocumentDB/issues/1086
+	failsForDocDB  string
+	failsProviders []shareddata.Provider // use only if failsForDocDB is set, defaults to all providers
 }
 
 // testAggregateStagesCompat tests aggregation stages compatibility test cases with all providers.
@@ -175,8 +175,8 @@ func testAggregateStagesCompatWithProviders(t *testing.T, providers shareddata.P
 
 // aggregateCommandCompatTestCase describes aggregate compatibility test case.
 type aggregateCommandCompatTestCase struct {
-	command          bson.D                   // required
-	resultType       CompatTestCaseResultType // defaults to NonEmptyResult
+	command       bson.D                   // required
+	resultType    CompatTestCaseResultType // defaults to NonEmptyResult
 	failsForDocDB string
 }
 
@@ -259,14 +259,14 @@ func TestAggregateCommandCompat(t *testing.T) {
 			command: bson.D{
 				{"aggregate", 1},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"FailedToParse": {
 			command: bson.D{
 				{"aggregate", 2},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"PipelineTypeMismatch": {
@@ -402,8 +402,8 @@ func TestAggregateCompatCount(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$count", "nonexistent"}}},
 		},
 		"CountGroupID": {
-			pipeline:         bson.A{bson.D{{"$count", "_id"}}},
-			resultType:       EmptyResult,
+			pipeline:      bson.A{bson.D{{"$count", "_id"}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 		"CountNonString": {
@@ -411,8 +411,8 @@ func TestAggregateCompatCount(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"CountEmpty": {
-			pipeline:         bson.A{bson.D{{"$count", ""}}},
-			resultType:       EmptyResult,
+			pipeline:      bson.A{bson.D{{"$count", ""}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"CountBadValue": {
@@ -715,7 +715,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDExpressionAndInvalidOperator": {
@@ -729,7 +729,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"IDDocument": {
@@ -774,14 +774,14 @@ func TestAggregateCompatGroup(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$"},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"EmptyVariable": {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"_id", "$$"},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"InvalidVariable$": {
@@ -822,7 +822,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$group", bson.D{
 				{"bla", 1},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"InvalidAccumulator": {
@@ -837,7 +837,7 @@ func TestAggregateCompatGroup(t *testing.T) {
 				{"_id", nil},
 				{"v", bson.D{}},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"GroupMultipleAccumulator": {
@@ -908,14 +908,14 @@ func TestAggregateCompatGroup(t *testing.T) {
 			pipeline: bson.A{
 				bson.D{{"$group", bson.D{{"_id", bson.D{{"$sum", "$"}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"IDSumRecursiveInvalid": {
 			pipeline: bson.A{
 				bson.D{{"$group", bson.D{{"_id", bson.D{{"$sum", bson.D{{"$sum", "$"}}}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 	}
@@ -1118,7 +1118,7 @@ func TestAggregateCompatGroupCount(t *testing.T) {
 				{"_id", nil},
 				{"count", bson.D{{"$count", ""}}},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"NonEmptyExpression": {
@@ -1126,7 +1126,7 @@ func TestAggregateCompatGroupCount(t *testing.T) {
 				{"_id", nil},
 				{"count", bson.D{{"$count", bson.D{{"a", 1}}}}},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"NonExistentField": {
@@ -1141,7 +1141,7 @@ func TestAggregateCompatGroupCount(t *testing.T) {
 				{"count", bson.D{{"$count", bson.D{}}}},
 				{"count", bson.D{{"$count", bson.D{}}}},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 	}
@@ -1177,7 +1177,7 @@ func TestAggregateCompatLimit(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$limit", "5"}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Double": {
@@ -1225,7 +1225,7 @@ func TestAggregateCompatLimit(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$limit", bson.D{}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Int64Overflow": {
@@ -1297,8 +1297,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				// ascending sort for shareddata collections.
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars, shareddata.Int64s, shareddata.Int32s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars, shareddata.Int64s, shareddata.Int32s},
 		},
 		"GroupByID": {
 			pipeline: bson.A{
@@ -1319,8 +1319,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"EmptyString": {
 			pipeline: bson.A{
@@ -1331,8 +1331,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"NonExpression": {
 			pipeline: bson.A{
@@ -1353,8 +1353,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"Document": {
 			pipeline: bson.A{
@@ -1366,8 +1366,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"Array": {
 			pipeline: bson.A{
@@ -1378,7 +1378,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"Int32": {
@@ -1390,8 +1390,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"MaxInt32": {
 			pipeline: bson.A{
@@ -1402,8 +1402,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"NegativeInt32": {
 			pipeline: bson.A{
@@ -1414,8 +1414,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"Int64": {
 			pipeline: bson.A{
@@ -1426,8 +1426,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"Double": {
 			pipeline: bson.A{
@@ -1438,8 +1438,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"MaxDouble": {
 			pipeline: bson.A{
@@ -1450,8 +1450,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"Bool": {
 			pipeline: bson.A{
@@ -1462,8 +1462,8 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
-			failsProviders:   []shareddata.Provider{shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/383",
+			failsProviders: []shareddata.Provider{shareddata.Scalars},
 		},
 		"Duplicate": {
 			pipeline: bson.A{
@@ -1475,7 +1475,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 				}}},
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/390",
 		},
 		"RecursiveOperator": {
@@ -1499,7 +1499,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 			pipeline: bson.A{
 				bson.D{{"$group", bson.D{{"sum", bson.D{{"$sum", bson.D{{"$type", bson.A{"1", "2"}}}}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 		"RecursiveOperatorNonExistent": {
@@ -1510,7 +1510,7 @@ func TestAggregateCompatGroupSum(t *testing.T) {
 					{"sum", bson.D{{"$sum", bson.D{{"$non-existent", "$v"}}}}},
 				}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/389",
 		},
 	}
@@ -1570,8 +1570,8 @@ func TestAggregateCompatMatch(t *testing.T) {
 			pipeline: bson.A{
 				bson.D{{"$match", bson.D{{"$expr", bson.D{{"$sum", "$v"}}}}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
-			failsProviders:   []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/362",
+			failsProviders: []shareddata.Provider{shareddata.Decimal128s, shareddata.Doubles, shareddata.Int64s, shareddata.Scalars},
 		},
 	}
 
@@ -1593,24 +1593,24 @@ func TestAggregateCompatSort(t *testing.T) {
 				{"v", 1},
 				{"_id", 1}, // sort by _id when v is the same.
 			}}}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
-			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
+			failsProviders: []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites},
 		},
 		"DescendingValue": {
 			pipeline: bson.A{bson.D{{"$sort", bson.D{
 				{"v", -1},
 				{"_id", 1}, // sort by _id when v is the same.
 			}}}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
-			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
+			failsProviders: []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"AscendingValueDescendingID": {
 			pipeline: bson.A{bson.D{{"$sort", bson.D{
 				{"v", 1},
 				{"_id", -1},
 			}}}},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
-			failsProviders:   []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/355",
+			failsProviders: []shareddata.Provider{shareddata.ArrayStrings, shareddata.Composites, shareddata.Mixed},
 		},
 		"DescendingValueDescendingID": {
 			pipeline: bson.A{bson.D{{"$sort", bson.D{
@@ -1637,18 +1637,18 @@ func TestAggregateCompatSort(t *testing.T) {
 			pipeline: bson.A{bson.D{{"$sort", bson.D{
 				{"v..foo", 1},
 			}}}},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 
 		"SortBadExpression": {
-			pipeline:         bson.A{bson.D{{"$sort", 1}}},
-			resultType:       EmptyResult,
+			pipeline:      bson.A{bson.D{{"$sort", 1}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"SortBadOrder": {
-			pipeline:         bson.A{bson.D{{"$sort", bson.D{{"_id", 0}}}}},
-			resultType:       EmptyResult,
+			pipeline:      bson.A{bson.D{{"$sort", bson.D{{"_id", 0}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"SortMissingKey": {
@@ -1656,8 +1656,8 @@ func TestAggregateCompatSort(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"BadDollarStart": {
-			pipeline:         bson.A{bson.D{{"$sort", bson.D{{"$v.foo", 1}}}}},
-			resultType:       EmptyResult,
+			pipeline:      bson.A{bson.D{{"$sort", bson.D{{"$v.foo", 1}}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/354",
 		},
 	}
@@ -1726,7 +1726,7 @@ func TestAggregateCompatUnwind(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 				bson.D{{"$unwind", "$v.0"}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/367",
 			failsProviders: shareddata.Providers{
 				shareddata.ArrayStrings,
@@ -1745,7 +1745,7 @@ func TestAggregateCompatUnwind(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", 1}}}},
 				bson.D{{"$unwind", "$v.0.foo"}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/367",
 			failsProviders: shareddata.Providers{
 				shareddata.ArrayAndDocuments,
@@ -1767,8 +1767,8 @@ func TestAggregateCompatUnwind(t *testing.T) {
 			resultType: EmptyResult,
 		},
 		"EmptyPath": {
-			pipeline:         bson.A{bson.D{{"$unwind", "$"}}},
-			resultType:       EmptyResult,
+			pipeline:      bson.A{bson.D{{"$unwind", "$"}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"EmptyVariable": {
@@ -1813,8 +1813,8 @@ func TestAggregateCompatSkip(t *testing.T) {
 
 	testCases := map[string]aggregateStagesCompatTestCase{
 		"Document": {
-			pipeline:         bson.A{bson.D{{"$skip", bson.D{}}}},
-			resultType:       EmptyResult,
+			pipeline:      bson.A{bson.D{{"$skip", bson.D{}}}},
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Zero": {
@@ -1841,7 +1841,7 @@ func TestAggregateCompatSkip(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$skip", "1"}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"NegativeValue": {
@@ -1901,7 +1901,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$project", "invalid"}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"ZeroOperators": {
@@ -1909,7 +1909,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$project", bson.D{{"v", bson.D{}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"TwoOperators": {
@@ -1917,7 +1917,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$project", bson.D{{"v", bson.D{{"$type", "foo"}, {"$sum", 1}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"DollarSignField": {
@@ -1970,7 +1970,7 @@ func TestAggregateCompatProject(t *testing.T) {
 
 				bson.D{{"$project", bson.D{{"foo", int32(0)}, {"bar", true}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"Exclude1FieldInclude1Field": {
@@ -2092,7 +2092,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$project", bson.D{{"foo", bson.D{}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"Document": {
@@ -2151,7 +2151,7 @@ func TestAggregateCompatProject(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$project", bson.D{{"type", bson.D{{"$type", bson.D{{"$non-existent", "$v"}}}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/368",
 		},
 		"TypeRecursiveInvalid": {
@@ -2251,8 +2251,8 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sum", bson.D{{"$sum", "$v"}}},
 				}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
-			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
+			failsProviders: shareddata.Providers{shareddata.Decimal128s},
 		},
 		"DotNotation": {
 			pipeline: bson.A{
@@ -2302,7 +2302,7 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sum", bson.D{{"$sum", bson.A{"$"}}}},
 				}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/369",
 		},
 		"ArrayValue": {
@@ -2311,8 +2311,8 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sum", bson.D{{"$sum", bson.A{"$v"}}}},
 				}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
-			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
+			failsProviders: shareddata.Providers{shareddata.Decimal128s},
 		},
 		"ArrayTwoValues": {
 			pipeline: bson.A{
@@ -2341,8 +2341,8 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sumsum", bson.D{{"$sum", bson.D{{"$sum", "$v"}}}}},
 				}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
-			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
+			failsProviders: shareddata.Providers{shareddata.Decimal128s},
 		},
 		"RecursiveArrayValue": {
 			pipeline: bson.A{
@@ -2350,8 +2350,8 @@ func TestAggregateCompatProjectSum(t *testing.T) {
 					{"sumsum", bson.D{{"$sum", bson.D{{"$sum", bson.A{"$v"}}}}}},
 				}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
-			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
+			failsProviders: shareddata.Providers{shareddata.Decimal128s},
 		},
 		"ArrayValueRecursiveInt": {
 			pipeline: bson.A{
@@ -2505,7 +2505,7 @@ func TestAggregateCompatAddFields(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$addFields", bson.D{{"value", bson.D{{"$invalid-operator", "foo"}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"Type": {
@@ -2537,7 +2537,7 @@ func TestAggregateCompatAddFields(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$addFields", bson.D{{"type", bson.D{{"$type", bson.D{{"$non-existent", "$v"}}}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"TypeRecursiveInvalid": {
@@ -2596,7 +2596,7 @@ func TestAggregateCompatAddFields(t *testing.T) {
 				bson.D{{"$sort", bson.D{{"_id", -1}}}},
 				bson.D{{"$addFields", bson.D{{"type", bson.D{{"not-operator", "foo"}, {"$type", "foo"}}}}}},
 			},
-			resultType:       EmptyResult,
+			resultType:    EmptyResult,
 			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/349",
 		},
 		"TypeArraySingleItem": {
@@ -2636,8 +2636,8 @@ func TestAggregateCompatAddFields(t *testing.T) {
 					{"sum", bson.D{{"$sum", "$v"}}},
 				}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
-			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
+			failsProviders: shareddata.Providers{shareddata.Decimal128s},
 		},
 	}
 
@@ -2747,8 +2747,8 @@ func TestAggregateCompatSet(t *testing.T) {
 					{"sum", bson.D{{"$sum", "$v"}}},
 				}}},
 			},
-			failsForDocDB: "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
-			failsProviders:   shareddata.Providers{shareddata.Decimal128s},
+			failsForDocDB:  "https://github.com/hanzoai/docdb-DocumentDB/issues/1078",
+			failsProviders: shareddata.Providers{shareddata.Decimal128s},
 		},
 	}
 	testAggregateStagesCompat(t, testCases)
