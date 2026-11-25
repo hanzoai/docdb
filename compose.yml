@@ -20,9 +20,9 @@ services:
     environment:
       # UTC−03:30/−02:30. Set to catch timezone problems.
       - TZ=America/St_Johns
-      - POSTGRES_USER=pg-user
-      - POSTGRES_PASSWORD=pg-pass
-      - POSTGRES_DB=postgres
+      - SQL_USER=pg-user
+      - SQL_PASSWORD=pg-pass
+      - SQL_DB=postgres
     volumes:
       - ./build/testscripts:/testscripts
 

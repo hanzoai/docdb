@@ -13,7 +13,7 @@ ARG LABEL_COMMIT
 # prepare stage
 
 # TODO https://github.com/hanzoai/docdb/issues/5449
-FROM --platform=$BUILDPLATFORM golang:1.26.5-bookworm AS eval-prepare
+FROM --platform=$BUILDPLATFORM golang:1.27.1-bookworm AS eval-prepare
 ENV GOTOOLCHAIN=auto
 
 # use a single directory for all Go caches to simplify RUN --mount commands below
@@ -39,7 +39,7 @@ EOF
 # build stage
 
 # TODO https://github.com/hanzoai/docdb/issues/5449
-FROM golang:1.26.5-bookworm AS eval-build
+FROM golang:1.27.1-bookworm AS eval-build
 ENV GOTOOLCHAIN=auto
 
 ARG TARGETARCH
@@ -96,7 +96,7 @@ EOF
 # FROM ghcr.io/hanzoai/postgres-documentdb:17-0.108.0-docdb-2.8.0 AS eval
 
 # Use moving development image during development.
-FROM ghcr.io/hanzoai/postgres-documentdb-dev:17-docdb AS eval
+FROM ghcr.io/hanzoai/sql:18.0.10 AS eval
 
 RUN --mount=type=cache,sharing=locked,target=/var/cache/apt <<EOF
 apt install -y curl supervisor

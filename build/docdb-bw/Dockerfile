@@ -2,7 +2,7 @@
 # FROM --platform=linux/amd64 ghcr.io/hanzoai/postgres-documentdb:17-0.108.0-docdb-2.8.0
 
 # Use moving development image during development.
-FROM --platform=linux/amd64 ghcr.io/hanzoai/postgres-documentdb-dev:17-docdb
+FROM --platform=linux/amd64 ghcr.io/hanzoai/sql:18.0.10
 
 RUN --mount=type=cache,target=/var/cache/apt <<EOF
 

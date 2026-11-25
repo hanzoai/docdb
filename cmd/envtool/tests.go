@@ -50,6 +50,7 @@ type testEvent struct {
 	Package        string    `json:"Package"`
 	Test           string    `json:"Test"`
 	Output         string    `json:"Output"`
+	OutputType     string    `json:"OutputType"`
 	ElapsedSeconds float64   `json:"Elapsed"`
 
 	ImportPath string `json:"ImportPath"`
