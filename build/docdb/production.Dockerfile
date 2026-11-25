@@ -13,7 +13,7 @@ ARG LABEL_COMMIT
 # prepare stage
 
 # TODO https://github.com/hanzoai/docdb/issues/5449
-FROM --platform=$BUILDPLATFORM golang:1.26.5-bookworm AS production-prepare
+FROM --platform=$BUILDPLATFORM golang:1.27.1-bookworm AS production-prepare
 ENV GOTOOLCHAIN=auto
 
 # use a single directory for all Go caches to simplify RUN --mount commands below
@@ -39,7 +39,7 @@ EOF
 # build stage
 
 # TODO https://github.com/hanzoai/docdb/issues/5449
-FROM golang:1.26.5-bookworm AS production-build
+FROM golang:1.27.1-bookworm AS production-build
 ENV GOTOOLCHAIN=auto
 
 ARG TARGETARCH

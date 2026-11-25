@@ -2,4 +2,4 @@
 # FROM ghcr.io/hanzoai/postgres-documentdb-dev:17-0.108.0-docdb-2.8.0
 
 # Use moving development image during development.
-FROM ghcr.io/hanzoai/postgres-documentdb-dev:17-docdb
+FROM ghcr.io/hanzoai/sql:18.0.10
